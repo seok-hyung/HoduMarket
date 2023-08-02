@@ -8,6 +8,7 @@
   "bracketSpacing": true,
   "proseWrap": "preserve",
   "useTabs": false,
+  "endOfLine": "auto",
   "overrides": [
     {
       "files": "*.json",
