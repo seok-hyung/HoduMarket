@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Nav from 'components/nav/Nav';
+
+import Nav from 'components/common/nav/Nav';
+
 import { Route, Routes } from 'react-router-dom';
 import { Product } from 'model/product';
 import { getProductAPI } from '../../api/product/getProductAPI';

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavLogoImg from '../../assets/img/Logo-hodu.png';
-import NavSearchImg from '../../assets/img/icon-search.svg';
-import NavShoppingcartImg from '../../assets/img/icon-shopping-cart.svg';
-import NavUserImg from '../../assets/img/icon-user.svg';
+import NavLogoImg from '../../../assets/img/Logo-hodu.png';
+import NavSearchImg from '../../../assets/img/icon-search.svg';
+import NavShoppingcartImg from '../../../assets/img/icon-shopping-cart.svg';
+import NavUserImg from '../../../assets/img/icon-user.svg';
 import * as S from './Nav.style';
+
 const Nav: React.FC = () => {
   const navigate = useNavigate();
   return (
