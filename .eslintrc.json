@@ -1,18 +1,33 @@
+// {
+//   "extends": ["plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+//   "parser": "@typescript-eslint/parser",
+//   "plugins": ["@typescript-eslint"],
+//   "overrides": [
+//     {
+//       "files": ["*.js", "*.jsx"],
+//       "rules": {
+//         "@typescript-eslint/explicit-function-return-type": "off"
+//       }
+//     }
+//   ]
+// }
+
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx", ".js"]
-    },
-    "import/resolver": {
-      "typescript": "./tsconfig.json"
+    "react": {
+      "  version": "detect"
     }
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
-  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:react/recommended",
+    "eslint:recommended"
+    // "plugin:prettier/recommended",
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -20,12 +35,12 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+  "plugins": ["react"],
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "spaced-comment": "error",
-    "quotes": ["error", "single"],
-    "no-duplicate-imports": "error",
-    "prettier/prettier": "error"
+    "no-var": "error",
+    "require-await": "error",
+    "eqeqeq": "error",
+    "no-unused-vars": 1,
+    "react/prop-types": "off"
   }
 }
