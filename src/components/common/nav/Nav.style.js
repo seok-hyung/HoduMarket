@@ -1,68 +1,78 @@
 import { styled } from 'styled-components';
 
 export const WrapperDiv = styled.nav`
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
 `;
 
 export const WrapperNav = styled.nav`
   display: flex;
-  padding: 20px 0px;
-  margin: 0 320px;
   justify-content: space-between;
+  padding: 26px 0px;
+  max-width: 1500px;
+  margin: 0 auto;
+  /* box-shadow: inset 0 0 0 5px red; */
 `;
 
 export const LogoDiv = styled.div`
+  width: 700px;
   display: flex;
   align-items: center;
   position: relative;
+  /* box-shadow: inset 0 0 0 5px red; */
 `;
 
 export const LogoImg = styled.img`
-  width: 130px;
+  width: 200px;
+  object-fit: contain;
+`;
+
+export const SearchInput = styled.input`
+  width: 450px;
+  height: 60px;
+  outline: none;
+  font-weight: 400;
+  font-size: 25px;
+  color: var(--sub-text-color);
+  margin-left: 50px;
+  padding: 20px;
+
+  background: #ffffff;
+  border: 4px solid var(--main-color);
+  border-radius: 50px;
 `;
 
 export const SearchImg = styled.img`
   position: absolute;
-  width: 24px;
+  width: 28px;
   height: 28px;
   right: 22px;
-  top: 14px;
+  top: 22px;
   cursor: pointer;
-`;
-
-export const SearchInput = styled.input`
-  width: 400px;
-  height: 46px;
-  font-size: 16px;
-  font-weight: 400;
-  font-size: 16px;
-  color: #767676;
-  margin-left: 30px;
-  padding: 20px;
-
-  background: #ffffff;
-  border: 2px solid #21bf48;
-  border-radius: 50px;
 `;
 
 export const NavListUl = styled.ul`
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 450px;
+  gap: 15px;
+  /* box-shadow: inset 0 0 0 5px red; */
 `;
 
 export const NavListLi = styled.li`
-  margin-left: 30px;
   display: flex;
+  width: 120px;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   cursor: pointer;
+  /* box-shadow: inset 0 0 0 5px blue; */
 `;
 
 export const NavListP = styled.p`
-  margin-top: 5px;
+  font-size: 20px;
 `;
 
 export const NavListImg = styled.img`
-  width: 30px;
+  width: 50px;
+  margin-bottom: 5px;
 `;
