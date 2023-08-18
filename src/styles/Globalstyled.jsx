@@ -12,7 +12,7 @@ const GlobalStyled = createGlobalStyle`
 
   ${reset}
   :root {
-    --main-color : #55BDB3;
+    --main-color : #21bf48;
     --main-disabled-color: #D9D9D9;
     --main-text-color : #333333; 
     --sub-text-color : #767676;
@@ -33,7 +33,6 @@ const GlobalStyled = createGlobalStyle`
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
   }
 
   body{
@@ -63,6 +62,13 @@ const GlobalStyled = createGlobalStyle`
     word-break: initial;
     word-wrap: initial;
   }
+  .ellipsis {
+    overflow: hidden; /* 넘치는 부분 가리기 */
+    text-overflow: ellipsis; /* ... 처리하기 */
+    white-space: nowrap; /* 줄바꿈 안하기 (한 줄 밑줄임표 적용) */
+    display: inline-block; /* 특정 너비를 가지도록 상황에 따라 block or inline-block 으로 변경 */
+    width: 200px; /* inline-block처럼 콘텐츠에 따라 유동적인 너비를 가진다면 직접 너비를 설정 */
+}
 `;
 
 export default GlobalStyled;
