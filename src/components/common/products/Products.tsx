@@ -3,18 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { ProductsProps } from 'model/market';
 import * as S from './Products.style';
 
-const Products: React.FC<ProductsProps> = ({ goods }) => {
+// const Products: React.FC<ProductsProps> = ({ goods }) => {
+const Products = ({ products }: ProductsProps) => {
   const intl = new Intl.NumberFormat();
   const navigate = useNavigate();
-  return goods.length > 0 ? (
+  return (
     <S.ProductWrapperDiv>
       <S.ProductContainerUl>
-        {goods.map((item) => {
+        {products.map((item) => {
+          const productId = item.product_id; // 클릭한 상품의 id값
           return (
             <S.ProductLi
-              key={item.product_id}
+              key={productId}
               onClick={() => {
-                navigate(`/detail/${item.product_id}`);
+                navigate(`/detail/${productId}`, { state: { item } });
               }}
             >
               <S.ProductImg src={`${item.image}`} alt="상품 이미지" />
@@ -29,8 +31,6 @@ const Products: React.FC<ProductsProps> = ({ goods }) => {
         })}
       </S.ProductContainerUl>
     </S.ProductWrapperDiv>
-  ) : (
-    <p>Loading...</p>
   );
 };
 
