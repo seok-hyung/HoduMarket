@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-// import { Route, Routes } from 'react-router-dom';
+// Type Model
 import { ProductResults } from 'model/market';
+
+// API
 import { getProductAPI } from '../../api/product/getProductAPI';
 
 // 컴포넌트
@@ -9,11 +12,12 @@ import Nav from 'components/common/nav/Nav';
 import Carousel from 'components/common/carousel/Carousel';
 import Products from 'components/common/products/Products';
 import Footer from 'components/common/footer/Footer';
+import ProductDetail from 'pages/productDeatil/ProductDetail';
 
-const Home: React.FC = () => {
+const Home = () => {
   const [products, setProducts] = useState<ProductResults[]>([]);
-  const productImg = products.map((obj) => obj?.image);
-  console.log(products);
+  const productImg = products.map((obj) => obj?.image); // 상품 이미지 배열
+  // console.log(products);
 
   useEffect(() => {
     getProductAPI()
@@ -29,7 +33,7 @@ const Home: React.FC = () => {
     <>
       <Nav />
       <Carousel images={productImg} />
-      <Products goods={products} />
+      {products.length > 0 ? <Products products={products} /> : <p>Loading...</p>}
       <Footer />
     </>
   );
