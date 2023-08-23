@@ -19,8 +19,13 @@ export type ProductResults = {
   updated_at: string;
 };
 export type ProductsProps = {
-  goods: ProductResults[];
+  products: ProductResults[];
 };
 export type CarouselProps = {
   images: string[];
+};
+
+export type Tab = {
+  title: string;
+  content: JSX.Element;
 };
