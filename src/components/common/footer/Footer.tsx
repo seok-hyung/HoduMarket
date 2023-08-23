@@ -1,10 +1,6 @@
 import React from 'react';
 import * as S from './Footer.style';
 
-import InstaImg from '../../../assets/img/icon-insta.svg';
-import FacebookImg from '../../../assets/img/icon-fb.svg';
-import YoutubeImg from '../../../assets/img/icon-yt.svg';
-
 const Footer = () => {
   return (
     <S.WrapperFooter>
@@ -33,17 +29,17 @@ const Footer = () => {
           <S.LinkBtnUl>
             <li>
               <a href="#">
-                <img src={InstaImg} alt="인스타 이미지" />
+                <img src={'/assets/icon-insta.svg'} alt="인스타 이미지" />
               </a>
             </li>
             <li>
               <a href="#">
-                <img src={FacebookImg} alt="페이스북 이미지" />
+                <img src={'/assets/icon-fb.svg'} alt="페이스북 이미지" />
               </a>
             </li>
             <li>
               <a href="#">
-                <img src={YoutubeImg} alt="유튜브 이미지" />
+                <img src={'/assets/icon-yt.svg'} alt="유튜브 이미지" />
               </a>
             </li>
           </S.LinkBtnUl>

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import * as S from './Carousel.style';
 
-import PrevImg from '../../../assets/img/icon-swiper-1.svg';
-import NextImg from '../../../assets/img/icon-swiper-2.svg';
 import { CarouselProps } from 'model/market';
 
-const Carousel: React.FC<CarouselProps> = ({ images }) => {
+const Carousel = ({ images }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToNextSlide = () => {
@@ -20,8 +18,16 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
     <>
       <S.CarouselContainerDiv>
         <S.CarouselImg src={images[currentIndex]} alt="캐러셀 이미지" />
-        <S.LeftIconImg onClick={goToPrevSlide} src={PrevImg} alt="좌측 이동 화살표" />
-        <S.RightIconImg onClick={goToNextSlide} src={NextImg} alt="우측 이동 화살표" />
+        <S.LeftIconImg
+          onClick={goToPrevSlide}
+          src="/assets/icon-swiper-1.svg"
+          alt="좌측 이동 화살표"
+        />
+        <S.RightIconImg
+          onClick={goToNextSlide}
+          src="/assets/icon-swiper-2.svg"
+          alt="우측 이동 화살표"
+        />
       </S.CarouselContainerDiv>
     </>
   );
