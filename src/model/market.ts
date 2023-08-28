@@ -29,3 +29,15 @@ export type Tab = {
   title: string;
   content: JSX.Element;
 };
+
+export type UserForm = {
+  id: string;
+  password: string;
+  passwordConfirm: string;
+  name: string;
+  phoneNumber: string;
+};
+
+export type SelectedType = {
+  selected: boolean;
+};
