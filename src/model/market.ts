@@ -34,10 +34,45 @@ export type UserForm = {
   id: string;
   password: string;
   passwordConfirm: string;
-  name: string;
-  phoneNumber: string;
+  userName: string;
+  phoneNumberFirst: string;
+  phoneNumberMiddle: string;
+  phoneNumberLast: string;
+  memberType: 'BUYER' | 'SELLER';
+};
+
+export type LoginState = {
+  id: string;
+  password: string;
+  memberType: 'BUYER' | 'SELLER';
 };
 
 export type SelectedType = {
   selected: boolean;
+};
+
+export type InputProps = {
+  label?: string;
+  id: string;
+  name?: string;
+  type: string;
+  placeholder?: string;
+  value: string | number;
+  min?: number;
+  max?: number;
+  borderBottomColor?: string;
+  show?: 'on' | 'off';
+  errorMessage?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+};
+export type ErrorMsgPProps = {
+  show?: 'on' | 'off';
+};
+
+export type MemberTypeProps = {
+  buyerBtnText: string;
+  sellerBtnText: string;
 };
