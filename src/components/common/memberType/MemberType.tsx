@@ -2,29 +2,33 @@ import { MemberTypeProps, SelectedType } from 'model/market';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 
-const MemberType = ({ buyerBtnText, sellerBtnText }: MemberTypeProps) => {
+const MemberType = ({
+  buyerBtnText,
+  sellerBtnText,
+  handleTypeChange,
+}: MemberTypeProps) => {
   const [selectedType, setSelectedType] = useState('BUYER');
-  const [loginState, setLoginState] = useState({
-    id: '',
-    password: '',
-    memberType: 'BUYER',
-  });
+  // const [loginState, setLoginState] = useState({
+  //   id: '',
+  //   password: '',
+  //   memberType: 'BUYER',
+  // });
 
-  const handleTypeChange = (type: 'BUYER' | 'SELLER') => {
-    setLoginState((prevState) => ({ ...prevState, type }));
+  const handleInternalTypeChange = (type: 'BUYER' | 'SELLER') => {
     setSelectedType(type);
+    handleTypeChange(type);
   };
 
   return (
     <div className="login-memberType-box">
       <MemberTypeBtn
-        onClick={() => handleTypeChange('BUYER')}
+        onClick={() => handleInternalTypeChange('BUYER')}
         selected={selectedType === 'BUYER'}
       >
         {buyerBtnText}
       </MemberTypeBtn>
       <MemberTypeBtn
-        onClick={() => handleTypeChange('SELLER')}
+        onClick={() => handleInternalTypeChange('SELLER')}
         selected={selectedType === 'SELLER'}
       >
         {sellerBtnText}
