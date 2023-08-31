@@ -7,8 +7,11 @@ const Login = () => {
   const [loginState, setLoginState] = useState({
     id: '',
     password: '',
-    role: 'BUYER',
+    type: 'BUYER',
   });
+  const handleTypeChange = (type: 'BUYER' | 'SELLER') => {
+    setLoginState((prevState) => ({ ...prevState, type }));
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setLoginState({
@@ -28,7 +31,11 @@ const Login = () => {
       <img src="/assets/Logo-hodu.png" alt="Logo" />
       <S.LoginContainerDiv>
         {/* Member Type Tabs */}
-        <MemberType buyerBtnText="구매회원 로그인" sellerBtnText="판매회원 로그인" />
+        <MemberType
+          buyerBtnText="구매회원 로그인"
+          sellerBtnText="판매회원 로그인"
+          handleTypeChange={handleTypeChange}
+        />
 
         {/* Login Form */}
         <S.LoginForm onSubmit={handleSubmit}>
