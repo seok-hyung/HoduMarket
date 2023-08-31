@@ -3,10 +3,12 @@ import styled from 'styled-components';
 
 export const BoxLabel = styled.label`
   min-width: fit-content;
+  display: block;
   color: var(--sub-text-color);
   font-size: 18px;
   font-weight: 500;
   line-height: 16px;
+  margin-bottom: 15px;
 `;
 
 export const BoxInput = styled.input`
@@ -15,10 +17,10 @@ export const BoxInput = styled.input`
   font-weight: 400;
   font-size: 18px;
   line-height: 14px;
-  border: none;
   outline: none;
-  border-bottom: 1px solid var(--sub-text-color);
-  padding: 10px 0 5px 0;
+  border: 1px solid var(--sub-text-color);
+  border-radius: 5px;
+  padding: 15px;
 
   &::placeholder {
     color: var(--main-disabled-color);

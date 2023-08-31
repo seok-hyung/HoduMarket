@@ -26,16 +26,31 @@ export const LoginForm = styled.form`
   padding-bottom: 0;
   border: 1px solid #c4c4c4;
   border-top: 0;
-  > input:not(:last-of-type) {
-    margin-bottom: 40px;
+
+  .buyer-form {
+    > div,
+    > input {
+      margin-bottom: 35px;
+    }
+    > div:last-of-type {
+      margin-bottom: 0;
+    }
   }
-  /* .phone-number:not(:first-of-type) {
-    font-size: 30px;
+  .seller-form {
+    > div,
+    > input {
+      margin-bottom: 35px;
+    }
+    > input:last-of-type {
+      margin-bottom: 0;
+    }
   }
-   */
-  .phone-label {
+
+  .phone-label,
+  .email-label {
     display: block;
-    margin: 30px 0 15px 0;
+    color: var(--sub-text-color);
+    margin-bottom: 15px;
   }
   .phone-number {
     display: flex;
@@ -53,6 +68,18 @@ export const LoginForm = styled.form`
       border: 1px solid var(--sub-text-color);
       border-radius: 5px;
       text-align: center;
+    }
+  }
+  .email {
+    display: flex;
+    div {
+      margin: auto 5px;
+    }
+    input {
+      flex-basis: 50%;
+      border: 1px solid var(--sub-text-color);
+      border-radius: 5px;
+      padding: 15px;
     }
   }
 
