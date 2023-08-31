@@ -35,10 +35,14 @@ export type UserForm = {
   password: string;
   passwordConfirm: string;
   userName: string;
-  phoneNumberFirst: string;
-  phoneNumberMiddle: string;
-  phoneNumberLast: string;
-  memberType: 'BUYER' | 'SELLER';
+  phoneNumFirst: string;
+  phoneNumMiddle: string;
+  phoneNumLast: string;
+  type: 'BUYER' | 'SELLER';
+  emailId: string;
+  emailAddress: string;
+  businessNumber: string;
+  storeName: string;
 };
 
 export type LoginState = {
@@ -75,4 +79,37 @@ export type ErrorMsgPProps = {
 export type MemberTypeProps = {
   buyerBtnText: string;
   sellerBtnText: string;
+  handleTypeChange: (state: 'BUYER' | 'SELLER') => void;
+};
+
+export type BuyerJoinFormProps = {
+  form: {
+    id: string;
+    password: string;
+    passwordConfirm: string;
+    userName: string;
+    phoneNumFirst: string;
+    phoneNumMiddle: string;
+    phoneNumLast: string;
+    type: 'BUYER' | 'SELLER';
+  };
+  setForm: any;
+};
+
+export type SellerJoinFormProps = {
+  form: {
+    id: string;
+    password: string;
+    passwordConfirm: string;
+    userName: string;
+    phoneNumFirst: string;
+    phoneNumMiddle: string;
+    phoneNumLast: string;
+    type: 'BUYER' | 'SELLER';
+    emailId: string;
+    emailAddress: string;
+    businessNumber: string;
+    storeName: string;
+  };
+  setForm: any;
 };
