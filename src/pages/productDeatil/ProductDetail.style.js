@@ -75,11 +75,14 @@ export const DetailRightDiv = styled.div`
     }
     .total-amount-span {
       color: var(--main-color);
+      font-style: normal;
+      font-weight: 700;
     }
     .total-price-span {
       color: var(--main-color);
       font-style: normal;
       font-weight: 700;
+      margin-left: 5px;
     }
   }
   .detail-btn {

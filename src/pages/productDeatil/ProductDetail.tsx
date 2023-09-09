@@ -1,7 +1,7 @@
-import TabContent from 'components/tabContent/TabContent';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as S from './ProductDetail.style';
+import TabContent from 'components/tabContent/TabContent';
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -45,7 +45,7 @@ const ProductDetail = () => {
             <div className="total-price">
               <div className="price-info">총 상품 금액</div>
               <div className="total-amount">
-                총 수량 <span className="total-amount-span">{amount}</span>개 |{' '}
+                총 수량 <span className="total-amount-span">{amount}</span>개 |
                 <span className="total-price-span">
                   {intl.format(totalPrice * amount)}
                 </span>
