@@ -1,14 +1,37 @@
+import { BuyerJoinAPI } from 'api/user/buyerJoinAPI';
 import InputBox from 'components/common/inputBox/InputBox';
-import { BuyerJoinFormProps } from 'model/market';
-import React, { ChangeEvent, useState } from 'react';
+import { BuyerJoinFormProps, PostBuyerForm } from 'model/market';
+import React, { ChangeEvent, useState, FormEvent } from 'react';
+import { useMutation } from 'react-query';
 
 const BuyerJoinForm = ({ form, setForm }: BuyerJoinFormProps) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const mutation = useMutation(BuyerJoinAPI);
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault(); // 페이지 새로고침 방지
+    const postData: PostBuyerForm = {
+      username: form.id,
+      password: form.password,
+      password2: form.passwordConfirm,
+      phone_number: `${form.phoneNumFirst}${form.phoneNumMiddle}${form.phoneNumLast}`,
+      name: form.userName,
+    };
+    mutation.mutate(postData);
+  };
+  // 로딩 상태
+  if (mutation.isLoading) return <div>Submitting...</div>;
+
+  // 에러 상태
+  if (mutation.isError) return <div>Error submitting data</div>;
+
+  // 성공 상태
+  if (mutation.isSuccess) return <div>Data submitted successfully</div>;
+
   return (
-    <div className="buyer-form">
+    <form className="buyer-form" onSubmit={onSubmit}>
       <InputBox
         label="아이디"
         id="id"
@@ -78,7 +101,7 @@ const BuyerJoinForm = ({ form, setForm }: BuyerJoinFormProps) => {
           required={true}
         />
       </div>
-    </div>
+    </form>
   );
 };
 
