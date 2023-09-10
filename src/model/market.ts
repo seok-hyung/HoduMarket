@@ -39,8 +39,6 @@ export type UserForm = {
   phoneNumMiddle: string;
   phoneNumLast: string;
   type: 'BUYER' | 'SELLER';
-  emailId: string;
-  emailAddress: string;
   businessNumber: string;
   storeName: string;
 };
@@ -82,20 +80,19 @@ export type MemberTypeProps = {
   handleTypeChange: (state: 'BUYER' | 'SELLER') => void;
 };
 
+export type BuyerFormType = {
+  id: string;
+  password: string;
+  passwordConfirm: string;
+  userName: string;
+  phoneNumFirst: string;
+  phoneNumMiddle: string;
+  phoneNumLast: string;
+};
 export type BuyerJoinFormProps = {
-  form: {
-    id: string;
-    password: string;
-    passwordConfirm: string;
-    userName: string;
-    phoneNumFirst: string;
-    phoneNumMiddle: string;
-    phoneNumLast: string;
-    type: 'BUYER' | 'SELLER';
-  };
+  form: BuyerFormType;
   setForm: any;
 };
-
 export type SellerJoinFormProps = {
   form: {
     id: string;
@@ -106,10 +103,26 @@ export type SellerJoinFormProps = {
     phoneNumMiddle: string;
     phoneNumLast: string;
     type: 'BUYER' | 'SELLER';
-    emailId: string;
-    emailAddress: string;
     businessNumber: string;
     storeName: string;
   };
   setForm: any;
+};
+
+export type PostBuyerForm = {
+  username: string; // 아이디
+  password: string; // 패스워드
+  password2: string; // 패스워드 확인
+  phone_number: string; // 전화번호는 10~11자리 숫자
+  name: string; // 이름
+};
+
+export type PostSellerForm = {
+  username: string; // 아이디
+  password: string;
+  password2: string;
+  phone_number: string; // 전화번호는 010으로 시작하는 10~11자리 숫자
+  name: string; // 이름
+  company_registration_number: string;
+  store_name: string;
 };
