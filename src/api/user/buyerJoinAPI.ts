@@ -6,11 +6,20 @@ export const BuyerJoinAPI = async (formData: PostBuyerForm) => {
     method: 'POST',
     body: JSON.stringify(formData),
     headers: {
-      'Content-type': 'application/json; charset=UTF-8',
+      'Content-type': 'application/json',
     },
   });
+
   if (!res.ok) {
+    const errorData = await res.json();
+    console.error(errorData);
     throw new Error('Network response was not ok');
   }
-  return res.json();
+
+  // Parse the response data as JSON
+  const data = await res.json();
+
+  console.log(data);
+
+  return data;
 };

@@ -12,5 +12,7 @@ export const SellerJoinAPI = async (formData: PostSellerForm) => {
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
-  return res.json();
+  const data = await res.json();
+  console.log(data);
+  return data;
 };
