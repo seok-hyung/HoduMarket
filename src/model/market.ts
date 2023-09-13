@@ -126,3 +126,9 @@ export type PostSellerForm = {
   company_registration_number: string;
   store_name: string;
 };
+
+export type LoginForm = {
+  username: string;
+  password: string;
+  login_type: string; // BUYER : 일반 구매자, SELLER : 판매자
+};
