@@ -2,8 +2,13 @@ import MemberType from 'components/common/memberType/MemberType';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import * as S from './Login.style';
 import InputBox from 'components/common/inputBox/InputBox';
+import { useMutation } from 'react-query';
+import { LoginAPI } from 'api/user/loginAPI';
+import { LoginForm } from 'model/market';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loginState, setLoginState] = useState({
     id: '',
     password: '',
@@ -14,16 +19,24 @@ const Login = () => {
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setLoginState({
-      ...loginState,
-      [e.target.name]: e.target.value,
-    });
+    setLoginState({ ...loginState, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(loginState);
-    // 서버로 로그인 요청을 전송하거나 다른 처리를 여기서 수행하면 됩니다.
+  const loginMutation = useMutation(LoginAPI, {
+    onSuccess(data, variables, context) {
+      navigate('/');
+    },
+    onError(error, variables, context) {
+      console.log(error);
+    },
+  });
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault(); // 페이지 새로고침 방지
+    const postData: LoginForm = {
+      username: loginState.id,
+      password: loginState.password,
+      login_type: loginState.type,
+    };
+    loginMutation.mutate(postData);
   };
   return (
     <S.WrapperDiv>
@@ -38,7 +51,7 @@ const Login = () => {
         />
 
         {/* Login Form */}
-        <S.LoginForm onSubmit={handleSubmit}>
+        <S.LoginForm onSubmit={onSubmit}>
           <InputBox
             label="아이디"
             id="id"

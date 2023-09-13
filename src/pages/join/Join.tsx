@@ -3,10 +3,15 @@ import React, { FormEvent, useState } from 'react';
 import * as S from './Join.style';
 
 import MemberType from 'components/common/memberType/MemberType';
-import BuyerJoinForm from 'components/buyerJoinForm/BuyerJoinForm';
-import SellerJoinForm from 'components/sellerJoinForm/SellerJoinForm';
-import { UserForm } from 'model/market';
+import BuyerJoinForm from 'components/join/BuyerJoinForm';
+import SellerJoinForm from 'components/join/SellerJoinForm';
+import { PostBuyerForm, PostSellerForm, UserForm } from 'model/market';
+import { useMutation } from 'react-query';
+import { BuyerJoinAPI } from 'api/user/buyerJoinAPI';
+import { SellerJoinAPI } from 'api/user/sellerJoinAPI';
+import { useNavigate } from 'react-router-dom';
 const Join = () => {
+  const navigate = useNavigate();
   const [formType, setFormType] = useState('BUYER');
   const [form, setForm] = useState<UserForm>({
     id: '',
@@ -17,8 +22,6 @@ const Join = () => {
     phoneNumMiddle: '',
     phoneNumLast: '',
     type: 'BUYER',
-    emailId: '',
-    emailAddress: '',
     businessNumber: '',
     storeName: '',
   });
@@ -26,15 +29,39 @@ const Join = () => {
     setForm((prevState) => ({ ...prevState, type }));
     setFormType(type);
   };
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
 
+  const buyerMutation = useMutation(BuyerJoinAPI);
+  const sellerMutation = useMutation(SellerJoinAPI);
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (form.password !== form.passwordConfirm) {
       alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
       return;
     }
-
-    console.log(form);
+    if (form.type === 'BUYER') {
+      const postData: PostBuyerForm = {
+        username: form.id,
+        password: form.password,
+        password2: form.passwordConfirm,
+        phone_number: `${form.phoneNumFirst}${form.phoneNumMiddle}${form.phoneNumLast}`,
+        name: form.userName,
+      };
+      buyerMutation.mutate(postData);
+      navigate('/login');
+    } else if (form.type === 'SELLER') {
+      const postData: PostSellerForm = {
+        username: form.id,
+        password: form.password,
+        password2: form.passwordConfirm,
+        phone_number: `${form.phoneNumFirst}${form.phoneNumMiddle}${form.phoneNumLast}`,
+        name: form.userName,
+        company_registration_number: form.businessNumber,
+        store_name: form.storeName,
+      };
+      sellerMutation.mutate(postData);
+      navigate('/login');
+    }
   };
   return (
     <S.WrapperDiv>
@@ -49,14 +76,14 @@ const Join = () => {
         />
 
         {/* Login Form */}
-        <S.LoginForm onSubmit={handleSubmit}>
+        <S.LoginForm onSubmit={onSubmit}>
           {formType === 'BUYER' ? (
             <BuyerJoinForm form={form} setForm={setForm} />
           ) : (
             <SellerJoinForm form={form} setForm={setForm} />
           )}
           {/* Submit Button */}
-          <button className="login-btn">로그인</button>
+          <button className="login-btn">회원가입</button>
         </S.LoginForm>
 
         {/* Links to Registration and Password Recovery */}
