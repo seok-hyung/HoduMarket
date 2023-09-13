@@ -10,6 +10,7 @@ import { useMutation } from 'react-query';
 import { BuyerJoinAPI } from 'api/user/buyerJoinAPI';
 import { SellerJoinAPI } from 'api/user/sellerJoinAPI';
 import { useNavigate } from 'react-router-dom';
+
 const Join = () => {
   const navigate = useNavigate();
   const [formType, setFormType] = useState('BUYER');
@@ -30,8 +31,22 @@ const Join = () => {
     setFormType(type);
   };
 
-  const buyerMutation = useMutation(BuyerJoinAPI);
-  const sellerMutation = useMutation(SellerJoinAPI);
+  const buyerMutation = useMutation(BuyerJoinAPI,{
+    onSuccess: (data) => {
+      navigate('/login');
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+  const sellerMutation = useMutation(SellerJoinAPI,{
+    onSuccess: (data) => {
+      navigate('/login');
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,7 +63,6 @@ const Join = () => {
         name: form.userName,
       };
       buyerMutation.mutate(postData);
-      navigate('/login');
     } else if (form.type === 'SELLER') {
       const postData: PostSellerForm = {
         username: form.id,
@@ -60,7 +74,6 @@ const Join = () => {
         store_name: form.storeName,
       };
       sellerMutation.mutate(postData);
-      navigate('/login');
     }
   };
   return (
