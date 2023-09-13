@@ -8,11 +8,6 @@ const MemberType = ({
   handleTypeChange,
 }: MemberTypeProps) => {
   const [selectedType, setSelectedType] = useState('BUYER');
-  // const [loginState, setLoginState] = useState({
-  //   id: '',
-  //   password: '',
-  //   memberType: 'BUYER',
-  // });
 
   const handleInternalTypeChange = (type: 'BUYER' | 'SELLER') => {
     setSelectedType(type);
