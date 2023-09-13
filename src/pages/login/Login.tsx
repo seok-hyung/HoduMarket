@@ -6,9 +6,12 @@ import { useMutation } from 'react-query';
 import { LoginAPI } from 'api/user/loginAPI';
 import { LoginForm } from 'model/market';
 import { useNavigate } from 'react-router-dom';
+import{useSetRecoilState} from 'recoil'
+import { userTokenState } from 'atoms/Atoms';
 
 const Login = () => {
   const navigate = useNavigate();
+  const setUserToken = useSetRecoilState(userTokenState)
   const [loginState, setLoginState] = useState({
     id: '',
     password: '',
@@ -23,6 +26,7 @@ const Login = () => {
   };
   const loginMutation = useMutation(LoginAPI, {
     onSuccess(data, variables, context) {
+      setUserToken(data.token)
       navigate('/');
     },
     onError(error, variables, context) {
