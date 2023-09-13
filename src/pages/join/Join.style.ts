@@ -27,20 +27,19 @@ export const LoginForm = styled.form`
   border: 1px solid #c4c4c4;
   border-top: 0;
 
-  .buyer-form {
-    > div,
-    > input {
-      margin-bottom: 35px;
-    }
-    > div:last-of-type {
-      margin-bottom: 0;
-    }
-  }
+  .buyer-form,
   .seller-form {
     > div,
     > input {
       margin-bottom: 35px;
     }
+  }
+  .buyer-form {
+    > div:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+  .seller-form {
     > input:last-of-type {
       margin-bottom: 0;
     }
@@ -70,28 +69,15 @@ export const LoginForm = styled.form`
       text-align: center;
     }
   }
-  .email {
-    display: flex;
-    div {
-      margin: auto 5px;
-    }
-    input {
-      flex-basis: 50%;
-      border: 1px solid var(--sub-text-color);
-      border-radius: 5px;
-      padding: 15px;
-    }
-  }
-
   .login-btn {
-    margin: 36px 0;
     background-color: var(--main-color);
+    margin: 36px 0;
     color: white;
     font-size: 18px;
     font-weight: 700;
     line-height: 22px;
     border-radius: 5px;
-    padding: 19px 215px;
+    padding: 19px 200px;
   }
 `;
 export const JoinGroupDiv = styled.div`
