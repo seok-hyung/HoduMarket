@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
 
 export const DetailWrapperDiv = styled.div`
-  margin: 80px 320px;
+  margin: 80px auto;
+  width: fit-content;
   .product-img {
     width: 600px;
     height: 600px;
@@ -10,6 +11,7 @@ export const DetailWrapperDiv = styled.div`
 
 export const DetailContainerDiv = styled.div`
   display: flex;
+
   margin-bottom: 140px;
 `;
 export const DetailRightDiv = styled.div`
@@ -18,11 +20,12 @@ export const DetailRightDiv = styled.div`
   width: 630px;
   height: 600px;
   .info {
+    color: var(--sub-text-color);
     margin-bottom: 16px;
-    font-size: 18px;
+    font-size: 24px;
   }
   .name {
-    font-size: 32px;
+    font-size: 36px;
     line-height: 45px;
     margin-bottom: 20px;
   }
@@ -82,6 +85,7 @@ export const DetailRightDiv = styled.div`
       color: var(--main-color);
       font-style: normal;
       font-weight: 700;
+      font-size: 36px;
       margin-left: 5px;
     }
   }

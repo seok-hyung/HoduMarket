@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 export const CarouselContainerDiv = styled.div`
+  margin-top: 3px;
   position: relative;
   width: 100vw;
   height: 500px;

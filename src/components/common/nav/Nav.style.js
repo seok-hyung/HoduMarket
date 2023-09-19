@@ -1,16 +1,15 @@
 import { styled } from 'styled-components';
 
 export const WrapperDiv = styled.nav`
-  width: 100%;
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
 `;
 
 export const WrapperNav = styled.nav`
   display: flex;
+  margin: 0 auto;
   justify-content: space-between;
   padding: 26px 0px;
   max-width: 1500px;
-  margin: 0 auto;
-  /* box-shadow: inset 0 0 0 5px red; */
 `;
 
 export const LogoDiv = styled.div`
@@ -18,7 +17,6 @@ export const LogoDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  /* box-shadow: inset 0 0 0 5px red; */
 `;
 
 export const LogoImg = styled.img`
