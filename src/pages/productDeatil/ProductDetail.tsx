@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as S from './ProductDetail.style';
 import TabContent from 'components/tabContent/TabContent';
+import Nav from 'components/common/nav/Nav';
+import Footer from 'components/common/footer/Footer';
 
 const ProductDetail = () => {
   const location = useLocation();
   const productInfo = location.state?.item;
+  console.log(productInfo);
   const intl = new Intl.NumberFormat();
   let [amount, setAmount] = useState(1);
   let [totalPrice, setTotalPrice] = useState(productInfo.price);
@@ -19,6 +22,7 @@ const ProductDetail = () => {
 
   return (
     <>
+      <Nav />
       <S.DetailWrapperDiv>
         <S.DetailContainerDiv>
           <div>
@@ -60,6 +64,7 @@ const ProductDetail = () => {
         </S.DetailContainerDiv>
         <TabContent />
       </S.DetailWrapperDiv>
+      <Footer />
     </>
   );
 };
