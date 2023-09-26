@@ -1,6 +1,8 @@
-export const getProductAPI = async () => {
+import { apiURL } from 'api/apiURL';
+
+export const getProductAPI = async (page: number) => {
   try {
-    const response = await fetch('https://openmarket.weniv.co.kr/products/');
+    const response = await fetch(`${apiURL}/products/?page=${page}`);
 
     if (!response.ok) {
       throw new Error('네트워크에 문제가 있습니다.');

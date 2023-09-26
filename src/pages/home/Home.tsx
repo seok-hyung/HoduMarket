@@ -13,30 +13,64 @@ import Carousel from 'components/common/carousel/Carousel';
 import Products from 'components/common/products/Products';
 import Footer from 'components/common/footer/Footer';
 import ProductDetail from 'pages/productDeatil/ProductDetail';
+import { styled } from 'styled-components';
 
 const Home = () => {
   const [products, setProducts] = useState<ProductResults[]>([]);
   const productImg = products.map((obj) => obj?.image); // 상품 이미지 배열
-  // console.log(products);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    getProductAPI()
+    getProductAPI(currentPage)
       .then((data) => {
         setProducts(data.results);
+        setTotalPage(Math.ceil(data.count / 15));
       })
       .catch((error) => {
         console.log('상품 데이터를 불러오는데 에러가 발생했습니다', error);
       });
-  }, []);
+  }, [currentPage]);
+
+  // 페이지 버튼들을 생성합니다.
+  const pageButtons = [];
+  for (let i = 1; i <= totalPage; i++) {
+    pageButtons.push(
+      <button
+        key={i}
+        onClick={() => setCurrentPage(i)}
+        className={currentPage === i ? 'active' : ''}
+      >
+        {i}
+      </button>,
+    );
+  }
 
   return (
     <>
       <Nav />
       <Carousel images={productImg} />
       {products.length > 0 ? <Products products={products} /> : <p>Loading...</p>}
+      <PageBoxDiv>{pageButtons}</PageBoxDiv>
       <Footer />
     </>
   );
 };
-
 export default Home;
+
+const PageBoxDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  button {
+    font-size: 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin: 0px 20px;
+  }
+  .active {
+    background-color: lightgrey;
+  }
+`;
