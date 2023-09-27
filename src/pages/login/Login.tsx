@@ -3,15 +3,16 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import * as S from './Login.style';
 import InputBox from 'components/common/inputBox/InputBox';
 import { useMutation } from 'react-query';
-import { LoginAPI } from 'api/user/loginAPI';
+
 import { LoginForm } from 'model/market';
 import { useNavigate } from 'react-router-dom';
-import{useSetRecoilState} from 'recoil'
+import { useSetRecoilState } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
+import { loginAPI } from 'api/login/loginAPI';
 
 const Login = () => {
   const navigate = useNavigate();
-  const setUserToken = useSetRecoilState(userTokenState)
+  const setUserToken = useSetRecoilState(userTokenState);
   const [loginState, setLoginState] = useState({
     id: '',
     password: '',
@@ -24,9 +25,11 @@ const Login = () => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setLoginState({ ...loginState, [e.target.name]: e.target.value });
   };
-  const loginMutation = useMutation(LoginAPI, {
+  const loginMutation = useMutation(loginAPI, {
+    // data : res(API 호출 결과 데이터),
+    // variables : req(postData 객체)
     onSuccess(data, variables, context) {
-      setUserToken(data.token)
+      setUserToken(data.token);
       navigate('/');
     },
     onError(error, variables, context) {
