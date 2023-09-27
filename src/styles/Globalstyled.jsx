@@ -13,9 +13,9 @@ const GlobalStyled = createGlobalStyle`
   ${reset}
   :root {
     --main-color : #21bf48;
-    --main-disabled-color: #D9D9D9;
+    --main-disabled-color: #767676;
     --main-text-color : #333333; 
-    --sub-text-color : #767676;
+    --sub-text-color : #C4C4C4;
   }
 
   *{
