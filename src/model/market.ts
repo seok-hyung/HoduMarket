@@ -132,3 +132,39 @@ export type LoginForm = {
   password: string;
   login_type: string; // BUYER : 일반 구매자, SELLER : 판매자
 };
+
+export type PutCartItemProps = {
+  token: string;
+  urlId: string;
+  orderData: {
+    product_id: number;
+    quantity: number;
+    is_active: boolean;
+  };
+};
+
+export type CartItemProps = {
+  cartProduct: CartListProduct;
+  setCartItemList: CartListProduct[];
+  setIsChangeModalValue: boolean;
+  isOrderBtnClick: boolean;
+  isClickAllCheck: boolean;
+};
+
+export type CartListProduct = {
+  my_cart: number;
+  cart_item_id: number;
+  is_active: boolean;
+  product_id: number;
+  quantity: number;
+};
+
+export type CartProduct = {
+  product_id: number;
+  image: string;
+  product_name: string;
+  store_name: string;
+  price: number;
+  shipping_fee: number;
+  stock: number;
+};
