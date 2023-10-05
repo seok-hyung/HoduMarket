@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
-import { CarouselProps } from 'model/market';
-
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -47,7 +45,17 @@ const Carousel = () => {
     <>
       <CarouselContainerDiv>
         <div className="img-container">
-          <CarouselImg src={imgList[currentIndex].url} alt="캐러셀 이미지" />
+          {imgList.map((img, index) => (
+            <CarouselImg
+              key={img.id}
+              src={img.url}
+              alt="캐러셀 이미지"
+              style={{
+                transform: `translateX(${(index - currentIndex) * 100}%)`,
+                transition: 'transform ease-out .5s',
+              }}
+            />
+          ))}
         </div>
         <div className="left-background">
           <LeftIconImg
@@ -76,17 +84,19 @@ const CarouselContainerDiv = styled.div`
   width: 100vw;
   height: 500px;
   background: #f2f2f2;
-  display: flex;
+
   .img-container {
-    width: 65%;
+    position: relative;
     margin: 0 auto;
+    width: 65%;
+    height: 100%;
+    overflow: hidden;
   }
 `;
-
 const CarouselImg = styled.img`
-  margin: 0 auto;
+  position: absolute; //추가
+  width: 100%;
 `;
-
 const LeftIconImg = styled.img`
   width: 30%;
   position: absolute;
@@ -96,7 +106,6 @@ const LeftIconImg = styled.img`
   cursor: pointer;
   object-fit: contain;
 `;
-
 const RightIconImg = styled.img`
   width: 30%;
   position: absolute;
