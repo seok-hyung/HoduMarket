@@ -14,17 +14,17 @@ const ProductDetail = () => {
   const location = useLocation();
   const productInfo = location.state?.item;
   const intl = new Intl.NumberFormat();
+  const token = useRecoilValue(userTokenState);
   let [amount, setAmount] = useState(1);
   let [totalPrice, setTotalPrice] = useState(productInfo.price);
-  const token = useRecoilValue(userTokenState);
-  const [isInCart, setIsInCart] = useState(false); //! 장바구니에 제품있는지 확인해야함
+  const [isInCart, setIsInCart] = useState(false);
 
+  // 모달
   const [modalState, setModalState] = useState(false);
-
   const openModal = () => setModalState(true);
-
   const closeModal = () => setModalState(false);
 
+  // 수량
   const handleIncrement = () => {
     setAmount(amount + 1);
     setTotalPrice((amount + 1) * productInfo.price);
@@ -34,27 +34,22 @@ const ProductDetail = () => {
     setTotalPrice((amount - 1) * productInfo.price);
   };
   const formdata = {
-    product_id: Number(productInfo.product_id),
-    quantity: Number(amount),
+    product_id: productInfo.product_id,
+    quantity: amount,
     check: isInCart,
   };
+  console.log(formdata);
 
-  const handleCartBtn = () => {
-    getCartItemAPI(token).then(async (res) => {
+  const handleCartBtn = async () => {
+    await getCartItemAPI(token).then((res) => {
       // 현재 상품이 장바구니에 있는지 확인(상품의 고유 id로 확인)
       if (res.results.some((item: any) => item.product_id === productInfo.product_id)) {
         setIsInCart(true);
         openModal();
         return;
       }
-      try {
-        setIsInCart(false);
-        await postCartItemAPI(token, formdata);
-        alert('장바구니에 추가되었습니다.');
-      } catch (error) {
-        alert('장바구니 추가 중 오류 발생');
-      }
     });
+    await postCartItemAPI(token, formdata);
   };
   return (
     <>
@@ -100,18 +95,24 @@ const ProductDetail = () => {
         <TabContent />
       </S.DetailWrapperDiv>
       {modalState ? (
-        <ModalOverlay>
-          <div className="modal-wrapper">
+        <ModalOverlay onClick={closeModal}>
+          <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
+            <img src="/assets/icon-delete.svg" onClick={closeModal} alt="닫기 이미지" />
             <p>이미 장바구니에 있는 상품입니다. 장바구니로 이동하시겠습니까?</p>
-            <button onClick={closeModal}>아니요</button>
-            <button
-              onClick={() => {
-                postCartItemAPI(token, formdata);
-                closeModal();
-              }}
-            >
-              예
-            </button>
+            <div className="btn-box">
+              <button className="no-btn" onClick={closeModal}>
+                아니요
+              </button>
+              <button
+                className="yes-btn"
+                onClick={() => {
+                  postCartItemAPI(token, formdata);
+                  closeModal();
+                }}
+              >
+                예
+              </button>
+            </div>
           </div>
         </ModalOverlay>
       ) : null}
@@ -122,7 +123,6 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -130,7 +130,9 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+
   .modal-wrapper {
+    width: 400px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -138,5 +140,30 @@ const ModalOverlay = styled.div`
     background-color: white;
     padding: 20px;
     border-radius: 10px;
+  }
+  img {
+    width: 22px;
+    height: 22px;
+  }
+  p {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .btn-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px auto;
+  }
+  button {
+    width: 100px;
+    padding: 10px;
+    border: 1px var(--sub-text-color) solid;
+    border-radius: 5px;
+  }
+  .yes-btn {
+    background-color: var(--main-color);
+    color: white;
+    border: none;
   }
 `;
