@@ -7,8 +7,8 @@ import BuyerJoinForm from 'components/join/BuyerJoinForm';
 import SellerJoinForm from 'components/join/SellerJoinForm';
 import { PostBuyerForm, PostSellerForm, UserForm } from 'model/market';
 import { useMutation } from 'react-query';
-import { BuyerJoinAPI } from 'api/user/buyerJoinAPI';
-import { SellerJoinAPI } from 'api/user/sellerJoinAPI';
+import { buyerJoinAPI } from 'api/user/buyerJoinAPI';
+import { sellerJoinAPI } from 'api/user/sellerJoinAPI';
 import { useNavigate } from 'react-router-dom';
 
 const Join = () => {
@@ -31,7 +31,7 @@ const Join = () => {
     setFormType(type);
   };
 
-  const buyerMutation = useMutation(BuyerJoinAPI,{
+  const buyerMutation = useMutation(buyerJoinAPI, {
     onSuccess: (data) => {
       navigate('/login');
     },
@@ -39,7 +39,7 @@ const Join = () => {
       console.error(error);
     },
   });
-  const sellerMutation = useMutation(SellerJoinAPI,{
+  const sellerMutation = useMutation(sellerJoinAPI, {
     onSuccess: (data) => {
       navigate('/login');
     },
