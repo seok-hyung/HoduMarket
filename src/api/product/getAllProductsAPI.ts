@@ -1,6 +1,6 @@
 import { apiURL } from 'api/apiURL';
 
-export const getProductAPI = async (page: number) => {
+export const getAllProductsAPI = async (page: number) => {
   try {
     const response = await fetch(`${apiURL}/products/?page=${page}`);
 
