@@ -1,8 +1,6 @@
-import { BuyerJoinAPI } from 'api/user/buyerJoinAPI';
 import InputBox from 'components/common/inputBox/InputBox';
 import { BuyerJoinFormProps, PostBuyerForm } from 'model/market';
 import React, { ChangeEvent, useState, FormEvent } from 'react';
-import { useMutation } from 'react-query';
 
 const BuyerJoinForm = ({ form, setForm }: BuyerJoinFormProps) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

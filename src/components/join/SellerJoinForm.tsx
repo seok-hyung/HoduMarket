@@ -1,38 +1,11 @@
 import React, { ChangeEvent, useState, FormEvent } from 'react';
 import InputBox from 'components/common/inputBox/InputBox';
 import { SellerJoinFormProps } from 'model/market';
-import { useMutation } from 'react-query';
-import { SellerJoinAPI } from 'api/user/sellerJoinAPI';
 
 const SellerJoinForm = ({ form, setForm }: SellerJoinFormProps) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  // const mutation = useMutation(SellerJoinAPI);
-  // const onSubmit = (e: FormEvent) => {
-  //   console.log(form);
-  //   e.preventDefault(); // 페이지 새로고침 방지
-  //   const postData: PostSellerForm = {
-  //     username: form.id,
-  //     password: form.password,
-  //     password2: form.passwordConfirm,
-  //     phone_number: `${form.phoneNumFirst}${form.phoneNumMiddle}${form.phoneNumLast}`,
-  //     name: form.userName,
-  //     company_registration_number: form.businessNumber,
-  //     store_name: form.storeName,
-  //   };
-  //   mutation.mutate(postData);
-  // };
-  // // 로딩 상태
-  // if (mutation.isLoading) return <div>Submitting...</div>;
-
-  // // 에러 상태
-  // if (mutation.isError) return <div>Error submitting data</div>;
-
-  // // 성공 상태
-  // if (mutation.isSuccess) return <div>Data submitted successfully</div>;
-
   return (
     <div className="seller-form">
       <InputBox
@@ -104,28 +77,6 @@ const SellerJoinForm = ({ form, setForm }: SellerJoinFormProps) => {
           required={true}
         />
       </div>
-      {/* <label className="email-label" htmlFor="email-label">
-        이메일
-      </label>
-      <div className="email">
-        <InputBox
-          name="emailId"
-          id="emailId"
-          type="text"
-          value={form.emailId}
-          onChange={handleInputChange}
-          required={true}
-        />
-        <div>@</div>
-        <InputBox
-          name="emailAddress"
-          id="emailAddress"
-          type="text"
-          value={form.emailAddress}
-          onChange={handleInputChange}
-          required={true}
-        />
-      </div> */}
       <InputBox
         label="사업자 등록번호"
         name="businessNumber"
