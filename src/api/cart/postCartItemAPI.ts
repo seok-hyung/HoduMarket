@@ -7,11 +7,12 @@ export const postCartItemAPI = async (token: string, formData: PostCartItemForm)
     body: JSON.stringify(formData),
     headers: {
       Authorization: `JWT ${token}`,
+      'Content-type': 'application/json',
     },
   });
 
   if (!res.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error('네트워크에 문제가 있습니다.');
   }
   const data = await res.json();
   console.log(data);
