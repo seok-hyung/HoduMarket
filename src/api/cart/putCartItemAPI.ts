@@ -1,7 +1,7 @@
 import { apiURL } from 'api/apiURL';
-import { PutCartItemProps } from 'model/market';
+import { PutCartItemForm } from 'model/market';
 
-export async function putCartItem({ token, urlId, orderData }: PutCartItemProps) {
+export async function putCartItem({ token, urlId, orderData }: PutCartItemForm) {
   try {
     const response = await fetch(`${apiURL}/cart/${urlId}/`, {
       method: 'PUT',

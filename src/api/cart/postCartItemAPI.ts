@@ -11,8 +11,6 @@ export const postCartItemAPI = async (token: string, formData: PostCartItemForm)
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    console.error(errorData);
     throw new Error('Network response was not ok');
   }
   const data = await res.json();

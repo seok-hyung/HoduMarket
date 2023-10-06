@@ -127,13 +127,13 @@ export type PostSellerForm = {
   store_name: string;
 };
 
-export type LoginForm = {
+export type LoginDataForm = {
   username: string;
   password: string;
   login_type: string; // BUYER : 일반 구매자, SELLER : 판매자
 };
 
-export type PutCartItemProps = {
+export type PutCartItemForm = {
   token: string;
   urlId: string;
   orderData: {
@@ -141,6 +141,11 @@ export type PutCartItemProps = {
     quantity: number;
     is_active: boolean;
   };
+};
+export type PostCartItemForm = {
+  product_id: number;
+  quantity: number;
+  check: boolean; // 장바구니에 해당 제품이 있는지 확인합니다. False일 때는 확인용 모달창을 띄워야하고, True일 때 카트에 담을 수 있습니다
 };
 
 export type CartItemProps = {
@@ -167,4 +172,7 @@ export type CartProduct = {
   price: number;
   shipping_fee: number;
   stock: number;
+};
+export type CartItemDetail = {
+  products: ProductResults[];
 };
