@@ -1,7 +1,7 @@
 import { apiURL } from 'api/apiURL';
-import { LoginForm } from 'model/market';
+import { LoginDataForm } from 'model/market';
 
-export const loginAPI = async (formData: LoginForm) => {
+export const loginAPI = async (formData: LoginDataForm) => {
   const res = await fetch(`${apiURL}/accounts/login/`, {
     method: 'POST',
     body: JSON.stringify(formData),
