@@ -41,6 +41,7 @@
     "require-await": "error",
     "eqeqeq": "error",
     "no-unused-vars": 1,
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-undef": "off"
   }
 }
