@@ -1,11 +1,11 @@
 import { logOutAPI } from 'api/login/logoutAPI';
 import { userTokenState } from 'atoms/Atoms';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { styled } from 'styled-components';
 
 const MyPageModal = () => {
-  const [userToken, setUserToken] = useRecoilState(userTokenState);
+  const setUserToken = useSetRecoilState(userTokenState);
 
   const handleLogout = async () => {
     await logOutAPI();
