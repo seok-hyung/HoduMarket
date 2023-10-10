@@ -134,13 +134,9 @@ export type LoginDataForm = {
 };
 
 export type PutCartItemForm = {
-  token: string;
-  urlId: string;
-  orderData: {
-    product_id: number;
-    quantity: number;
-    is_active: boolean;
-  };
+  product_id: number;
+  quantity: number;
+  is_active: boolean;
 };
 export type PostCartItemForm = {
   product_id: number;

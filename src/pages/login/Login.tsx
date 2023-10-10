@@ -1,10 +1,11 @@
 import MemberType from 'components/common/memberType/MemberType';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import * as S from './Login.style';
+import { styled } from 'styled-components';
+
 import InputBox from 'components/common/inputBox/InputBox';
 import { useMutation } from 'react-query';
 
-import { LoginForm } from 'model/market';
+import { LoginDataForm } from 'model/market';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
@@ -30,6 +31,7 @@ const Login = () => {
     // variables : req(postData 객체)
     onSuccess(data, variables, context) {
       setUserToken(data.token);
+      console.log(data);
       navigate('/');
     },
     onError(error, variables, context) {
@@ -38,7 +40,7 @@ const Login = () => {
   });
   const onSubmit = (e: FormEvent) => {
     e.preventDefault(); // 페이지 새로고침 방지
-    const postData: LoginForm = {
+    const postData: LoginDataForm = {
       username: loginState.id,
       password: loginState.password,
       login_type: loginState.type,
@@ -46,10 +48,10 @@ const Login = () => {
     loginMutation.mutate(postData);
   };
   return (
-    <S.WrapperDiv>
+    <WrapperDiv>
       {/* Logo Image */}
       <img src="/assets/Logo-hodu.png" alt="Logo" />
-      <S.LoginContainerDiv>
+      <LoginContainerDiv>
         {/* Member Type Tabs */}
         <MemberType
           buyerBtnText="구매회원 로그인"
@@ -58,7 +60,7 @@ const Login = () => {
         />
 
         {/* Login Form */}
-        <S.LoginForm onSubmit={onSubmit}>
+        <LoginForm onSubmit={onSubmit}>
           <InputBox
             label="아이디"
             id="id"
@@ -80,16 +82,67 @@ const Login = () => {
 
           {/* Submit Button */}
           <button className="login-btn">로그인</button>
-        </S.LoginForm>
+        </LoginForm>
 
         {/* Links to Registration and Password Recovery */}
-        <S.JoinGroupDiv>
+        <JoinGroupDiv>
           <a href="/join">회원가입</a>
           <a href="/find-password">비밀번호 찾기</a>
-        </S.JoinGroupDiv>
-      </S.LoginContainerDiv>
-    </S.WrapperDiv>
+        </JoinGroupDiv>
+      </LoginContainerDiv>
+    </WrapperDiv>
   );
 };
 
 export default Login;
+
+const WrapperDiv = styled.div`
+  max-width: 500px;
+  margin: 180px auto;
+  img {
+    display: block;
+    width: 250px;
+    margin: 0 auto 70px auto;
+  }
+`;
+
+const LoginContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .login-memberType-box {
+    display: flex;
+  }
+`;
+
+const LoginForm = styled.form`
+  width: 550px;
+  padding: 30px;
+  padding-bottom: 0;
+  border: 1px solid #c4c4c4;
+  border-top: 0;
+
+  input:not(:last-of-type) {
+    margin-bottom: 40px;
+  }
+  .login-btn {
+    margin: 36px 0;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    border-radius: 5px;
+    padding: 19px 215px;
+  }
+`;
+const JoinGroupDiv = styled.div`
+  color: #333333;
+  margin-top: 30px;
+  a:first-child::after {
+    content: '';
+    border-right: 1px solid #333333;
+    margin: 0 14px;
+  }
+`;
