@@ -5,26 +5,28 @@ import { Route, Routes } from 'react-router-dom';
 import { ProductResults } from 'model/market';
 
 // API
-import { getProductAPI } from '../../api/product/getProductAPI';
+import { getAllProductsAPI } from '../../api/product/getAllProductsAPI';
 
 // 컴포넌트
 import Nav from 'components/common/nav/Nav';
 import Carousel from 'components/common/carousel/Carousel';
 import Products from 'components/common/products/Products';
 import Footer from 'components/common/footer/Footer';
-import ProductDetail from 'pages/productDeatil/ProductDetail';
+
+// 스타일
 import { styled } from 'styled-components';
 
 const Home = () => {
   const [products, setProducts] = useState<ProductResults[]>([]);
-  const productImg = products.map((obj) => obj?.image); // 상품 이미지 배열
+  // const productImg = products.map((obj) => obj?.image); // 상품 이미지 배열
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    getProductAPI(currentPage)
+    getAllProductsAPI(currentPage)
       .then((data) => {
         setProducts(data.results);
+        console.log(data);
         setTotalPage(Math.ceil(data.count / 15));
       })
       .catch((error) => {
@@ -49,7 +51,7 @@ const Home = () => {
   return (
     <>
       <Nav />
-      <Carousel images={productImg} />
+      <Carousel />
       {products.length > 0 ? <Products products={products} /> : <p>Loading...</p>}
       <PageBoxDiv>{pageButtons}</PageBoxDiv>
       <Footer />
