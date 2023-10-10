@@ -1,37 +1,81 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductsProps } from 'model/market';
-import * as S from './Products.style';
+import { styled } from 'styled-components';
 
 // const Products: React.FC<ProductsProps> = ({ goods }) => {
 const Products = ({ products }: ProductsProps) => {
   const intl = new Intl.NumberFormat();
   const navigate = useNavigate();
   return (
-    <S.ProductWrapperDiv>
-      <S.ProductContainerUl>
+    <ProductWrapperDiv>
+      <ProductContainerUl>
         {products.map((item) => {
           const productId = item.product_id; // 클릭한 상품의 id값
           return (
-            <S.ProductLi
+            <ProductLi
               key={productId}
               onClick={() => {
                 navigate(`/detail/${productId}`, { state: { item } });
               }}
             >
-              <S.ProductImg src={`${item.image}`} alt="상품 이미지" />
-              <S.StoreNameP>{item.store_name}</S.StoreNameP>
-              <S.ProductNameH2>{item.product_name}</S.ProductNameH2>
-              <S.ProductPriceP>
+              <img src={`${item.image}`} alt="상품 이미지" />
+              <p className="store-name-p">{item.store_name}</p>
+              <h2 className="product-name-h2">{item.product_name}</h2>
+              <p className="price-p">
                 {intl.format(item.price)}
-                <S.WonSpan>원</S.WonSpan>
-              </S.ProductPriceP>
-            </S.ProductLi>
+                <span className="won">원</span>
+              </p>
+            </ProductLi>
           );
         })}
-      </S.ProductContainerUl>
-    </S.ProductWrapperDiv>
+      </ProductContainerUl>
+    </ProductWrapperDiv>
   );
 };
 
 export default Products;
+
+const ProductWrapperDiv = styled.div`
+  margin: 80px 320px;
+`;
+const ProductContainerUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 80px;
+  justify-content: center;
+  max-width: 1800px;
+  margin: auto;
+`;
+
+const ProductLi = styled.li`
+  /* flex-basis: calc(33.33% - 60px); */
+  width: 450px;
+  min-width: 450px;
+  max-width: 450px;
+  margin-bottom: 80px;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 320px;
+  }
+  .store-name-p {
+    color: var(--main-disabled-color);
+    font-size: 28px;
+    margin: 16px 0 10px 0;
+  }
+  .product-name-h2 {
+    font-size: 34px;
+    color: var(--main-text-color);
+    margin-bottom: 10px;
+  }
+  .price-p {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--main-text-color);
+    .won {
+      font-weight: normal;
+      font-size: 16px;
+    }
+  }
+`;
