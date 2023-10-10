@@ -38,10 +38,11 @@ const ProductDetail = () => {
     quantity: amount,
     check: isInCart,
   };
-  console.log(formdata);
+  // console.log(formdata);
+  console.log(productInfo);
 
-  const handleCartBtn = async () => {
-    await getCartItemAPI(token).then((res) => {
+  const handleCartBtn = () => {
+    getCartItemAPI(token).then((res) => {
       // 현재 상품이 장바구니에 있는지 확인(상품의 고유 id로 확인)
       if (res.results.some((item: any) => item.product_id === productInfo.product_id)) {
         setIsInCart(true);
@@ -49,7 +50,7 @@ const ProductDetail = () => {
         return;
       }
     });
-    await postCartItemAPI(token, formdata);
+    postCartItemAPI(token, formdata);
   };
   return (
     <>
@@ -65,7 +66,7 @@ const ProductDetail = () => {
           </div>
 
           <S.DetailRightDiv>
-            <p className="info ">{productInfo.product_info}</p>
+            <p className="info ">{productInfo.store_name}</p>
             <p className="name">{productInfo.product_name}</p>
             <p className="price">{intl.format(productInfo.price)}</p>
             <span>원</span>
