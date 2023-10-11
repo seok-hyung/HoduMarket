@@ -44,6 +44,11 @@ const Carousel = () => {
   return (
     <>
       <CarouselContainerDiv>
+        <LeftIconImg
+          onClick={goToPrevSlide}
+          src="/assets/icon-swiper-1.svg"
+          alt="좌측 이동 화살표"
+        />
         <div className="img-container">
           {imgList.map((img, index) => (
             <CarouselImg
@@ -57,20 +62,11 @@ const Carousel = () => {
             />
           ))}
         </div>
-        <div className="left-background">
-          <LeftIconImg
-            onClick={goToPrevSlide}
-            src="/assets/icon-swiper-1.svg"
-            alt="좌측 이동 화살표"
-          />
-        </div>
-        <div className="right-background">
-          <RightIconImg
-            onClick={goToNextSlide}
-            src="/assets/icon-swiper-2.svg"
-            alt="우측 이동 화살표"
-          />
-        </div>
+        <RightIconImg
+          onClick={goToNextSlide}
+          src="/assets/icon-swiper-2.svg"
+          alt="우측 이동 화살표"
+        />
       </CarouselContainerDiv>
     </>
   );
@@ -81,15 +77,14 @@ export default Carousel;
 const CarouselContainerDiv = styled.div`
   margin-top: 3px;
   position: relative;
-  width: 100vw;
+  display: flex;
   height: 500px;
   background: #f2f2f2;
 
   .img-container {
     position: relative;
     margin: 0 auto;
-    width: 65%;
-    height: 100%;
+    width: 70%;
     overflow: hidden;
   }
 `;
@@ -98,20 +93,21 @@ const CarouselImg = styled.img`
   width: 100%;
 `;
 const LeftIconImg = styled.img`
-  width: 30%;
   position: absolute;
+  z-index: 10;
+  width: 15%;
   top: 50%;
-  left: -30px;
+  left: 0;
   transform: translate(0, -50%);
-  cursor: pointer;
   object-fit: contain;
+  cursor: pointer;
 `;
 const RightIconImg = styled.img`
-  width: 30%;
   position: absolute;
-  object-fit: contain;
+  width: 15%;
   top: 50%;
-  right: -30px;
+  right: 0;
   transform: translate(0, -50%);
+  object-fit: contain;
   cursor: pointer;
 `;
