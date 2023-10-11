@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import * as S from './ProductDetail.style';
+import { styled } from 'styled-components';
 import TabContent from 'components/tabContent/TabContent';
 import Nav from 'components/common/nav/Nav';
 import Footer from 'components/common/footer/Footer';
@@ -8,7 +8,6 @@ import { postCartItemAPI } from 'api/cart/postCartItemAPI';
 import { useRecoilValue } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
 import { getCartItemAPI } from 'api/cart/getCartItemAPI';
-import { styled } from 'styled-components';
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -55,8 +54,8 @@ const ProductDetail = () => {
   return (
     <>
       <Nav />
-      <S.DetailWrapperDiv>
-        <S.DetailContainerDiv>
+      <DetailWrapperDiv>
+        <DetailContainerDiv>
           <div>
             <img
               className="product-img"
@@ -65,7 +64,7 @@ const ProductDetail = () => {
             />
           </div>
 
-          <S.DetailRightDiv>
+          <DetailRightDiv>
             <p className="info ">{productInfo.store_name}</p>
             <p className="name">{productInfo.product_name}</p>
             <p className="price">{intl.format(productInfo.price)}</p>
@@ -91,10 +90,10 @@ const ProductDetail = () => {
                 장바구니
               </button>
             </div>
-          </S.DetailRightDiv>
-        </S.DetailContainerDiv>
+          </DetailRightDiv>
+        </DetailContainerDiv>
         <TabContent />
-      </S.DetailWrapperDiv>
+      </DetailWrapperDiv>
       {modalState ? (
         <ModalOverlay onClick={closeModal}>
           <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
@@ -124,6 +123,119 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+const DetailWrapperDiv = styled.div`
+  margin: 80px auto;
+  width: fit-content;
+  .product-img {
+    width: 600px;
+    height: 600px;
+  }
+`;
+
+const DetailContainerDiv = styled.div`
+  display: flex;
+
+  margin-bottom: 140px;
+`;
+const DetailRightDiv = styled.div`
+  margin-left: 50px;
+  font-size: 28px;
+  width: 630px;
+  height: 600px;
+  .info {
+    color: var(--sub-text-color);
+    margin-bottom: 16px;
+    font-size: 24px;
+  }
+  .name {
+    font-size: 36px;
+    line-height: 45px;
+    margin-bottom: 20px;
+  }
+  .price {
+    display: inline-block;
+    font-size: 36px;
+    margin-bottom: 138px;
+    font-weight: 700;
+    line-height: 45px;
+  }
+  .deliveryInfo {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  .amount {
+    width: 150px;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 3px solid #c4c4c4;
+    border-radius: 5px;
+    margin: 30px 0;
+
+    img {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  hr {
+    width: 630px;
+    border: 2px solid #c4c4c4;
+  }
+
+  .total-price {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0 32px 0;
+    width: 630px;
+
+    .price-info {
+      line-height: 23px;
+      min-width: fit-content;
+    }
+    .total-amount {
+      font-weight: 400;
+      line-height: 23px;
+      min-width: fit-content;
+    }
+    .total-amount-span {
+      color: var(--main-color);
+      font-style: normal;
+      font-weight: 700;
+    }
+    .total-price-span {
+      color: var(--main-color);
+      font-style: normal;
+      font-weight: 700;
+      font-size: 36px;
+      margin-left: 5px;
+    }
+  }
+  .detail-btn {
+    display: flex;
+    height: 60px;
+    .buy {
+      flex-basis: 66%;
+      border: none;
+      background: var(--main-color);
+      border-radius: 5px;
+      color: white;
+      font-size: 20px;
+      margin-right: 14px;
+    }
+    .shop-bag {
+      flex-basis: 33%;
+      background: #767676;
+      border-radius: 5px;
+      color: white;
+      font-size: 20px;
+      border: none;
+    }
+  }
+`;
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
 
 // Type Model
 import { ProductResults } from 'model/market';
 
 // API
-import { getAllProductsAPI } from '../../api/product/getAllProductsAPI';
+import { getAllProductsAPI } from '../api/product/getAllProductsAPI';
 
 // 컴포넌트
 import Nav from 'components/common/nav/Nav';
