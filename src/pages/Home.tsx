@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Type Model
-import { ProductResults } from 'model/market';
+import { ProductDetail } from 'model/market';
 
 // API
 import { getAllProductsAPI } from '../api/product/getAllProductsAPI';
@@ -16,7 +16,7 @@ import Footer from 'components/common/footer/Footer';
 import { styled } from 'styled-components';
 
 const Home = () => {
-  const [products, setProducts] = useState<ProductResults[]>([]);
+  const [products, setProducts] = useState<ProductDetail[]>([]);
   // const productImg = products.map((obj) => obj?.image); // 상품 이미지 배열
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
