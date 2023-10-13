@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { userTokenState } from 'atoms/Atoms';
 import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
-import { CartListProduct, ProductResults } from 'model/market';
+import { CartListProduct, ProductDetail } from 'model/market';
 import { styled } from 'styled-components';
 
 import { getCartItemAPI } from 'api/cart/getCartItemAPI';
@@ -12,21 +12,34 @@ import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 import { putCartItemAPI } from 'api/cart/putCartItemAPI';
 
 const CartList = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
-  const [cartItemDeatails, setCartItemDetails] = useState<ProductResults[]>([]);
   const navigate = useNavigate();
   const token = useRecoilValue(userTokenState);
+  const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
+  const [cartItemDeatails, setCartItemDetails] = useState<ProductDetail[]>([]);
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
   // console.log(cartItemList);
   // console.log(cartItemDeatails);
   // console.log(amounts);
-  const formData = {
-    product_id: 0,
-    quantity: 0,
-    is_active: false,
-  };
-  const queryInfo = useQuery('cartItems', () => getCartItemAPI(token));
+
+  useQuery('cartItems', () => getCartItemAPI(token), {
+    onSuccess: (data) => {
+      setCartItemList(data.results);
+
+      if (data.results.length > 0) {
+        const newAmounts = data.results.reduce(
+          (acc: { [key: string]: number }, curr: CartListProduct) => ({
+            ...acc,
+            [curr.product_id]: curr.quantity,
+          }),
+          {},
+        );
+        setAmounts(newAmounts);
+      }
+    },
+    onError: (error) => {
+      console.error('장바구니 상품을 가져오는데 문제가 발생했습니다.', error);
+    },
+  });
 
   useEffect(() => {
     if (cartItemList.length > 0) {
@@ -41,67 +54,45 @@ const CartList = () => {
     }
   }, [cartItemList]);
 
-  useEffect(() => {
-    const { data, error, isLoading, isError } = queryInfo;
-    if (isLoading) {
-      console.log('Loading...');
-    }
-    if (isError) {
-      console.error('An error occurred: ', error);
-    }
-    if (data) {
-      // console.log(data);
-      // setCartItemList(data?.results);
-      setCartItemList((prevState) =>
-        JSON.stringify(prevState) !== JSON.stringify(data.results)
-          ? data.results
-          : prevState,
-      );
-
-      if (data.results.length > 0) {
-        const newAmounts = data.results.reduce(
-          (acc: { [key: string]: number }, curr: CartListProduct) => ({
-            ...acc,
-            [curr.product_id]: curr.quantity,
-          }),
-          {},
-        );
-        setAmounts((prevState) =>
-          JSON.stringify(prevState) !== JSON.stringify(newAmounts)
-            ? newAmounts
-            : prevState,
-        );
-      }
-    }
-  }, [queryInfo]);
-
   // quantity 조절 함수
-  const handleIncrement = async (productId: any) => {
+  const handleIncrement = (productId: any) => {
     const newQuantity = (amounts[productId] || 0) + 1;
-    setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
-
     const cartItem = cartItemList.find((item) => item.product_id === productId);
+    if (!cartItem) return;
 
-    // putCartItem(token, productId, formData);
     const formData = {
       product_id: productId,
       quantity: newQuantity,
       is_active: true,
     };
-    await putCartItemAPI(token, cartItem?.cart_item_id, formData);
+    putCartItemAPI(token, cartItem?.cart_item_id, formData)
+      .then(() => {
+        setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+      })
+      .catch((error) => {
+        console.error('수량 +1하는데 에러가 있습니다.', error);
+        setAmounts((prev) => ({ ...prev, [productId]: amounts[productId] || 0 }));
+      });
   };
 
-  const handleDecrement = async (productId: any) => {
+  const handleDecrement = (productId: any) => {
     if ((amounts[productId] || 0) > 0) {
       const newQuantity = amounts[productId] - 1;
-      setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
       const cartItem = cartItemList.find((item) => item.product_id === productId);
+      if (!cartItem || newQuantity < 0) return;
       const formData = {
         product_id: productId,
         quantity: newQuantity,
         is_active: true,
       };
-      await putCartItemAPI(token, cartItem?.cart_item_id, formData);
+      putCartItemAPI(token, cartItem?.cart_item_id, formData)
+        .then(() => {
+          setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+        })
+        .catch((error) => {
+          console.error('수량 -1을 하는데 에러가 있습니다.', error);
+          setAmounts((prev) => ({ ...prev, [productId]: amounts[productId] }));
+        });
     }
   };
 
