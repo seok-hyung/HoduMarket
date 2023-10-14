@@ -18,7 +18,7 @@ const CartList = () => {
   const [cartItemDeatails, setCartItemDetails] = useState<ProductDetail[]>([]);
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
   // console.log(cartItemList);
-  // console.log(cartItemDeatails);
+  console.log(cartItemDeatails);
   // console.log(amounts);
 
   useQuery('cartItems', () => getCartItemAPI(token), {
@@ -177,13 +177,15 @@ const CartList = () => {
               <img
                 onClick={() => handleDecrement(detail.product_id)}
                 src="/assets/icon-minus-line.svg"
-                alt=""
+                id="minus-img"
+                alt="마이너스 이미지"
               />
               <div>{amounts[detail.product_id]}</div>
               <img
                 onClick={() => handleIncrement(detail.product_id)}
                 src="/assets/icon-plus-line.svg"
-                alt=""
+                id="plus-img"
+                alt="플러스 이미지"
               />
             </div>
             <div className="price-box">
@@ -210,6 +212,32 @@ const CartList = () => {
           <p>원하는 상품을 장바구니에 담아보세요.</p>
         </div>
       )}
+
+      <ul className="final-price-ul">
+        <li>
+          <p>총 상품 금액</p>
+          <strong>46,500원</strong>
+        </li>
+        <li className="icon-li minus">
+          <img src="assets/icon-minus-line.svg" alt="마이너스 이미지" />
+        </li>
+        <li>
+          <p>상품 할인</p>
+          <strong>0원</strong>
+        </li>
+        <li className="icon-li plus">
+          <img src="assets/icon-plus-line.svg" alt="플러스 이미지" />
+        </li>
+        <li>
+          <p>배송비</p>
+          <strong>0원</strong>
+        </li>
+        <li>
+          <p>결제 예정 금액</p>
+          <strong id="final-price-strong">46,500원</strong>
+        </li>
+      </ul>
+      <button className="final-order-btn">주문하기</button>
     </CartWrapper>
   );
 };
@@ -270,6 +298,9 @@ const CartWrapper = styled.div`
     border: 2px solid #e0e0e0;
     border-radius: 10px;
     margin-bottom: 10px;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
     .checkbox {
       margin-right: 40px;
     }
@@ -278,6 +309,7 @@ const CartWrapper = styled.div`
     }
     .product-info {
       flex-basis: 490px;
+
       .store-name {
         color: var(--main-disabled-color);
         font-size: 20px;
@@ -310,7 +342,7 @@ const CartWrapper = styled.div`
       align-items: center;
       border: 3px solid #c4c4c4;
       border-radius: 5px;
-      margin: 30px 120px 30px 0;
+      margin: auto 120px auto 0;
 
       img {
         cursor: pointer;
@@ -351,5 +383,78 @@ const CartWrapper = styled.div`
       font-size: 24px;
       color: var(--main-disabled-color);
     }
+  }
+
+  // 최종 가격 박스 CSS
+  .final-price-ul {
+    width: 1280px;
+    height: 150px;
+    background-color: #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 80px auto 40px auto;
+    position: relative;
+
+    #final-price-strong {
+      font-size: 36px;
+      color: red;
+      line-height: 45px;
+    }
+    li:not(.icon-li) {
+      flex-basis: 25%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      p {
+        font-size: 22px;
+        line-height: 20px;
+      }
+      strong {
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 30px;
+      }
+    }
+    li.icon-li {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      img {
+        position: absolute;
+        z-index: 100;
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: 54px;
+        height: 54px;
+        z-index: 10;
+        border-radius: 50%;
+        background-color: white;
+      }
+    }
+    li.icon-li.minus {
+      left: calc(25% - 13.5px);
+    }
+    li.icon-li.plus {
+      left: calc(50% - 13.5px);
+    }
+  }
+  .final-order-btn {
+    width: 220px;
+    height: 68px;
+    background-color: var(--main-color);
+    border-radius: 5px;
+    font-size: 24px;
+    color: white;
+    font-weight: 700;
+    display: block;
+    margin: 40px auto;
   }
 `;
