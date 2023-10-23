@@ -69,6 +69,27 @@ const GlobalStyled = createGlobalStyle`
     display: inline-block; /* 특정 너비를 가지도록 상황에 따라 block or inline-block 으로 변경 */
     width: 200px; /* inline-block처럼 콘텐츠에 따라 유동적인 너비를 가진다면 직접 너비를 설정 */
 }
+  .modal-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    .modal{
+      width: 600px;
+      text-align: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius:10px;
+      z-index:100;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+  }
 `;
 
 export default GlobalStyled;
