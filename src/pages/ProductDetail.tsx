@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TabContent from 'components/tabContent/TabContent';
 import Nav from 'components/common/nav/Nav';
@@ -17,6 +17,7 @@ const ProductDetail = () => {
   let [amount, setAmount] = useState(1);
   let [totalPrice, setTotalPrice] = useState(productInfo.price);
   const [isInCart, setIsInCart] = useState(false);
+  const navigate = useNavigate();
 
   // 모달
   const [modalState, setModalState] = useState(false);
@@ -49,6 +50,7 @@ const ProductDetail = () => {
         return;
       }
     });
+    setIsInCart(false);
     postCartItemAPI(token, formdata);
   };
   return (
@@ -96,9 +98,10 @@ const ProductDetail = () => {
       </DetailWrapperDiv>
       {modalState ? (
         <ModalOverlay onClick={closeModal}>
-          <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
             <img src="/assets/icon-delete.svg" onClick={closeModal} alt="닫기 이미지" />
-            <p>이미 장바구니에 있는 상품입니다. 장바구니로 이동하시겠습니까?</p>
+            <p>이미 장바구니에 있는 상품입니다.</p>
+            <p>장바구니로 이동하시겠습니까?</p>
             <div className="btn-box">
               <button className="no-btn" onClick={closeModal}>
                 아니요
@@ -106,8 +109,7 @@ const ProductDetail = () => {
               <button
                 className="yes-btn"
                 onClick={() => {
-                  postCartItemAPI(token, formdata);
-                  closeModal();
+                  navigate('/cart');
                 }}
               >
                 예
@@ -244,33 +246,41 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 
-  .modal-wrapper {
-    width: 400px;
+  .modal {
+    width: 450px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    padding: 20px;
+    padding: 60px;
     border-radius: 10px;
   }
   img {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    cursor: pointer;
+    top: 25px;
+    right: 25px;
   }
   p {
     font-size: 24px;
     font-weight: 600;
+    &:first-of-type {
+      margin-bottom: 15px;
+    }
   }
   .btn-box {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin: 30px auto;
+    margin-top: 30px;
   }
   button {
-    width: 100px;
+    width: 120px;
     padding: 10px;
+    font-size: 20px;
     border: 1px var(--sub-text-color) solid;
     border-radius: 5px;
   }
