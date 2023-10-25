@@ -11,6 +11,7 @@ import { getCartItemAPI } from 'api/cart/getCartItemAPI';
 import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 import { putCartItemAPI } from 'api/cart/putCartItemAPI';
 import { deleteCartItemAPI } from 'api/cart/deleteCartItemAPI';
+
 const CartList = () => {
   const navigate = useNavigate();
   const token = useRecoilValue(userTokenState);
@@ -19,13 +20,12 @@ const CartList = () => {
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
   const [totalPrice, setTotalPrice] = useState<number>(0); // 결제 예정 금액
   const [totalShippingFee, setTotalShippingFee] = useState<number>(0); // 총 배송비
-  //모달
-  const [modalState, setModalState] = useState(false);
+  const [modalState, setModalState] = useState(false); //모달
   const openModal = () => setModalState(true);
   const closeModal = () => setModalState(false);
-  console.log(cartItemList);
-  console.log(cartItemDetails);
-  console.log(amounts);
+  // console.log(cartItemList);
+  // console.log(cartItemDetails);
+  // console.log(amounts);
 
   useQuery('cartItems', () => getCartItemAPI(token), {
     onSuccess: (data) => {
@@ -74,6 +74,11 @@ const CartList = () => {
     putCartItemAPI(token, cartItem?.cart_item_id, formData)
       .then(() => {
         setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+        //깃 이슈#17 에러 해결
+        const newCartItemList = [...cartItemList];
+        cartItem.quantity = newQuantity;
+        setCartItemList(newCartItemList);
+        // 에러 해결
       })
       .catch((error) => {
         console.error('수량 +1하는데 에러가 있습니다.', error);
@@ -94,6 +99,10 @@ const CartList = () => {
       putCartItemAPI(token, cartItem?.cart_item_id, formData)
         .then(() => {
           setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+          //깃 이슈#17 에러 해결
+          const newCartItemList = [...cartItemList];
+          cartItem.quantity = newQuantity;
+          setCartItemList(newCartItemList);
         })
         .catch((error) => {
           console.error('수량 -1을 하는데 에러가 있습니다.', error);
@@ -181,14 +190,14 @@ const CartList = () => {
   return (
     <CartWrapper>
       <div className="tab-title">장바구니</div>
-      <ul className="tab-list-ul">
-        <li className="checkbox-li">
+      <ul className="tab-list">
+        <li className="checkbox">
           <label htmlFor="checkbox"></label>
           <input type="checkbox" id="checkbox" />
         </li>
-        <li className="product-info-li">상품정보</li>
-        <li className="quantity-li">수량</li>
-        <li className="price-li">상품금액</li>
+        <li className="productInfo">상품정보</li>
+        <li className="quantity">수량</li>
+        <li className="price">상품금액</li>
       </ul>
       {cartItemDetails.length ? (
         cartItemDetails.map((detail, index) => (
@@ -281,7 +290,16 @@ const CartList = () => {
           <strong id="final-price-strong">{totalPrice + totalShippingFee}원</strong>
         </li>
       </ul>
-      <button className="final-order-btn">주문하기</button>
+      <button
+        className="final-order-btn"
+        onClick={() => {
+          navigate('/payment', {
+            state: { cartData: cartItemDetails, quantityData: cartItemList },
+          });
+        }}
+      >
+        주문하기
+      </button>
 
       {modalState && (
         <div className="modal-overlay" onClick={closeModal}>
@@ -309,7 +327,7 @@ const CartWrapper = styled.div`
     width: 160px;
     height: 160px;
   }
-  .tab-list-ul {
+  .tab-list {
     width: 1280px;
     display: flex;
     margin: auto;
@@ -331,16 +349,16 @@ const CartWrapper = styled.div`
       border: none;
     }
   }
-  .checkbox-li {
+  .checkbox {
     margin-right: 314px;
   }
-  .product-info-li {
+  .productInfo {
     margin-right: 379px;
   }
-  .quantity-li {
+  .quantity {
     margin-right: 238px;
   }
-  .price-li {
+  .price {
   }
 
   .cart-item {
