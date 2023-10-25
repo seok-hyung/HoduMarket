@@ -10,23 +10,29 @@ import { styled } from 'styled-components';
 import { getCartItemAPI } from 'api/cart/getCartItemAPI';
 import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 import { putCartItemAPI } from 'api/cart/putCartItemAPI';
-
+import { deleteCartItemAPI } from 'api/cart/deleteCartItemAPI';
 const CartList = () => {
   const navigate = useNavigate();
   const token = useRecoilValue(userTokenState);
   const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
-  const [cartItemDeatails, setCartItemDetails] = useState<ProductDetail[]>([]);
+  const [cartItemDetails, setCartItemDetails] = useState<ProductDetail[]>([]);
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
-  // console.log(cartItemList);
-  console.log(cartItemDeatails);
-  // console.log(amounts);
+  const [totalPrice, setTotalPrice] = useState<number>(0); // 결제 예정 금액
+  const [totalShippingFee, setTotalShippingFee] = useState<number>(0); // 총 배송비
+  //모달
+  const [modalState, setModalState] = useState(false);
+  const openModal = () => setModalState(true);
+  const closeModal = () => setModalState(false);
+  console.log(cartItemList);
+  console.log(cartItemDetails);
+  console.log(amounts);
 
   useQuery('cartItems', () => getCartItemAPI(token), {
     onSuccess: (data) => {
-      setCartItemList(data.results);
+      setCartItemList(data?.results);
 
-      if (data.results.length > 0) {
-        const newAmounts = data.results.reduce(
+      if (data?.results.length > 0) {
+        const newAmounts = data?.results.reduce(
           (acc: { [key: string]: number }, curr: CartListProduct) => ({
             ...acc,
             [curr.product_id]: curr.quantity,
@@ -54,7 +60,7 @@ const CartList = () => {
     }
   }, [cartItemList]);
 
-  // quantity 조절 함수
+  // quantity(수량) 조절 함수
   const handleIncrement = (productId: any) => {
     const newQuantity = (amounts[productId] || 0) + 1;
     const cartItem = cartItemList.find((item) => item.product_id === productId);
@@ -76,7 +82,7 @@ const CartList = () => {
   };
 
   const handleDecrement = (productId: any) => {
-    if ((amounts[productId] || 0) > 0) {
+    if ((amounts[productId] || 0) > 1) {
       const newQuantity = amounts[productId] - 1;
       const cartItem = cartItemList.find((item) => item.product_id === productId);
       if (!cartItem || newQuantity < 0) return;
@@ -93,6 +99,35 @@ const CartList = () => {
           console.error('수량 -1을 하는데 에러가 있습니다.', error);
           setAmounts((prev) => ({ ...prev, [productId]: amounts[productId] }));
         });
+    } else {
+      // 수량이 0이 되는 경우
+      openModal();
+    }
+  };
+
+  // 최종금액 및 배송비 처리
+  useEffect(() => {
+    let price = 0;
+    let shippingFee = 0;
+
+    cartItemDetails.forEach((item) => {
+      price += item.price * (amounts[item.product_id] || 0);
+      shippingFee += item.shipping_fee;
+    });
+    setTotalPrice(price);
+    setTotalShippingFee(shippingFee);
+  }, [cartItemDetails, amounts]);
+
+  // 장바구니상품 개별 삭제
+  const delEachProduct = async (productId: number) => {
+    const cartItem = cartItemList.find((item) => item.product_id === productId);
+    if (!cartItem) return;
+
+    try {
+      await deleteCartItemAPI(token, cartItem.cart_item_id);
+      setCartItemList((prev) => prev.filter((item) => item.product_id !== productId));
+    } catch (error) {
+      console.error('상품 삭제 중 오류가 발생했습니다.', error);
     }
   };
 
@@ -155,22 +190,31 @@ const CartList = () => {
         <li className="quantity-li">수량</li>
         <li className="price-li">상품금액</li>
       </ul>
-      {cartItemDeatails.length ? (
-        cartItemDeatails.map((detail, index) => (
+      {cartItemDetails.length ? (
+        cartItemDetails.map((detail, index) => (
           <div className="cart-item" key={index}>
+            <img
+              className="del-img"
+              src="assets/icon-delete.svg"
+              alt="삭제(X) 이미지"
+              onClick={() => delEachProduct(detail.product_id)}
+            />
             <div className="checkbox">
               <input type="checkbox" />
             </div>
             <div className="cartImg-box">
-              <img id="cart-img" src={`${detail.image}`} alt="" />
+              <img className="cart-img" src={`${detail.image}`} alt="" />
             </div>
             <div className="product-info">
               <h2 className="store-name">{detail.store_name}</h2>
               <p className="product-name">{detail.product_name}</p>
               <p className="price">{detail.price}원</p>
               <div className="delivery-box">
-                <p>택배배송 /</p>
-                <p>무료배송</p>
+                {detail.shipping_fee === 0 ? (
+                  <p>무료배송</p>
+                ) : (
+                  <p>택배배송 / {detail.shipping_fee}원</p>
+                )}
               </div>
             </div>
             <div className="amount">
@@ -216,7 +260,7 @@ const CartList = () => {
       <ul className="final-price-ul">
         <li>
           <p>총 상품 금액</p>
-          <strong>46,500원</strong>
+          <strong>{totalPrice}원</strong>
         </li>
         <li className="icon-li minus">
           <img src="assets/icon-minus-line.svg" alt="마이너스 이미지" />
@@ -230,14 +274,24 @@ const CartList = () => {
         </li>
         <li>
           <p>배송비</p>
-          <strong>0원</strong>
+          <strong>{totalShippingFee}원</strong>
         </li>
         <li>
           <p>결제 예정 금액</p>
-          <strong id="final-price-strong">46,500원</strong>
+          <strong id="final-price-strong">{totalPrice + totalShippingFee}원</strong>
         </li>
       </ul>
       <button className="final-order-btn">주문하기</button>
+
+      {modalState && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <img src="assets/icon-delete.svg" alt="삭제(X) 아이콘" onClick={closeModal} />
+            <p>1개 이상부터 구매할 수 있어요</p>
+            <button onClick={closeModal}>확인</button>
+          </div>
+        </div>
+      )}
     </CartWrapper>
   );
 };
@@ -251,7 +305,7 @@ const CartWrapper = styled.div`
     text-align: center;
     font-weight: 700;
   }
-  #cart-img {
+  .cart-img {
     width: 160px;
     height: 160px;
   }
@@ -297,12 +351,22 @@ const CartWrapper = styled.div`
     padding: 25px;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
     &:last-of-type {
       margin-bottom: 0;
     }
+    .del-img {
+      position: absolute;
+      width: 24px;
+      top: -70px;
+      right: 20px;
+      cursor: pointer;
+    }
     .checkbox {
       margin-right: 40px;
+      display: flex;
+      align-items: center;
     }
     .cartImg-box {
       margin-right: 36px;
@@ -358,13 +422,14 @@ const CartWrapper = styled.div`
       align-items: center;
       gap: 30px;
       .price {
-        color: red;
+        color: rgb(235, 87, 87);
         font-weight: 700;
       }
       .order-btn {
-        width: 130px;
-        height: 40px;
+        width: 150px;
         border-radius: 5px;
+        font-size: 20px;
+        padding: 15px;
         background-color: var(--main-color);
         color: white;
       }
@@ -398,7 +463,6 @@ const CartWrapper = styled.div`
 
     #final-price-strong {
       font-size: 36px;
-      color: red;
       line-height: 45px;
     }
     li:not(.icon-li) {
@@ -425,7 +489,6 @@ const CartWrapper = styled.div`
       height: 34px;
       img {
         position: absolute;
-        z-index: 100;
       }
       &::before {
         content: '';
@@ -434,7 +497,6 @@ const CartWrapper = styled.div`
         left: -10px;
         width: 54px;
         height: 54px;
-        z-index: 10;
         border-radius: 50%;
         background-color: white;
       }
@@ -456,5 +518,31 @@ const CartWrapper = styled.div`
     font-weight: 700;
     display: block;
     margin: 40px auto;
+  }
+  .modal {
+    padding: 40px;
+    p {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 30px auto;
+    }
+    button {
+      width: 100px;
+      padding: 10px;
+      font-size: 20px;
+      border: 1px var(--sub-text-color) solid;
+      border-radius: 5px;
+      background-color: var(--main-color);
+      color: white;
+      border: none;
+      float: right;
+    }
+    img {
+      position: absolute;
+      top: -70px;
+      right: 20px;
+      width: 30px;
+      cursor: pointer;
+    }
   }
 `;
