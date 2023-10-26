@@ -58,6 +58,7 @@ const WrapperDiv = styled.nav`
 
 const WrapperNav = styled.nav`
   display: flex;
+  width: 1400px;
   margin: 0 auto;
   justify-content: space-between;
   padding: 26px 0px;

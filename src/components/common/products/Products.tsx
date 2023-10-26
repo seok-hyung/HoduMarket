@@ -40,19 +40,18 @@ const ProductWrapperDiv = styled.div`
   margin: 80px 320px;
 `;
 const ProductContainerUl = styled.ul`
+  max-width: 1400px;
   display: flex;
   flex-wrap: wrap;
-  gap: 80px;
+  gap: 70px;
   justify-content: center;
-  max-width: 1800px;
   margin: auto;
 `;
 
 const ProductLi = styled.li`
-  /* flex-basis: calc(33.33% - 60px); */
-  width: 450px;
-  min-width: 450px;
-  max-width: 450px;
+  flex-basis: calc(33.33% - 60px);
+  min-width: calc(33.33% - 60px);
+  max-width: calc(33.33% - 60px);
   margin-bottom: 80px;
   cursor: pointer;
   img {
