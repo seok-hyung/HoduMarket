@@ -440,7 +440,7 @@ const CartWrapper = styled.div`
       align-items: center;
       gap: 30px;
       .price {
-        color: rgb(235, 87, 87);
+        color: #eb5757;
         font-weight: 700;
       }
       .order-btn {
