@@ -53,6 +53,16 @@ const ProductDetail = () => {
     setIsInCart(false);
     postCartItemAPI(token, formdata);
   };
+
+  const handleBuyBtn = () => {
+    navigate('/payment', {
+      state: {
+        // 장바구니에서 주문서로 데이터를 배열로 보내기 떄문에 데이터 형태를 맞춰야 함
+        cartData: [productInfo],
+        quantityData: [{ product_id: productInfo.product_id, quantity: amount }],
+      },
+    });
+  };
   return (
     <>
       <Nav />
@@ -67,7 +77,7 @@ const ProductDetail = () => {
           </div>
 
           <DetailRightDiv>
-            <p className="info ">{productInfo.store_name}</p>
+            <p className="info">{productInfo.store_name}</p>
             <p className="name">{productInfo.product_name}</p>
             <p className="price">{intl.format(productInfo.price)}</p>
             <span>원</span>
@@ -87,7 +97,9 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className="detail-btn">
-              <button className="buy">바로 구매</button>
+              <button onClick={handleBuyBtn} className="buy">
+                바로 구매
+              </button>
               <button onClick={handleCartBtn} className="shop-bag">
                 장바구니
               </button>
@@ -128,7 +140,7 @@ export default ProductDetail;
 
 const DetailWrapperDiv = styled.div`
   margin: 80px auto;
-  width: fit-content;
+  width: 1400px;
   .product-img {
     width: 600px;
     height: 600px;
@@ -143,8 +155,7 @@ const DetailContainerDiv = styled.div`
 const DetailRightDiv = styled.div`
   margin-left: 50px;
   font-size: 28px;
-  width: 630px;
-  height: 600px;
+  width: 100%;
   .info {
     color: var(--sub-text-color);
     margin-bottom: 16px;
@@ -179,11 +190,9 @@ const DetailRightDiv = styled.div`
     img {
       cursor: pointer;
       width: 20px;
-      height: 20px;
     }
   }
   hr {
-    width: 630px;
     border: 2px solid #c4c4c4;
   }
 
@@ -191,7 +200,6 @@ const DetailRightDiv = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 30px 0 32px 0;
-    width: 630px;
 
     .price-info {
       line-height: 23px;
@@ -217,7 +225,10 @@ const DetailRightDiv = styled.div`
   }
   .detail-btn {
     display: flex;
-    height: 60px;
+    .buy,
+    .shop-bag {
+      padding: 20px 0;
+    }
     .buy {
       flex-basis: 66%;
       border: none;
