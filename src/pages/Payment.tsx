@@ -1,5 +1,4 @@
 import Nav from 'components/common/nav/Nav';
-import { type } from 'os';
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -10,9 +9,7 @@ const Payment = () => {
   const quantityDatas = location.state.quantityData;
   const [totalPrice, setTotalPrice] = useState(0);
   const [shippingFee, setShippingFee] = useState(0);
-  // quantityDatas.find((i: any) => console.log(typeof i.product_id));
-  // console.log(quantityDatas);
-  // console.log(cartDatas);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   useEffect(() => {
     const total = cartDatas?.reduce((acc: any, item: any) => {
       const quantityItem = quantityDatas.find(
@@ -193,20 +190,20 @@ const Payment = () => {
             <div className="pay-info-box">
               <div className="not-gray">
                 <div>
-                  <p>-상품금액</p>
+                  <p>- 상품금액</p>
                   <strong>{totalPrice - shippingFee}원</strong>
                 </div>
                 <div>
-                  <p>-할인금액</p>
+                  <p>- 할인금액</p>
                   <strong>0원</strong>
                 </div>
                 <div>
-                  <p>-배송비</p>
+                  <p>- 배송비</p>
                   <strong>{shippingFee}원</strong>
                 </div>
                 <hr />
                 <div className="price">
-                  <p>-결제금액</p>
+                  <p>- 결제금액</p>
                   <strong>{totalPrice}원</strong>
                 </div>
               </div>
@@ -214,11 +211,16 @@ const Payment = () => {
               <div className="gray">
                 <div className="info-confirm-box">
                   <label htmlFor="info-confirm">
-                    <input type="checkbox" name="info-confirm" id="info-confirm" />
+                    <input
+                      type="checkbox"
+                      name="info-confirm"
+                      id="info-confirm"
+                      onChange={() => setIsChecked(!isChecked)}
+                    />
                     <span>주문 내용을 확인하였으며 정보 제공 등에 동의합니다.</span>
                   </label>
+                  <PayBtn checked={isChecked}>결제하기</PayBtn>
                 </div>
-                <button>결제하기</button>
               </div>
             </div>
           </div>
@@ -244,18 +246,22 @@ const PaymentWrapper = styled.div`
   }
   .tab {
     display: flex;
-    font-size: 24px;
-    padding: 25px;
+    font-size: 28px;
+    padding: 20px 0;
+    text-align: center;
     background-color: #eee;
-    margin-bottom: 35px;
+    margin-bottom: 16px;
     .productInfo {
-      margin: auto 340px auto 240px;
+      width: 45%;
     }
     .discount {
-      margin-right: 180px;
+      width: 20%;
     }
     .shippingFee {
-      margin-right: 170px;
+      width: 20%;
+    }
+    .orderPrice {
+      width: 20%;
     }
   }
   .cartItemBox {
@@ -265,12 +271,13 @@ const PaymentWrapper = styled.div`
     border-bottom: 2px solid #c4c4c4;
     padding: 15px 0;
     img {
-      width: 100px;
+      width: 10%;
       border-radius: 10px;
     }
     .productInfoBox {
-      margin-left: 36px;
-      width: 40%;
+      margin-left: 30px;
+      width: calc(35% - 30px);
+
       .storeName {
         margin-bottom: 6px;
         color: var(--main-disabled-color);
@@ -282,24 +289,23 @@ const PaymentWrapper = styled.div`
         margin-bottom: 10px;
         font-weight: 400;
       }
-      .quantity {
-      }
     }
     .discount {
-      width: 10%;
+      width: 20%;
+
       display: flex;
       justify-content: center;
       align-items: center;
     }
     .shippingFee {
-      width: 25%;
+      width: 20%;
       font-size: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
     .price {
-      width: 15%;
+      width: 20%;
       font-weight: 700;
       font-size: 24px;
       display: flex;
@@ -311,6 +317,7 @@ const PaymentWrapper = styled.div`
     max-width: 1400px;
     font-size: 24px;
     text-align: end;
+    margin-top: 20px;
     span {
       font-size: 28px;
       color: #eb5757;
@@ -361,7 +368,7 @@ const PaymentWrapper = styled.div`
         margin-right: 10px;
         + button {
           width: 50%;
-          font-size: 16=8px;
+          font-size: 18px;
           background-color: var(--main-color);
           border-radius: 5px;
           border: none;
@@ -403,18 +410,17 @@ const PaymentWrapper = styled.div`
       font-size: 26px;
       line-height: 22px;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     .footer-left {
-      flex-basis: 55%;
+      flex-basis: 60%;
       margin-bottom: 400px;
       .pay-method {
         padding: 15px 10px;
         border-top: 2px solid #c4c4c4;
         border-bottom: 2px solid #c4c4c4;
         label {
-          width: 130px;
-          margin-right: 20px;
+          margin-right: 30px;
           input[type='checkbox'] {
             width: 1rem;
             height: 1rem;
@@ -437,7 +443,6 @@ const PaymentWrapper = styled.div`
       }
     }
     .footer-right {
-      width: 540px;
       margin: 0 auto;
       .pay-info-box {
         border: 3px solid var(--main-color);
@@ -465,14 +470,11 @@ const PaymentWrapper = styled.div`
         .gray {
           background-color: #f2f2f2;
           padding: 25px;
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          justify-content: center;
-          align-items: center;
           .info-confirm-box {
-            label {
-            }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             input[type='checkbox'] {
               width: 1rem;
               height: 1rem;
@@ -489,16 +491,17 @@ const PaymentWrapper = styled.div`
               border: none;
             }
           }
-          button {
-            width: 220px;
-            padding: 20px 30px;
-            border-radius: 10px;
-            background-color: #c4c4c4;
-            color: white;
-            font-size: 24px;
-          }
         }
       }
     }
   }
+`;
+const PayBtn = styled.button<{ checked: boolean }>`
+  width: 220px;
+  font-size: 24px;
+  padding: 20px 0;
+  color: white;
+  border-radius: 10px;
+  background-color: ${(props) => (props.checked ? '#32e732' : '#c4c4c4')};
+  cursor: ${(props) => (props.checked ? 'pointer' : 'default')};
 `;
