@@ -44,14 +44,16 @@ const Carousel = () => {
   return (
     <>
       <CarouselContainerDiv>
-        <LeftIconImg
+        <img
+          className="icon circle left"
           onClick={goToPrevSlide}
           src="/assets/icon-swiper-1.svg"
           alt="좌측 이동 화살표"
         />
         <div className="img-container">
           {imgList.map((img, index) => (
-            <CarouselImg
+            <img
+              className="carouselImg"
               key={img.id}
               src={img.url}
               alt="캐러셀 이미지"
@@ -62,7 +64,8 @@ const Carousel = () => {
             />
           ))}
         </div>
-        <RightIconImg
+        <img
+          className="icon circle right"
           onClick={goToNextSlide}
           src="/assets/icon-swiper-2.svg"
           alt="우측 이동 화살표"
@@ -75,39 +78,48 @@ const Carousel = () => {
 export default Carousel;
 
 const CarouselContainerDiv = styled.div`
-  margin-top: 3px;
+  margin-top: 7px;
   position: relative;
   display: flex;
-  height: 500px;
+  height: 600px;
   background: #f2f2f2;
+  .icon {
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  }
+  .icon:hover {
+    background-color: white;
+  }
+  .icon:active {
+    background-color: #eee;
+  }
+  .circle {
+    border-radius: 50%;
+    background-color: #c4c4c4;
+  }
+  .icon.left {
+    left: 80px;
+  }
+  .icon.right {
+    right: 80px;
+  }
 
   .img-container {
     position: relative;
-    margin: 0 auto;
-    width: 70%;
+    width: 100vw;
     overflow: hidden;
+    .carouselImg {
+      position: absolute;
+    }
   }
 `;
-const CarouselImg = styled.img`
-  position: absolute; //추가
-  width: 100%;
-`;
-const LeftIconImg = styled.img`
-  position: absolute;
-  z-index: 10;
-  width: 15%;
-  top: 50%;
-  left: 0;
-  transform: translate(0, -50%);
-  object-fit: contain;
-  cursor: pointer;
-`;
-const RightIconImg = styled.img`
-  position: absolute;
-  width: 15%;
-  top: 50%;
-  right: 0;
-  transform: translate(0, -50%);
-  object-fit: contain;
-  cursor: pointer;
+const ArrowIcon = styled.img`
+  width: 110px;
+  height: 110px;
 `;
