@@ -1,6 +1,8 @@
 import React from 'react';
 import { InputProps } from 'model/market';
-import * as S from './InputBox.style';
+import { ErrorMsgPProps } from 'model/market';
+import styled from 'styled-components';
+
 /* InputBox 사용 명세
 label : label로 쓰일 텍스트입니다.
 id : input의 id값입니다.
@@ -36,8 +38,8 @@ const InputBox = ({
 }: InputProps) => {
   return (
     <>
-      <S.BoxLabel htmlFor={id}>{label}</S.BoxLabel>
-      <S.BoxInput
+      <BoxLabel htmlFor={id}>{label}</BoxLabel>
+      <BoxInput
         id={id}
         name={name}
         type={type}
@@ -50,9 +52,42 @@ const InputBox = ({
         value={value}
         required={required}
       />
-      <S.ErrorMsgP show={show}>{errorMessage}</S.ErrorMsgP>
+      <ErrorMsgP show={show}>{errorMessage}</ErrorMsgP>
     </>
   );
 };
 
 export default InputBox;
+
+const BoxLabel = styled.label`
+  min-width: fit-content;
+  display: block;
+  color: var(--sub-text-color);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 16px;
+  margin-bottom: 15px;
+`;
+const BoxInput = styled.input`
+  width: 100%;
+  color: var(--main-text-color);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 14px;
+  outline: none;
+  border: 1px solid var(--sub-text-color);
+  border-radius: 5px;
+  padding: 15px;
+
+  &::placeholder {
+    color: var(--main-disabled-color);
+  }
+`;
+const ErrorMsgP = styled.p<ErrorMsgPProps>`
+  font-size: 12px;
+  color: #eb5757;
+  font-weight: 500;
+  line-height: 14px;
+  margin: 10px 0;
+  display: ${(props) => (props.show === 'on' ? 'block' : 'none')};
+`;
