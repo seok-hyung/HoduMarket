@@ -46,12 +46,14 @@ const ProductDetail = () => {
       // 현재 상품이 장바구니에 있는지 확인(상품의 고유 id로 확인)
       if (res.results.some((item: any) => item.product_id === productInfo.product_id)) {
         setIsInCart(true);
+        postCartItemAPI(token, formdata);
         openModal();
-        return;
+      } else {
+        // 장바구니에 현재 상품이 없을때만 실행
+        setIsInCart(false);
+        postCartItemAPI(token, formdata);
       }
     });
-    setIsInCart(false);
-    postCartItemAPI(token, formdata);
   };
 
   const handleBuyBtn = () => {
@@ -68,7 +70,7 @@ const ProductDetail = () => {
       <Nav />
       <DetailWrapperDiv>
         <DetailContainerDiv>
-          <div>
+          <div className="detail-left-div">
             <img
               className="product-img"
               src={`${productInfo.image}`}
@@ -76,11 +78,13 @@ const ProductDetail = () => {
             />
           </div>
 
-          <DetailRightDiv>
+          <div className="detail-right-div">
             <p className="info">{productInfo.store_name}</p>
             <p className="name">{productInfo.product_name}</p>
-            <p className="price">{intl.format(productInfo.price)}</p>
-            <span>원</span>
+            <p className="price">
+              {intl.format(productInfo.price)}
+              <span>원</span>
+            </p>
             <p className="deliveryInfo">택배 배송 / 무료배송</p>
             <hr />
             <div className="amount">
@@ -104,7 +108,7 @@ const ProductDetail = () => {
                 장바구니
               </button>
             </div>
-          </DetailRightDiv>
+          </div>
         </DetailContainerDiv>
         <TabContent />
       </DetailWrapperDiv>
@@ -140,111 +144,118 @@ export default ProductDetail;
 
 const DetailWrapperDiv = styled.div`
   margin: 80px auto;
-  width: 1400px;
-  .product-img {
-    width: 600px;
-    height: 600px;
-  }
+  max-width: 65vw;
 `;
 
 const DetailContainerDiv = styled.div`
   display: flex;
-
   margin-bottom: 140px;
-`;
-const DetailRightDiv = styled.div`
-  margin-left: 50px;
-  font-size: 28px;
-  width: 100%;
-  .info {
-    color: var(--sub-text-color);
-    margin-bottom: 16px;
-    font-size: 24px;
-  }
-  .name {
-    font-size: 36px;
-    line-height: 45px;
-    margin-bottom: 20px;
-  }
-  .price {
-    display: inline-block;
-    font-size: 36px;
-    margin-bottom: 138px;
-    font-weight: 700;
-    line-height: 45px;
-  }
-  .deliveryInfo {
-    margin-bottom: 20px;
-    font-size: 20px;
-  }
-  .amount {
-    width: 150px;
-    height: 50px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border: 3px solid #c4c4c4;
-    border-radius: 5px;
-    margin: 30px 0;
-
+  min-width: 65vw;
+  .detail-left-div {
+    min-width: 50%;
+    max-width: 50%;
+    margin-right: 50px;
     img {
-      cursor: pointer;
-      width: 20px;
+      object-fit: cover;
     }
   }
-  hr {
-    border: 2px solid #c4c4c4;
-  }
 
-  .total-price {
+  .detail-right-div {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    margin: 30px 0 32px 0;
-
-    .price-info {
-      line-height: 23px;
-      min-width: fit-content;
+    min-width: calc(50% - 50px);
+    font-size: 28px;
+    .info {
+      color: var(--sub-text-color);
+      margin-bottom: 16px;
+      font-size: 24px;
     }
-    .total-amount {
-      font-weight: 400;
-      line-height: 23px;
-      min-width: fit-content;
-    }
-    .total-amount-span {
-      color: var(--main-color);
-      font-style: normal;
-      font-weight: 700;
-    }
-    .total-price-span {
-      color: var(--main-color);
-      font-style: normal;
-      font-weight: 700;
+    .name {
       font-size: 36px;
-      margin-left: 5px;
+      line-height: 45px;
+      margin-bottom: 20px;
     }
-  }
-  .detail-btn {
-    display: flex;
-    .buy,
-    .shop-bag {
-      padding: 20px 0;
+    .price {
+      display: inline-block;
+      font-size: 36px;
+      margin-bottom: 138px;
+      font-weight: 700;
+      line-height: 45px;
     }
-    .buy {
-      flex-basis: 66%;
-      border: none;
-      background: var(--main-color);
-      border-radius: 5px;
-      color: white;
+    .deliveryInfo {
+      margin-bottom: 20px;
       font-size: 20px;
-      margin-right: 14px;
     }
-    .shop-bag {
-      flex-basis: 33%;
-      background: #767676;
+    .amount {
+      width: 150px;
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border: 3px solid #c4c4c4;
       border-radius: 5px;
-      color: white;
-      font-size: 20px;
-      border: none;
+      margin: 30px 0;
+
+      img {
+        cursor: pointer;
+        width: 20px;
+      }
+    }
+    hr {
+      border: 2px solid #c4c4c4;
+    }
+
+    .total-price {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0 32px 0;
+
+      .price-info {
+        line-height: 23px;
+        min-width: fit-content;
+      }
+      .total-amount {
+        font-weight: 400;
+        line-height: 23px;
+        min-width: fit-content;
+      }
+      .total-amount-span {
+        color: var(--main-color);
+        font-style: normal;
+        font-weight: 700;
+      }
+      .total-price-span {
+        color: var(--main-color);
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        margin-left: 5px;
+      }
+    }
+    .detail-btn {
+      display: flex;
+      .buy,
+      .shop-bag {
+        padding: 20px 0;
+      }
+      .buy {
+        flex-basis: 66%;
+        border: none;
+        background: var(--main-color);
+        border-radius: 5px;
+        color: white;
+        font-size: 20px;
+        margin-right: 14px;
+      }
+      .shop-bag {
+        flex-basis: 33%;
+        background: #767676;
+        border-radius: 5px;
+        color: white;
+        font-size: 20px;
+        border: none;
+      }
     }
   }
 `;
