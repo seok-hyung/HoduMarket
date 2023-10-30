@@ -57,12 +57,11 @@ const WrapperDiv = styled.nav`
 `;
 
 const WrapperNav = styled.nav`
+  max-width: 65vw;
   display: flex;
-  width: 1400px;
   margin: 0 auto;
   justify-content: space-between;
   padding: 26px 0px;
-  max-width: 1500px;
 `;
 
 const LogoDiv = styled.div`

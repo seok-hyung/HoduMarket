@@ -37,10 +37,11 @@ const TabContent = () => {
 export default TabContent;
 
 const TabButtonsDiv = styled.div`
-  width: 1400px;
+  max-width: 65vw;
   button {
     background-color: white;
     width: 25%;
+    min-width: fit-content;
     font-size: 24px;
     margin-bottom: 100px;
     border-bottom: 12px solid #e0e0e0;

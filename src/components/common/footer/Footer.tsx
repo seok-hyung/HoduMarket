@@ -62,7 +62,7 @@ export default Footer;
 const WrapperFooter = styled.footer`
   background-color: #f2f2f2;
   .container-box {
-    max-width: 1400px;
+    max-width: 65vw;
     padding: 40px 0;
     font-size: 14px;
     font-weight: 400;

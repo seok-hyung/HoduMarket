@@ -37,14 +37,14 @@ const Products = ({ products }: ProductsProps) => {
 export default Products;
 
 const ProductWrapperDiv = styled.div`
-  margin: 80px 320px;
+  margin-top: 80px;
 `;
 const ProductContainerUl = styled.ul`
-  max-width: 1400px;
+  max-width: 65vw;
   display: flex;
   flex-wrap: wrap;
   gap: 70px;
-  justify-content: center;
+  justify-content: space-between;
   margin: auto;
 `;
 
