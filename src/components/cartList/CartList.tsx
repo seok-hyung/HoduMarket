@@ -135,6 +135,7 @@ const CartList = () => {
     try {
       await deleteCartItemAPI(token, cartItem.cart_item_id);
       setCartItemList((prev) => prev.filter((item) => item.product_id !== productId));
+      setCartItemDetails((prev) => prev.filter((item) => item.product_id !== productId));
     } catch (error) {
       console.error('상품 삭제 중 오류가 발생했습니다.', error);
     }
