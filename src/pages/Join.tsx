@@ -78,28 +78,22 @@ const Join = () => {
   };
   return (
     <WrapperDiv>
-      {/* Logo Image */}
       <img src="/assets/Logo-hodu.png" alt="Logo" />
       <LoginContainerDiv>
-        {/* Member Type Tabs */}
         <MemberType
           buyerBtnText="구매회원가입"
           sellerBtnText="판매회원가입"
           handleTypeChange={handleTypeChange}
         />
-
-        {/* Login Form */}
         <LoginForm onSubmit={onSubmit}>
           {formType === 'BUYER' ? (
             <BuyerJoinForm form={form} setForm={setForm} />
           ) : (
             <SellerJoinForm form={form} setForm={setForm} />
           )}
-          {/* Submit Button */}
           <button className="login-btn">회원가입</button>
         </LoginForm>
 
-        {/* Links to Registration and Password Recovery */}
         <JoinGroupDiv>
           <a href="/join">회원가입</a>
           <a href="/find-password">비밀번호 찾기</a>
@@ -137,7 +131,21 @@ const LoginForm = styled.form`
   padding-bottom: 0;
   border: 1px solid #c4c4c4;
   border-top: 0;
-
+  .idBox,
+  .businessNumberBox {
+    input {
+      width: 70%;
+      margin-right: 12px;
+    }
+    button {
+      background-color: var(--main-color);
+      width: calc(30% - 12px);
+      padding: 15px;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+    }
+  }
   .buyer-form,
   .seller-form {
     > div,
@@ -182,7 +190,8 @@ const LoginForm = styled.form`
   }
   .login-btn {
     background-color: var(--main-color);
-    margin: 36px 0;
+    width: 100%;
+    margin: 24px 0;
     color: white;
     font-size: 18px;
     font-weight: 700;

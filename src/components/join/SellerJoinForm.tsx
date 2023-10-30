@@ -8,15 +8,18 @@ const SellerJoinForm = ({ form, setForm }: SellerJoinFormProps) => {
   };
   return (
     <div className="seller-form">
-      <InputBox
-        label="아이디"
-        id="id"
-        name="id"
-        type="text"
-        value={form.id}
-        onChange={handleInputChange}
-        required={true}
-      />
+      <div className="idBox">
+        <InputBox
+          label="아이디"
+          id="id"
+          name="id"
+          type="text"
+          value={form.id}
+          onChange={handleInputChange}
+          required={true}
+        />
+        <button>중복확인</button>
+      </div>
       <InputBox
         label="비밀번호"
         name="password"
@@ -77,14 +80,17 @@ const SellerJoinForm = ({ form, setForm }: SellerJoinFormProps) => {
           required={true}
         />
       </div>
-      <InputBox
-        label="사업자 등록번호"
-        name="businessNumber"
-        id="businessNumber"
-        type="text"
-        value={form.businessNumber}
-        onChange={handleInputChange}
-      />
+      <div className="businessNumberBox">
+        <InputBox
+          label="사업자 등록번호"
+          name="businessNumber"
+          id="businessNumber"
+          type="text"
+          value={form.businessNumber}
+          onChange={handleInputChange}
+        />
+        <button>인증</button>
+      </div>
       <InputBox
         label="스토어 이름"
         name="storeName"

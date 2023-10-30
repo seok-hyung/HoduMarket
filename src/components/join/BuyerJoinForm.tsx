@@ -1,6 +1,7 @@
 import InputBox from 'components/common/inputBox/InputBox';
 import { BuyerJoinFormProps, PostBuyerForm } from 'model/market';
 import React, { ChangeEvent, useState, FormEvent } from 'react';
+import styled from 'styled-components';
 
 const BuyerJoinForm = ({ form, setForm }: BuyerJoinFormProps) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -8,15 +9,18 @@ const BuyerJoinForm = ({ form, setForm }: BuyerJoinFormProps) => {
   };
   return (
     <div className="buyer-form">
-      <InputBox
-        label="아이디"
-        id="id"
-        name="id"
-        type="text"
-        value={form.id}
-        onChange={handleInputChange}
-        required={true}
-      />
+      <div className="idBox">
+        <InputBox
+          label="아이디"
+          id="id"
+          name="id"
+          type="text"
+          value={form.id}
+          onChange={handleInputChange}
+          required={true}
+        />
+        <button>중복확인</button>
+      </div>
       <InputBox
         label="비밀번호"
         name="password"
