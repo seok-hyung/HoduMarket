@@ -7,6 +7,7 @@ import Join from 'pages/Join';
 import Cart from 'pages/Cart';
 import Page404 from 'pages/Page404';
 import Payment from 'pages/Payment';
+import SellerCenter from 'pages/SellerCenter';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/cart" element={<Cart />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/page404" element={<Page404 />} />
+      <Route path="/seller-center" element={<SellerCenter />} />
     </Routes>
   );
 }
