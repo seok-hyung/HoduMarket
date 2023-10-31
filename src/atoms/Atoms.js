@@ -15,6 +15,12 @@ export const isLoginState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const userTypeState = atom({
+  key: 'userTypeState',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const accountIdState = atom({
   key: 'accountIdState',
   default: '',
