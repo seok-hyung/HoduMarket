@@ -23,9 +23,9 @@ const ModalUl = styled.ul`
   /* box-sizing: border-box; */
   position: absolute;
   background-color: #ffff;
-  top: 120px;
-  right: -30px;
   width: 200px;
+  top: 120px;
+  right: -40px;
   z-index: 10;
   font-size: 22px;
   border-radius: 10px;
