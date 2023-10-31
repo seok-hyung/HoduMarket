@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import { imgList, Image } from './ImgList';
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const images: Image[] = imgList;
 
   const goToNextSlide = () => {
-    const nextIndex = (currentIndex + 1) % imgList.length;
+    const nextIndex = (currentIndex + 1) % images.length;
     setCurrentIndex(nextIndex);
   };
   const goToPrevSlide = () => {
-    const prevIndex = (currentIndex - 1 + imgList.length) % imgList.length;
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
     setCurrentIndex(prevIndex);
   };
 
@@ -19,57 +21,36 @@ const Carousel = () => {
     return () => clearInterval(slideShow);
   }, [currentIndex]);
 
-  const imgList = [
-    {
-      id: 1,
-      url: 'https://images.unsplash.com/photo-1587731556938-38755b4803a6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2978&q=80',
-    },
-    {
-      id: 2,
-      url: 'https://images.unsplash.com/photo-1508272849285-ec94ff3855e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80',
-    },
-    {
-      id: 3,
-      url: 'https://images.unsplash.com/photo-1543622748-5ee7237e8565?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80',
-    },
-    {
-      id: 4,
-      url: 'https://images.unsplash.com/photo-1603917745459-0078218e7c5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80',
-    },
-    {
-      id: 5,
-      url: 'https://images.unsplash.com/photo-1680059439144-aefe88d4c858?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80',
-    },
-  ];
   return (
     <>
       <CarouselContainerDiv>
-        <img
-          className="icon circle left"
-          onClick={goToPrevSlide}
-          src="/assets/icon-swiper-1.svg"
-          alt="좌측 이동 화살표"
-        />
+        <div className="circle left">
+          <img
+            className="icon"
+            onClick={goToPrevSlide}
+            src="/assets/icon-swiper-1.png"
+            alt="좌측 이동 화살표"
+          />
+        </div>
         <div className="img-container">
-          {imgList.map((img, index) => (
-            <img
-              className="carouselImg"
+          {images.map((img, index) => (
+            <CarouselImg
+              index={index}
+              currentIndex={currentIndex}
               key={img.id}
               src={img.url}
               alt="캐러셀 이미지"
-              style={{
-                transform: `translateX(${(index - currentIndex) * 100}%)`,
-                transition: 'transform ease-out .5s',
-              }}
             />
           ))}
         </div>
-        <img
-          className="icon circle right"
-          onClick={goToNextSlide}
-          src="/assets/icon-swiper-2.svg"
-          alt="우측 이동 화살표"
-        />
+        <div className="circle right">
+          <img
+            className="icon"
+            onClick={goToNextSlide}
+            src="/assets/icon-swiper-2.png"
+            alt="우측 이동 화살표"
+          />
+        </div>
       </CarouselContainerDiv>
     </>
   );
@@ -82,31 +63,35 @@ const CarouselContainerDiv = styled.div`
   position: relative;
   display: flex;
   height: 600px;
-  background: #f2f2f2;
-  .icon {
-    width: 110px;
-    height: 110px;
+  .circle {
     position: absolute;
     z-index: 10;
     top: 50%;
-    transform: translate(0, -50%);
+    transform: translateY(-50%);
     cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  }
-  .icon:hover {
-    background-color: white;
-  }
-  .icon:active {
-    background-color: #eee;
-  }
-  .circle {
+    width: 115px;
+    height: 115px;
     border-radius: 50%;
     background-color: #c4c4c4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    .icon {
+      min-width: 150px;
+      min-height: 150px;
+    }
   }
-  .icon.left {
+  .circle:hover {
+    background-color: white;
+  }
+  .circle:active {
+    background-color: #eee;
+  }
+  .circle.left {
     left: 80px;
   }
-  .icon.right {
+  .circle.right {
     right: 80px;
   }
 
@@ -115,11 +100,17 @@ const CarouselContainerDiv = styled.div`
     width: 100vw;
     overflow: hidden;
     .carouselImg {
-      position: absolute;
     }
   }
 `;
-const ArrowIcon = styled.img`
-  width: 110px;
-  height: 110px;
+
+type CarouselImgProps = {
+  index: number;
+  currentIndex: number;
+};
+
+const CarouselImg = styled.img<CarouselImgProps>`
+  position: absolute;
+  transform: ${(props) => `translateX(${(props.index - props.currentIndex) * 100}%)`};
+  transition: transform ease-out 0.5s;
 `;
