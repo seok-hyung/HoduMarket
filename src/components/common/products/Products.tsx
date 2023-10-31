@@ -49,10 +49,9 @@ const ProductContainerUl = styled.ul`
 `;
 
 const ProductLi = styled.li`
-  flex-basis: calc(33.33% - 60px);
+  width: calc(33.33% - 60px);
   min-width: calc(33.33% - 60px);
   max-width: calc(33.33% - 60px);
-  margin-bottom: 80px;
   cursor: pointer;
   img {
     width: 100%;
