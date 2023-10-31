@@ -8,12 +8,13 @@ import { useMutation } from 'react-query';
 import { LoginDataForm } from 'model/market';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { userTokenState } from 'atoms/Atoms';
+import { userTokenState, userTypeState } from 'atoms/Atoms';
 import { loginAPI } from 'api/login/loginAPI';
 
 const Login = () => {
   const navigate = useNavigate();
   const setUserToken = useSetRecoilState(userTokenState);
+  const setUserType = useSetRecoilState(userTypeState);
   const [loginState, setLoginState] = useState({
     id: '',
     password: '',
@@ -31,6 +32,7 @@ const Login = () => {
     // variables : req(postData 객체)
     onSuccess(data, variables, context) {
       setUserToken(data.token);
+      setUserType(data.user_type);
       console.log(data);
       navigate('/');
     },
@@ -49,17 +51,13 @@ const Login = () => {
   };
   return (
     <WrapperDiv>
-      {/* Logo Image */}
       <img src="/assets/Logo-hodu.png" alt="Logo" />
       <LoginContainerDiv>
-        {/* Member Type Tabs */}
         <MemberType
           buyerBtnText="구매회원 로그인"
           sellerBtnText="판매회원 로그인"
           handleTypeChange={handleTypeChange}
         />
-
-        {/* Login Form */}
         <LoginForm onSubmit={onSubmit}>
           <InputBox
             label="아이디"
@@ -79,12 +77,8 @@ const Login = () => {
             onChange={handleInputChange}
             required={true}
           />
-
-          {/* Submit Button */}
           <button className="login-btn">로그인</button>
         </LoginForm>
-
-        {/* Links to Registration and Password Recovery */}
         <JoinGroupDiv>
           <a href="/join">회원가입</a>
           <a href="/find-password">비밀번호 찾기</a>
