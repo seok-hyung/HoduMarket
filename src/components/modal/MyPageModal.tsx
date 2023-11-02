@@ -20,7 +20,6 @@ const MyPageModal = () => {
   );
 };
 const ModalUl = styled.ul`
-  /* box-sizing: border-box; */
   position: absolute;
   background-color: #ffff;
   width: 200px;

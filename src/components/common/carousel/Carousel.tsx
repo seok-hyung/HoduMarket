@@ -62,7 +62,7 @@ const CarouselContainerDiv = styled.div`
   margin-top: 7px;
   position: relative;
   display: flex;
-  height: 600px;
+  height: 650px;
   .circle {
     position: absolute;
     z-index: 10;
@@ -72,10 +72,11 @@ const CarouselContainerDiv = styled.div`
     width: 115px;
     height: 115px;
     border-radius: 50%;
-    background-color: #c4c4c4;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 3px solid #e9e9ec;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     .icon {
       min-width: 150px;
@@ -83,10 +84,10 @@ const CarouselContainerDiv = styled.div`
     }
   }
   .circle:hover {
-    background-color: white;
+    background-color: #f0f0f3;
   }
   .circle:active {
-    background-color: #eee;
+    background-color: white;
   }
   .circle.left {
     left: 80px;
@@ -94,13 +95,10 @@ const CarouselContainerDiv = styled.div`
   .circle.right {
     right: 80px;
   }
-
   .img-container {
     position: relative;
     width: 100vw;
     overflow: hidden;
-    .carouselImg {
-    }
   }
 `;
 
@@ -111,6 +109,8 @@ type CarouselImgProps = {
 
 const CarouselImg = styled.img<CarouselImgProps>`
   position: absolute;
+  object-fit: cover;
+
   transform: ${(props) => `translateX(${(props.index - props.currentIndex) * 100}%)`};
   transition: transform ease-out 0.5s;
 `;

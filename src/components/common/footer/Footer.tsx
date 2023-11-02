@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Footer = () => {
+type FooterProps = {
+  isSellerCenter?: boolean;
+};
+
+const Footer = ({ isSellerCenter }: FooterProps) => {
   return (
-    <WrapperFooter>
-      <div className="container-box">
+    <WrapperFooter isSellerCenter={isSellerCenter}>
+      <div className="container-box sellerCenter">
         <LinkSection>
           <ul className="link-ul">
             <li>
@@ -59,10 +63,12 @@ const Footer = () => {
 };
 export default Footer;
 
-const WrapperFooter = styled.footer`
+const WrapperFooter = styled.footer<FooterProps>`
   background-color: #f2f2f2;
+  min-height: 300px;
   .container-box {
-    max-width: 65vw;
+    /* max-width: 65vw; */
+    max-width: ${(props) => (props.isSellerCenter ? '90vw' : '70vw')};
     padding: 40px 0;
     font-size: 14px;
     font-weight: 400;

@@ -22,47 +22,64 @@ const Nav = () => {
   }, []);
 
   const renderMenuItems = () => {
-    if (userType === 'BUYER') {
+    if (!userToken) {
       return (
-        <MenuItem
-          onClick={() => navigate('/cart')}
-          src="/assets/icon-shopping-cart.png"
-          alt="장바구니 이미지"
-          text="장바구니"
-        />
+        <>
+          <MenuItem
+            onClick={() => navigate('/cart')}
+            src="/assets/icon-shopping-cart.svg"
+            alt="장바구니 이미지"
+            text="장바구니"
+          />
+          <MenuItem
+            onClick={() => navigate('/login')}
+            src="/assets/icon-user.svg"
+            alt="유저 이미지"
+            text="로그인"
+          />
+        </>
       );
     }
-    if (userToken) {
+
+    if (userType === 'BUYER') {
       return (
-        <li className="listLi mypage" onClick={() => setModalOpen(!isModalOpen)}>
-          <img
-            className="navImg"
-            src="/assets/icon-user.svg"
-            alt="로그인된 유저 이미지"
+        <>
+          <MenuItem
+            onClick={() => navigate('/cart')}
+            src="/assets/icon-shopping-cart.svg"
+            alt="장바구니 이미지"
+            text="장바구니"
           />
-          <p>마이페이지</p>
-          {isModalOpen && <MyPageModal />}
-        </li>
+          <li className="listLi mypage" onClick={() => setModalOpen(!isModalOpen)}>
+            <img
+              className="navImg"
+              src="/assets/icon-user.svg"
+              alt="로그인된 유저 이미지"
+            />
+            <p>마이페이지</p>
+            {isModalOpen && <MyPageModal />}
+          </li>
+        </>
       );
     }
 
     if (userType === 'SELLER') {
       return (
-        <li className="shoppingBagLi" onClick={() => navigate('/seller-center')}>
-          <img src="/assets/icon-shopping-bag.png" alt="판매자 센터 이미지" />
-          <p>판매자센터</p>
-        </li>
-      );
-    }
-
-    if (!userToken) {
-      return (
-        <MenuItem
-          onClick={() => navigate('/login')}
-          src="/assets/icon-user.svg"
-          alt="유저 이미지"
-          text="로그인"
-        />
+        <>
+          <li className="listLi mypage" onClick={() => setModalOpen(!isModalOpen)}>
+            <img
+              className="navImg"
+              src="/assets/icon-user.svg"
+              alt="로그인된 유저 이미지"
+            />
+            <p>마이페이지</p>
+            {isModalOpen && <MyPageModal />}
+          </li>
+          <li className="shoppingBagLi" onClick={() => navigate('/seller-center')}>
+            <img src="/assets/icon-shopping-bag.png" alt="판매자 센터 이미지" />
+            <p>판매자센터</p>
+          </li>
+        </>
       );
     }
   };
@@ -92,16 +109,15 @@ export default Nav;
 const WrapperDiv = styled.nav`
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
   .wrapperNav {
-    max-width: 65vw;
+    max-width: 70vw;
     display: flex;
     margin: 0 auto;
     justify-content: space-between;
     padding: 26px 0px;
 
     .logoBoxDiv {
-      width: 700px;
       display: flex;
-      gap: 50px;
+      gap: 40px;
       align-items: center;
       position: relative;
 
@@ -110,11 +126,10 @@ const WrapperDiv = styled.nav`
         object-fit: contain;
       }
       .searchInput {
-        width: 100%;
-        height: 100%;
-        padding: 0 30px;
+        width: 600px;
+        padding: 20px 30px;
         outline: none;
-        font-size: 25px;
+        font-size: 28px;
         display: flex;
         background: #ffffff;
         border: 4px solid var(--main-color);
@@ -133,7 +148,7 @@ const WrapperDiv = styled.nav`
       justify-content: flex-end;
       width: 100%;
       max-width: 450px;
-      gap: 15px;
+      gap: 30px;
       position: relative;
     }
     .listLi {

@@ -9,27 +9,29 @@ const Products = ({ products }: ProductsProps) => {
   const navigate = useNavigate();
   return (
     <ProductWrapperDiv>
-      <ProductContainerUl>
+      <ul className="productsUl">
         {products.map((item) => {
           const productId = item.product_id; // 클릭한 상품의 id값
           return (
-            <ProductLi
+            <li
               key={productId}
               onClick={() => {
                 navigate(`/detail/${productId}`, { state: { item } });
               }}
             >
               <img src={`${item.image}`} alt="상품 이미지" />
-              <p className="store-name-p">{item.store_name}</p>
-              <h2 className="product-name-h2">{item.product_name}</h2>
-              <p className="price-p">
-                {intl.format(item.price)}
-                <span className="won">원</span>
-              </p>
-            </ProductLi>
+              <div className="productInfo">
+                <p className="store-name-p">{item.store_name}</p>
+                <h2 className="product-name-h2">{item.product_name}</h2>
+                <p className="price-p">
+                  {intl.format(item.price)}
+                  <span className="won">원</span>
+                </p>
+              </div>
+            </li>
           );
         })}
-      </ProductContainerUl>
+      </ul>
     </ProductWrapperDiv>
   );
 };
@@ -37,43 +39,60 @@ const Products = ({ products }: ProductsProps) => {
 export default Products;
 
 const ProductWrapperDiv = styled.div`
-  margin-top: 80px;
-`;
-const ProductContainerUl = styled.ul`
-  max-width: 65vw;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 70px;
-  justify-content: space-between;
-  margin: auto;
-`;
+  margin-top: 100px;
+  .productsUl {
+    max-width: 70vw;
+    display: flex;
+    gap: 70px;
+    justify-content: space-between;
+    margin: auto;
+    flex-wrap: wrap;
 
-const ProductLi = styled.li`
-  width: calc(33.33% - 60px);
-  min-width: calc(33.33% - 60px);
-  max-width: calc(33.33% - 60px);
-  cursor: pointer;
-  img {
-    width: 100%;
-    height: 320px;
-  }
-  .store-name-p {
-    color: var(--main-disabled-color);
-    font-size: 28px;
-    margin: 16px 0 10px 0;
-  }
-  .product-name-h2 {
-    font-size: 34px;
-    color: var(--main-text-color);
-    margin-bottom: 10px;
-  }
-  .price-p {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--main-text-color);
-    .won {
-      font-weight: normal;
-      font-size: 16px;
+    li {
+      flex-basis: calc(33% - 60px);
+      border-radius: 10px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      cursor: pointer;
+      img {
+        border-radius: 10px;
+        width: 100%;
+        height: auto; // 높이를 자동으로 조절하도록 변경했습니다.
+        object-fit: cover; // 이미지가 컨테이너를 채우도록 설정했습니다.
+        aspect-ratio: 1;
+        /* border: 1px solid rgb(196, 196, 196); */
+      }
+      .productInfo {
+        padding: 30px;
+        .store-name-p {
+          color: var(--main-disabled-color);
+          font-size: 28px;
+          margin-bottom: 16px;
+        }
+        .product-name-h2 {
+          font-size: 34px;
+          color: var(--main-text-color);
+          margin-bottom: 14px;
+        }
+        .price-p {
+          font-size: 32px;
+          font-weight: bold;
+          color: var(--main-text-color);
+          .won {
+            font-weight: normal;
+            font-size: 16px;
+          }
+        }
+      }
+
+      @media (max-width: 1600px) {
+        // 화면 너비가 900px 이하일 때 한 줄에 두 개의 상품이 나타나도록 설정합니다.
+        flex-basis: calc(50% - 60px);
+      }
+
+      @media (max-width: 1000px) {
+        // 화면 너비가 600px 이하일 때 한 줄에 하나의 상품이 나타나도록 설정합니다.
+        flex-basis: 100%;
+      }
     }
   }
 `;
