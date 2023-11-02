@@ -8,6 +8,8 @@ import Cart from 'pages/Cart';
 import Page404 from 'pages/Page404';
 import Payment from 'pages/Payment';
 import SellerCenter from 'pages/SellerCenter';
+import UploadProduct from 'pages/UploadProduct';
+import EditProduct from 'pages/EditProduct';
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
       <Route path="/payment" element={<Payment />} />
       <Route path="/page404" element={<Page404 />} />
       <Route path="/seller-center" element={<SellerCenter />} />
+      <Route path="/seller-center/upload" element={<UploadProduct />} />
+      <Route path="/seller-center/edit" element={<EditProduct />} />
+      <Route path="*" element={<Page404 />} />
     </Routes>
   );
 }
