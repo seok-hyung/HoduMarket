@@ -1,11 +1,10 @@
 import { apiURL } from 'api/apiURL';
-import { PutCartItemForm } from 'model/market';
 
-export async function putCartItemAPI(
+export const putCartItemAPI = async (
   token: string,
   cart_item_id: number | string | undefined,
   formData: PutCartItemForm,
-) {
+) => {
   try {
     const res = await fetch(`${apiURL}/cart/${cart_item_id}/`, {
       method: 'PUT',
@@ -16,7 +15,6 @@ export async function putCartItemAPI(
       body: JSON.stringify(formData),
     });
     if (!res.ok) {
-      // Not a successful HTTP response, log the text body
       const text = await res.text();
       console.error('Server error:', text);
 
@@ -27,4 +25,9 @@ export async function putCartItemAPI(
   } catch (error) {
     console.log('장바구니 상품 업데이트하는데 실패했습니다.', error);
   }
-}
+};
+type PutCartItemForm = {
+  product_id: number;
+  quantity: number;
+  is_active: boolean;
+};

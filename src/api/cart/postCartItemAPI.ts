@@ -1,5 +1,4 @@
 import { apiURL } from 'api/apiURL';
-import { PostCartItemForm } from 'model/market';
 
 export const postCartItemAPI = async (token: string, formData: PostCartItemForm) => {
   const res = await fetch(`${apiURL}/cart/`, {
@@ -18,6 +17,12 @@ export const postCartItemAPI = async (token: string, formData: PostCartItemForm)
   console.log(data);
 
   return data;
+};
+
+type PostCartItemForm = {
+  product_id: number;
+  quantity: number;
+  check: boolean; // 장바구니에 해당 제품이 있는지 확인합니다. False일 때는 확인용 모달창을 띄워야하고, True일 때 카트에 담을 수 있습니다
 };
 
 //? res
