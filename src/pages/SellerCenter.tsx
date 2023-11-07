@@ -66,7 +66,14 @@ const SellerCenter = () => {
                 </div>
                 <p className="price">17,500원</p>
                 <div className="editBtnDiv">
-                  <button className="editBtn">수정</button>
+                  <button
+                    className="editBtn"
+                    onClick={() => {
+                      navigate(`/seller-center/edit`);
+                    }}
+                  >
+                    수정
+                  </button>
                 </div>
                 <div className="delBtnDiv">
                   <button className="delBtn">삭제</button>
