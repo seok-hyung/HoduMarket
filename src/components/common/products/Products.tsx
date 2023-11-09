@@ -79,7 +79,8 @@ const ProductWrapperDiv = styled.div`
           color: var(--main-text-color);
           .won {
             font-weight: normal;
-            font-size: 16px;
+            margin-left: 5px;
+            font-size: 22px;
           }
         }
       }
