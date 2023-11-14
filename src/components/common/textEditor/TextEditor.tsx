@@ -14,22 +14,25 @@ const TextEditor = ({ value, onChange }: TextEditorProps) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
-    const contentState = convertFromRaw({
-      blocks: [
-        {
-          key: 'init',
-          text: value, // 초기값
-          type: 'unstyled',
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {},
-        },
-      ],
-      entityMap: {},
-    });
-    setEditorState(EditorState.createWithContent(contentState));
-  }, [value]);
+    const currentContent = editorState.getCurrentContent().getPlainText();
+    if (currentContent !== value) {
+      const contentState = convertFromRaw({
+        blocks: [
+          {
+            key: 'init',
+            text: value, // 초기값
+            type: 'unstyled',
+            depth: 0,
+            inlineStyleRanges: [],
+            entityRanges: [],
+            data: {},
+          },
+        ],
+        entityMap: {},
+      });
+      setEditorState(EditorState.createWithContent(contentState));
+    }
+  }, [value, editorState]);
 
   const onEditorStateChange = (newEditorState: EditorState) => {
     setEditorState(newEditorState);
