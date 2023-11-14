@@ -1,7 +1,7 @@
 import { apiURL } from 'api/apiURL';
 import React from 'react';
 
-export const getDetailProductAPI = async (product_id: number) => {
+export const getDetailProductAPI = async (product_id: number | string) => {
   try {
     const res = await fetch(`${apiURL}/products/${product_id}/`, {
       method: 'GET',
