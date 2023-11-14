@@ -21,7 +21,7 @@ const UploadProduct = () => {
   const [productInfo, setProductInfo] = useState<string>('');
   const maxLength = 20;
 
-  const uploadForm: PostSellerProductForm = {
+  const uploadProductForm: PostSellerProductForm = {
     product_name: productName,
     image: img,
     price: price,
@@ -32,8 +32,8 @@ const UploadProduct = () => {
   };
 
   const handleUpload = () => {
-    postSellerProductAPI(token, uploadForm).then((res) => {
-      navigate('/SellerCenter');
+    postSellerProductAPI(token, uploadProductForm).then((res) => {
+      navigate('/seller-center');
       console.log(res);
     });
   };
