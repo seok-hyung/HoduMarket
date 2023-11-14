@@ -251,16 +251,6 @@ const CartList = () => {
           </div>
         ))
       ) : (
-        // cartItemList?.map((cartItem) => {
-        //   return (
-        //     <CartItem
-        //       key={cartItem.cart_item_id}
-        //       cartProduct={cartItem}
-        //       setCartItemList={setCartItemList}
-        //       setIsChangeModalValue={setIsChangeModalValue}
-        //       isOrderBtnClick={isOrderBtnClick}
-        //       isClickAllCheck={isClickAllCheck}
-        //     />
         <div className="empty-cart">
           <strong>장바구니에 담긴 상품이 없습니다.</strong>
           <p>원하는 상품을 장바구니에 담아보세요.</p>
@@ -303,8 +293,8 @@ const CartList = () => {
       </button>
 
       {modalState && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modalOverlay" onClick={closeModal}>
+          <div className="modalContent" onClick={(e) => e.stopPropagation()}>
             <img src="assets/icon-delete.svg" alt="삭제(X) 아이콘" onClick={closeModal} />
             <p>1개 이상부터 구매할 수 있어요</p>
             <button onClick={closeModal}>확인</button>
@@ -538,7 +528,8 @@ const CartWrapper = styled.div`
     display: block;
     margin: 40px auto;
   }
-  .modal {
+  .modalContent {
+    width: 600px;
     padding: 40px;
     p {
       font-size: 24px;
