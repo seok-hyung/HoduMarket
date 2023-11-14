@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
 import Footer from 'components/common/footer/Footer';
 import { useNavigate } from 'react-router-dom';
+import { deleteSellerProductAPI } from 'api/product/deleteSellerProductAPI';
 
 const SellerCenter = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,7 +20,11 @@ const SellerCenter = () => {
       setProductDatas(data.results);
     });
   }, []);
-  console.log(productDatas);
+  const deleteProduct = (productId: any) => {
+    deleteSellerProductAPI(token, productId).then(() => {
+      window.location.reload();
+    });
+  };
   return (
     <>
       <SellerNav />
@@ -76,14 +81,19 @@ const SellerCenter = () => {
                       <button
                         className="editBtn"
                         onClick={() => {
-                          navigate(`/seller-center/edit/${product.product_id}`);
+                          navigate(`/seller-center/upload/${product.product_id}`);
                         }}
                       >
                         수정
                       </button>
                     </div>
                     <div className="delBtnDiv">
-                      <button className="delBtn">삭제</button>
+                      <button
+                        className="delBtn"
+                        onClick={() => deleteProduct(product.product_id)}
+                      >
+                        삭제
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -175,6 +185,7 @@ const Wrapper = styled.div`
         border-bottom: 1px solid #c4c4c4;
         img {
           width: 100px;
+          height: 100px;
           border-radius: 50%;
           margin: 16px 30px;
         }
@@ -245,8 +256,8 @@ const StyledLi = styled.li<StyledLiProps>`
   background-color: ${(props) => (props.isActive ? 'var(--main-color)' : 'white')};
   color: ${(props) => (props.isActive ? 'white' : 'black')};
   &:hover {
-    background-color: #effff3;
-    color: black;
+    background-color: ${(props) => (props.isActive ? 'var(--main-color)' : '#effff3')};
+    color: ${(props) => (props.isActive ? 'white' : 'black')};
   }
   &:last-of-type {
     margin-bottom: 0;
