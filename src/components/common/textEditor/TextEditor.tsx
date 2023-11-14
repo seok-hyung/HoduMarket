@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import { EditorState, convertFromRaw } from 'draft-js';
+// import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import styled from 'styled-components';
 
@@ -11,10 +11,25 @@ type TextEditorProps = {
 };
 
 const TextEditor = ({ value, onChange }: TextEditorProps) => {
-  const contentState = EditorState.createEmpty().getCurrentContent();
-  const [editorState, setEditorState] = useState(
-    EditorState.createWithContent(contentState),
-  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  useEffect(() => {
+    const contentState = convertFromRaw({
+      blocks: [
+        {
+          key: 'init',
+          text: value, // 초기값
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {},
+        },
+      ],
+      entityMap: {},
+    });
+    setEditorState(EditorState.createWithContent(contentState));
+  }, [value]);
 
   const onEditorStateChange = (newEditorState: EditorState) => {
     setEditorState(newEditorState);
@@ -46,6 +61,7 @@ const Wrapper = styled.div`
 
   .editor-class {
     min-height: 600px;
+    padding: 10px 20px;
   }
   .editor-class::-webkit-scrollbar {
     display: none;
