@@ -161,3 +161,13 @@ export type CartProduct = {
 export type CartItemDetail = {
   products: ProductDetail[];
 };
+
+export type PostSellerProductForm = {
+  product_name: string;
+  image: any;
+  price: number | string;
+  shipping_method: 'PARCEL' | 'DELIVERY';
+  shipping_fee: number | string;
+  stock: number | string;
+  product_info: string;
+};
