@@ -16,6 +16,5 @@ export const getDetailProductAPI = async (product_id: number | string) => {
     return data;
   } catch (error) {
     console.error('디테일 상품 데이터를 가져오는데 문제가 있습니다.', error);
-    throw error;
   }
 };
