@@ -157,6 +157,7 @@ const DetailContainerDiv = styled.div`
     margin-right: 50px;
     img {
       object-fit: cover;
+      border-radius: 10px;
     }
   }
 
