@@ -1,12 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
-import React, { useEffect, useState } from 'react';
 import { userTokenState } from 'atoms/Atoms';
 import { useNavigate } from 'react-router-dom';
-import CartItem from './CartItem';
 import { CartListProduct, ProductDetail } from 'model/market';
 import { styled } from 'styled-components';
 
+//API
 import { getCartItemAPI } from 'api/cart/getCartItemAPI';
 import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 import { putCartItemAPI } from 'api/cart/putCartItemAPI';
@@ -23,9 +23,6 @@ const CartList = () => {
   const [modalState, setModalState] = useState(false); //모달
   const openModal = () => setModalState(true);
   const closeModal = () => setModalState(false);
-  // console.log(cartItemList);
-  // console.log(cartItemDetails);
-  // console.log(amounts);
 
   useQuery('cartItems', () => getCartItemAPI(token), {
     onSuccess: (data) => {
@@ -141,53 +138,6 @@ const CartList = () => {
     }
   };
 
-  // 모달로 확인한 값이 바뀌는 경우
-  const [isChangeModalValue, setIsChangeModalValue] = useState<boolean>(false);
-
-  // 전체 선택상태 일때
-  const [isAllCheck, setAllIsCheck] = useState<boolean>(true);
-
-  // 전체 선택 체크박스를 눌렀을 때
-  const [isClickAllCheck, setIsClickAllCheck] = useState<boolean>(true);
-
-  // 장바구니 아이템이 하나라도 비활성화 시 전체 체크박스 상태 변경
-  useEffect(() => {
-    const isCheckArr = cartItemList.map((cartItem) => cartItem.is_active);
-    isCheckArr.includes(false) ? setAllIsCheck(false) : setAllIsCheck(true);
-  }, [cartItemList]);
-
-  // cartItem checkbox 클릭시 전체 체크박스 상태 변경
-  const handleCheckBoxClick = () => {
-    if (isClickAllCheck) {
-      setAllIsCheck(false);
-      setIsClickAllCheck(false);
-      cartItemList.map((cartItem) => {
-        cartItem.is_active = false;
-      });
-    } else {
-      setAllIsCheck(true);
-      setIsClickAllCheck(true);
-      cartItemList.map((cartItem) => {
-        cartItem.is_active = true;
-      });
-    }
-  };
-
-  const [isOrderBtnClick, setIsOrderBtnClick] = useState(false);
-  const handleOrderBtnClick = () => {
-    setIsOrderBtnClick(true);
-  };
-
-  useEffect(() => {
-    if (isOrderBtnClick) {
-      // is_active가 true인 아이템만 필터링
-      const orderList = cartItemList.filter((cartItem) => cartItem.is_active);
-      const orderListId = orderList.map((cartItem) => cartItem.product_id);
-      const orderListQuantity = orderList.map((cartItem) => cartItem.quantity);
-      const order_kind = 'cart_order';
-      navigate('/payment', { state: { orderListId, orderListQuantity, order_kind } });
-    }
-  }, [isOrderBtnClick]);
   return (
     <CartWrapper>
       <div className="tab-title">장바구니</div>
