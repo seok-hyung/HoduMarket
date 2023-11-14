@@ -9,7 +9,6 @@ import Page404 from 'pages/Page404';
 import Payment from 'pages/Payment';
 import SellerCenter from 'pages/SellerCenter';
 import UploadProduct from 'pages/UploadProduct';
-import EditProduct from 'pages/EditProduct';
 
 function App() {
   return (
@@ -23,7 +22,8 @@ function App() {
       <Route path="/page404" element={<Page404 />} />
       <Route path="/seller-center" element={<SellerCenter />} />
       <Route path="/seller-center/upload" element={<UploadProduct />} />
-      <Route path="/seller-center/edit/:product_id" element={<EditProduct />} />
+      {/* 상품 수정 페이지 */}
+      <Route path="/seller-center/upload/:product_id" element={<UploadProduct />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );
