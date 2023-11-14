@@ -12,12 +12,14 @@ const SellerCenter = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const navItems = ['판매중인 상품', '주문/배송', '문의/리뷰', '통계', '스토어 설정'];
   const token = useRecoilValue(userTokenState);
+  const [productDatas, setProductDatas] = useState<any>([]);
   const navigate = useNavigate();
   useEffect(() => {
-    getSellerProductsAPI(token).then((res) => {
-      console.log(res);
+    getSellerProductsAPI(token).then((data) => {
+      setProductDatas(data.results);
     });
   }, []);
+  console.log(productDatas);
   return (
     <>
       <SellerNav />
@@ -58,27 +60,33 @@ const SellerCenter = () => {
                 <li className="deleteTab">삭제</li>
               </ul>
 
-              <div className="item white">
-                <img src="https://via.placeholder.com/70x70" alt="판매상품 이미지" />
-                <div className="productInfoDiv">
-                  <p className="productName">딥러닝 개발자 무릎 담요</p>
-                  <p className="stock">재고 : 370개</p>
-                </div>
-                <p className="price">17,500원</p>
-                <div className="editBtnDiv">
-                  <button
-                    className="editBtn"
-                    onClick={() => {
-                      navigate(`/seller-center/edit`);
-                    }}
-                  >
-                    수정
-                  </button>
-                </div>
-                <div className="delBtnDiv">
-                  <button className="delBtn">삭제</button>
-                </div>
-              </div>
+              {productDatas &&
+                productDatas.map((product: any) => (
+                  <div className="item white" key={product.product_id}>
+                    <img
+                      src={product.image || 'https://via.placeholder.com/70x70'}
+                      alt="판매상품 이미지"
+                    />
+                    <div className="productInfoDiv">
+                      <p className="productName">{product.product_name}</p>
+                      <p className="stock">재고 : {product.stock}개</p>
+                    </div>
+                    <p className="price">{product.price}원</p>
+                    <div className="editBtnDiv">
+                      <button
+                        className="editBtn"
+                        onClick={() => {
+                          navigate(`/seller-center/edit/${product.product_id}`);
+                        }}
+                      >
+                        수정
+                      </button>
+                    </div>
+                    <div className="delBtnDiv">
+                      <button className="delBtn">삭제</button>
+                    </div>
+                  </div>
+                ))}
             </article>
           </section>
         </main>
