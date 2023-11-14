@@ -2,21 +2,48 @@ import SellerNav from 'components/common/nav/SellerNav';
 import TextEditor from 'components/common/textEditor/TextEditor';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { postSellerProductAPI } from 'api/product/postSellerProductAPI';
+import { PostSellerProductForm } from 'model/market';
+import { useRecoilValue } from 'recoil';
+import { userTokenState } from 'atoms/Atoms';
+import { useNavigate } from 'react-router-dom';
 const UploadProduct = () => {
-  const [inputValue, setInputValue] = useState('');
+  const token = useRecoilValue(userTokenState);
+  const navigate = useNavigate();
+  const [productName, setProductName] = useState<string>('');
+  const [img, setImg] = useState<File | string | Blob>('');
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [price, setPrice] = useState<number | string>('');
+  const [shippingMethod, setShippingMethod] = useState<'PARCEL' | 'DELIVERY'>('PARCEL');
+  const [activeBtn, setActiveBtn] = useState<string>('PARCEL');
+  const [shippingFee, setShippingFee] = useState<number | string>('');
+  const [stock, setStock] = useState<number | string>('');
+  const [productInfo, setProductInfo] = useState<string>('');
   const maxLength = 20;
 
-  const handleInputChange = (e: any) => {
-    setInputValue(e.target.value);
+  const uploadForm: PostSellerProductForm = {
+    product_name: productName,
+    image: img,
+    price: price,
+    shipping_method: shippingMethod, // PARCEL 또는 DELIVERY 선택
+    shipping_fee: shippingFee,
+    stock: stock,
+    product_info: productInfo,
   };
-  const [activeBtn, setActiveBtn] = useState<string | null>(null);
 
-  const handleBtnClick = (e: any) => {
-    setActiveBtn(e.currentTarget.dataset.name);
+  const handleUpload = () => {
+    postSellerProductAPI(token, uploadForm).then((res) => {
+      navigate('/SellerCenter');
+      console.log(res);
+    });
   };
 
-  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  // 상품명 설정
+  const handleProductNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductName(e.target.value);
+  };
+
+  // 이미지 설정
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -26,7 +53,38 @@ const UploadProduct = () => {
       };
 
       reader.readAsDataURL(e.target.files[0]);
+      setImg(e.target.files[0]);
     }
+  };
+  // 가격 설정
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(e.target.value);
+  };
+
+  // 배송 방법 설정
+  const handleShippingMethodChange = (e: any) => {
+    const clickedBtnName = e.currentTarget.dataset.name;
+    setActiveBtn(clickedBtnName);
+    if (clickedBtnName === 'PARCEL') {
+      setShippingMethod('PARCEL');
+    } else if (clickedBtnName === 'DELIVERY') {
+      setShippingMethod('DELIVERY');
+    }
+  };
+
+  // 배송비 설정
+  const handleShippingFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShippingFee(e.target.value);
+  };
+
+  // 재고 설정
+  const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStock(e.target.value);
+  };
+
+  // 상품 정보 설정
+  const handleProductInfoChange = (value: string) => {
+    setProductInfo(value);
   };
 
   return (
@@ -92,15 +150,20 @@ const UploadProduct = () => {
                       type="text"
                       className="productNameInput"
                       name="productName"
-                      value={inputValue}
-                      onChange={handleInputChange}
+                      value={productName}
+                      onChange={handleProductNameChange}
                       maxLength={maxLength}
                     />
-                    <small>{`${inputValue.length}/${maxLength}`}</small>
+                    <small>{`${productName.length}/${maxLength}`}</small>
                   </label>
                   <label>
                     <span>판매가</span>
-                    <input type="text" name="price" />
+                    <input
+                      type="number"
+                      name="price"
+                      value={price}
+                      onChange={handlePriceChange}
+                    />
                     <strong>원</strong>
                   </label>
 
@@ -108,16 +171,16 @@ const UploadProduct = () => {
                     <span>배송방법</span>
                     <div className="deliveryDiv">
                       <ShippingDiv
-                        data-name="parcel"
-                        onClick={handleBtnClick}
-                        isActive={activeBtn === 'parcel'}
+                        data-name="PARCEL"
+                        onClick={handleShippingMethodChange}
+                        isActive={activeBtn === 'PARCEL'}
                       >
                         택배,소포,동기
                       </ShippingDiv>
                       <ShippingDiv
-                        data-name="direct"
-                        onClick={handleBtnClick}
-                        isActive={activeBtn === 'direct'}
+                        data-name="DELIVERY"
+                        onClick={handleShippingMethodChange}
+                        isActive={activeBtn === 'DELIVERY'}
                       >
                         직접배송(화물배달)
                       </ShippingDiv>
@@ -126,17 +189,33 @@ const UploadProduct = () => {
 
                   <label>
                     <span>기본 배송비</span>
-                    <input type="text" name="shippingFee" />
+                    <input
+                      type="number"
+                      name="shippingFee"
+                      value={shippingFee}
+                      onChange={handleShippingFeeChange}
+                    />
                     <strong>원</strong>
                   </label>
                   <label>
                     <span>재고</span>
-                    <input type="text" name="stock" />
+                    <input
+                      type="number"
+                      name="stock"
+                      value={stock}
+                      onChange={handleStockChange}
+                    />
                     <strong>개</strong>
                   </label>
                 </div>
               </article>
-              <TextEditor />
+              <TextEditor value={productInfo} onChange={handleProductInfoChange} />
+              <BtnDiv>
+                <button className="cancel">취소</button>
+                <button className="save" onClick={handleUpload}>
+                  저장
+                </button>
+              </BtnDiv>
             </div>
           </section>
         </main>
@@ -181,19 +260,19 @@ const Wrapper = styled.div`
       }
     }
     .articleDiv {
-      display: flex;
-      flex-direction: column;
       width: 100%;
-      gap: 100px;
     }
     .addArticle {
       width: 100%;
+      min-height: 650px;
+      max-height: 650px;
       display: flex;
+      margin-bottom: 100px;
     }
     span {
       display: block;
       color: #767676;
-      font-size: 24px;
+      font-size: 28px;
       margin-bottom: 15px;
     }
     label {
@@ -201,12 +280,12 @@ const Wrapper = styled.div`
       margin-bottom: 20px;
     }
     .imgDiv {
-      width: 45%;
+      min-width: 45%;
+      max-width: 45%;
       margin-right: 40px;
       .imgLabel {
         position: relative;
         background-color: #c4c4c4;
-        width: 100%;
         height: calc(100% - 30px);
         border-radius: 10px;
         cursor: pointer;
@@ -230,6 +309,10 @@ const Wrapper = styled.div`
     .inputDiv {
       width: 55%;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
       input {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
@@ -276,12 +359,34 @@ const Wrapper = styled.div`
   }
 `;
 const ShippingDiv = styled.div<{ isActive: boolean }>`
-  width: 245px;
-  font-size: 18px;
-  padding: 17px;
+  width: 250px;
+  font-size: 22px;
+  padding: 17px 0;
   border-radius: 5px;
   border: 1px solid #c4c4c4;
 
   background-color: ${(props) => (props.isActive ? 'var(--main-color)' : 'transparent')};
   color: ${(props) => (props.isActive ? 'white' : 'initial')};
+`;
+
+const BtnDiv = styled.div`
+  display: flex;
+  gap: 30px;
+  justify-content: end;
+  margin: 50px 0;
+  button {
+    width: 220px;
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 5px;
+  }
+  .cancel {
+    border: 1px solid #e4e4e4;
+  }
+  .save {
+    background-color: var(--main-color);
+    width: 220px;
+    color: white;
+    padding: 20px;
+  }
 `;
