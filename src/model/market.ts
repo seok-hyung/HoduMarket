@@ -169,5 +169,13 @@ export type PostSellerProductForm = {
   shipping_method: 'PARCEL' | 'DELIVERY';
   shipping_fee: number | string;
   stock: number | string;
-  product_info: string;
+  product_info?: string;
+};
+export type PutSellerProductForm = {
+  product_name: String;
+  price: number | string;
+  shipping_method: String;
+  shipping_fee: number | string;
+  stock: number | string;
+  products_info?: String;
 };

@@ -2,12 +2,33 @@ import SellerNav from 'components/common/nav/SellerNav';
 import TextEditor from 'components/common/textEditor/TextEditor';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { postSellerProductAPI } from 'api/product/postSellerProductAPI';
-import { PostSellerProductForm } from 'model/market';
+import { PostSellerProductForm, PutSellerProductForm } from 'model/market';
 import { useRecoilValue } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { postSellerProductAPI } from 'api/product/postSellerProductAPI';
+import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
+import { putSellerProductAPI } from 'api/product/putSellerProductAPI';
+
 const UploadProduct = () => {
+  const { product_id } = useParams();
+  useEffect(() => {
+    if (product_id !== undefined) {
+      getDetailProductAPI(product_id).then((product) => {
+        setProductName(product.product_name);
+        setImg(product.image);
+        setPreviewImg(product.image);
+        setPrice(product.price);
+        setShippingMethod(product.shipping_method);
+        setActiveBtn(product.shipping_method);
+        setShippingFee(product.shipping_fee);
+        setStock(product.stock);
+        setProductInfo(product.product_info);
+      });
+    }
+  }, [product_id]);
+
   const token = useRecoilValue(userTokenState);
   const navigate = useNavigate();
   const [productName, setProductName] = useState<string>('');
@@ -30,12 +51,26 @@ const UploadProduct = () => {
     stock: stock,
     product_info: productInfo,
   };
+  const updatedProductForm: PutSellerProductForm = {
+    product_name: productName,
+    price: price,
+    shipping_method: shippingMethod,
+    shipping_fee: shippingFee,
+    stock: stock,
+    products_info: productInfo,
+  };
 
-  const handleUpload = () => {
-    postSellerProductAPI(token, uploadProductForm).then((res) => {
-      navigate('/seller-center');
-      console.log(res);
-    });
+  const handleSaveBtn = () => {
+    if (product_id) {
+      putSellerProductAPI(token, product_id, updatedProductForm).then((res) => {
+        navigate('/seller-center');
+        alert(res.detail + '(※서버측에서 막아둠)');
+      });
+    } else
+      postSellerProductAPI(token, uploadProductForm).then((res) => {
+        navigate('/seller-center');
+        console.log(res);
+      });
   };
 
   // 상품명 설정
@@ -212,7 +247,7 @@ const UploadProduct = () => {
               <TextEditor value={productInfo} onChange={handleProductInfoChange} />
               <BtnDiv>
                 <button className="cancel">취소</button>
-                <button className="save" onClick={handleUpload}>
+                <button className="save" onClick={handleSaveBtn}>
                   저장
                 </button>
               </BtnDiv>
