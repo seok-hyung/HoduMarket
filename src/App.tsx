@@ -23,7 +23,7 @@ function App() {
       <Route path="/page404" element={<Page404 />} />
       <Route path="/seller-center" element={<SellerCenter />} />
       <Route path="/seller-center/upload" element={<UploadProduct />} />
-      <Route path="/seller-center/edit" element={<EditProduct />} />
+      <Route path="/seller-center/edit/:product_id" element={<EditProduct />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );
