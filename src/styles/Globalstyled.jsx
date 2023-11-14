@@ -48,6 +48,16 @@ const GlobalStyled = createGlobalStyle`
     overflow:visible;
     cursor:pointer
   }
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox  */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 
   .a11y-hidden {
     position: relative;
@@ -69,15 +79,16 @@ const GlobalStyled = createGlobalStyle`
     display: inline-block; /* 특정 너비를 가지도록 상황에 따라 block or inline-block 으로 변경 */
     width: 200px; /* inline-block처럼 콘텐츠에 따라 유동적인 너비를 가진다면 직접 너비를 설정 */
 }
-  .modal-overlay{
+  .modalOverlay{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    .modal{
-      width: 600px;
+    z-index: 1000;
+    .modalContent{
+      
       text-align: center;
       position: fixed;
       top: 50%;
