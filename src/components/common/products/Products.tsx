@@ -53,6 +53,10 @@ const ProductWrapperDiv = styled.div`
       border-radius: 10px;
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
       cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+      &:hover {
+        transform: translateY(-15px);
+      }
       img {
         border-radius: 10px;
         width: 100%;
