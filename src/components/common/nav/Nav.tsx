@@ -16,17 +16,28 @@ const Nav = () => {
   const navigate = useNavigate();
   const [userToken, setUserToken] = useRecoilState(userTokenState);
   const userType = useRecoilValue(userTypeState);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isMyPageModalState, setIsMyPageModalState] = useState(false);
+  const [isCartModalState, setIsCartModalState] = useState(false);
+
   useEffect(() => {
     setUserToken(userToken);
   }, []);
+
+  const handleCloseModal = () => {
+    setIsCartModalState(false);
+  };
+
+  const handleConfirmModal = () => {
+    setIsCartModalState(false);
+    navigate('/login');
+  };
 
   const renderMenuItems = () => {
     if (!userToken) {
       return (
         <>
           <MenuItem
-            onClick={() => navigate('/cart')}
+            onClick={() => setIsCartModalState(true)}
             src="/assets/icon-shopping-cart.svg"
             alt="장바구니 이미지"
             text="장바구니"
@@ -50,14 +61,17 @@ const Nav = () => {
             alt="장바구니 이미지"
             text="장바구니"
           />
-          <li className="listLi mypage" onClick={() => setModalOpen(!isModalOpen)}>
+          <li
+            className="listLi mypage"
+            onClick={() => setIsMyPageModalState(!isMyPageModalState)}
+          >
             <img
               className="navImg"
               src="/assets/icon-user.svg"
               alt="로그인된 유저 이미지"
             />
             <p>마이페이지</p>
-            {isModalOpen && <MyPageModal />}
+            {isMyPageModalState && <MyPageModal />}
           </li>
         </>
       );
@@ -66,14 +80,17 @@ const Nav = () => {
     if (userType === 'SELLER') {
       return (
         <>
-          <li className="listLi mypage" onClick={() => setModalOpen(!isModalOpen)}>
+          <li
+            className="listLi mypage"
+            onClick={() => setIsMyPageModalState(!isMyPageModalState)}
+          >
             <img
               className="navImg"
               src="/assets/icon-user.svg"
               alt="로그인된 유저 이미지"
             />
             <p>마이페이지</p>
-            {isModalOpen && <MyPageModal />}
+            {isMyPageModalState && <MyPageModal />}
           </li>
           <li className="shoppingBagLi" onClick={() => navigate('/seller-center')}>
             <img src="/assets/icon-shopping-bag.png" alt="판매자 센터 이미지" />
@@ -99,6 +116,23 @@ const Nav = () => {
           <img className="searchImg" src="/assets/icon-search.svg" alt="검색 이미지" />
         </div>
         <ul className="listUl">{renderMenuItems()}</ul>
+        {isCartModalState && (
+          <div className="modalOverlay" onClick={handleCloseModal}>
+            <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+              <img
+                src="assets/icon-delete.svg"
+                alt="삭제(X) 아이콘"
+                onClick={() => {
+                  setIsCartModalState(false);
+                }}
+              />
+              <p>로그인이 필요한 서비스입니다.</p>
+              <p>로그인 하시겠습니까?</p>
+              <button onClick={handleCloseModal}>아니오</button>
+              <button onClick={handleConfirmModal}>예</button>
+            </div>
+          </div>
+        )}
       </nav>
     </WrapperDiv>
   );
@@ -147,9 +181,7 @@ const WrapperDiv = styled.nav`
       display: flex;
       justify-content: flex-end;
       width: 100%;
-      max-width: 450px;
       gap: 30px;
-      position: relative;
     }
     .listLi {
       display: flex;
@@ -169,7 +201,7 @@ const WrapperDiv = styled.nav`
       position: relative;
     }
     .shoppingBagLi {
-      width: 168px;
+      width: 180px;
       border-radius: 5px;
       background-color: var(--main-color);
       color: white;
@@ -184,6 +216,44 @@ const WrapperDiv = styled.nav`
         height: 32px;
       }
       p {
+      }
+    }
+    .modalContent {
+      width: 600px;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      p {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+      button {
+        width: 180px;
+        margin-top: 30px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 24px;
+        &:first-of-type {
+          border: 1px var(--sub-text-color) solid;
+          margin-right: 15px;
+        }
+        &:last-of-type {
+          border: none;
+          background-color: var(--main-color);
+          color: white;
+        }
+      }
+      img {
+        position: absolute;
+        top: -70px;
+        right: 20px;
+        width: 30px;
+        cursor: pointer;
       }
     }
   }
