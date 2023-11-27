@@ -1,13 +1,14 @@
-import React, { ChangeEvent, useState, FormEvent } from 'react';
 import InputBox from 'components/common/inputBox/InputBox';
-import { SellerJoinFormProps } from 'model/market';
+import { BuyerJoinFormProps, PostBuyerForm } from 'model/market';
+import React, { ChangeEvent, useState, FormEvent } from 'react';
+import styled from 'styled-components';
 
-const SellerJoinForm = ({ form, setForm }: SellerJoinFormProps) => {
+const BuyerSignUpForm = ({ form, setForm }: BuyerJoinFormProps) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   return (
-    <div className="seller-form">
+    <div className="buyer-form">
       <div className="idBox">
         <InputBox
           label="아이디"
@@ -80,28 +81,8 @@ const SellerJoinForm = ({ form, setForm }: SellerJoinFormProps) => {
           required={true}
         />
       </div>
-      <div className="businessNumberBox">
-        <InputBox
-          label="사업자 등록번호"
-          name="businessNumber"
-          id="businessNumber"
-          type="text"
-          value={form.businessNumber}
-          onChange={handleInputChange}
-        />
-        <button>인증</button>
-      </div>
-      <InputBox
-        label="스토어 이름"
-        name="storeName"
-        id="storeName"
-        type="text"
-        value={form.storeName}
-        onChange={handleInputChange}
-        required={true}
-      />
     </div>
   );
 };
 
-export default SellerJoinForm;
+export default BuyerSignUpForm;

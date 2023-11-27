@@ -3,15 +3,15 @@ import React, { FormEvent, useState } from 'react';
 import { styled } from 'styled-components';
 
 import MemberType from 'components/common/memberType/MemberType';
-import BuyerJoinForm from 'components/join/BuyerJoinForm';
-import SellerJoinForm from 'components/join/SellerJoinForm';
+import BuyerSignUpForm from 'components/signUp/BuyerSignUpForm';
+import SellerSignUpForm from 'components/signUp/SellerSignUpForm';
 import { PostBuyerForm, PostSellerForm, UserForm } from 'model/market';
 import { useMutation } from 'react-query';
 import { buyerJoinAPI } from 'api/user/buyerJoinAPI';
 import { sellerJoinAPI } from 'api/user/sellerJoinAPI';
 import { useNavigate } from 'react-router-dom';
 
-const Join = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [formType, setFormType] = useState('BUYER');
   const [form, setForm] = useState<UserForm>({
@@ -87,9 +87,9 @@ const Join = () => {
         />
         <LoginForm onSubmit={onSubmit}>
           {formType === 'BUYER' ? (
-            <BuyerJoinForm form={form} setForm={setForm} />
+            <BuyerSignUpForm form={form} setForm={setForm} />
           ) : (
-            <SellerJoinForm form={form} setForm={setForm} />
+            <SellerSignUpForm form={form} setForm={setForm} />
           )}
           <button className="login-btn">회원가입</button>
         </LoginForm>
@@ -103,7 +103,7 @@ const Join = () => {
   );
 };
 
-export default Join;
+export default SignUp;
 
 const WrapperDiv = styled.div`
   max-width: 500px;
