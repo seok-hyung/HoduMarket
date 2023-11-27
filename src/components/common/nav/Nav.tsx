@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { userTokenState, userTypeState } from 'atoms/Atoms';
+import { searchValueState, userTokenState, userTypeState } from 'atoms/Atoms';
 import MyPageModal from 'components/modal/MyPageModal';
 
 const MenuItem = ({ onClick, src, alt, text }: any) => (
@@ -12,26 +12,34 @@ const MenuItem = ({ onClick, src, alt, text }: any) => (
   </li>
 );
 
-const Nav = () => {
+const Nav = ({ setSearchValue }: any) => {
   const navigate = useNavigate();
   const [userToken, setUserToken] = useRecoilState(userTokenState);
   const userType = useRecoilValue(userTypeState);
   const [isMyPageModalState, setIsMyPageModalState] = useState(false);
   const [isCartModalState, setIsCartModalState] = useState(false);
-
+  const [searchInputValue, setSearchInputValue] = useState('');
   useEffect(() => {
     setUserToken(userToken);
   }, []);
 
+  const handleInputChange = (e: any) => {
+    setSearchInputValue(e.target.value);
+  };
+
+  const handleKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      setSearchValue(e.target.value.toLowerCase());
+    }
+  };
+
   const handleCloseModal = () => {
     setIsCartModalState(false);
   };
-
   const handleConfirmModal = () => {
     setIsCartModalState(false);
     navigate('/login');
   };
-
   const renderMenuItems = () => {
     if (!userToken) {
       return (
@@ -112,8 +120,22 @@ const Nav = () => {
             src="/assets/Logo-hodu.png"
             alt="메인로고"
           />
-          <input className="searchInput" type="text" placeholder="상품을 검색해보세요!" />
-          <img className="searchImg" src="/assets/icon-search.svg" alt="검색 이미지" />
+          <input
+            className="searchInput"
+            type="text"
+            placeholder="상품을 검색해보세요!"
+            value={searchInputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+          />
+          <img
+            className="searchImg"
+            src="/assets/icon-search.svg"
+            alt="검색 이미지"
+            onClick={(e) => {
+              setSearchValue(searchInputValue.toLowerCase());
+            }}
+          />
         </div>
         <ul className="listUl">{renderMenuItems()}</ul>
         {isCartModalState && (

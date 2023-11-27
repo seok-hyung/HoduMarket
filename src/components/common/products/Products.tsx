@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductsProps } from 'model/market';
 import { styled } from 'styled-components';
 
-// const Products: React.FC<ProductsProps> = ({ goods }) => {
 const Products = ({ products }: ProductsProps) => {
   const intl = new Intl.NumberFormat();
   const navigate = useNavigate();
+
   return (
     <ProductWrapperDiv>
       <ul className="productsUl">
