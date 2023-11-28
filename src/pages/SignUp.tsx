@@ -7,9 +7,10 @@ import BuyerSignUpForm from 'components/signUp/BuyerSignUpForm';
 import SellerSignUpForm from 'components/signUp/SellerSignUpForm';
 import { PostBuyerForm, PostSellerForm, UserForm } from 'model/market';
 import { useMutation } from 'react-query';
-import { buyerJoinAPI } from 'api/user/buyerJoinAPI';
-import { sellerJoinAPI } from 'api/user/sellerJoinAPI';
+import { buyerSignUpAPI } from 'api/user/buyerSignUpAPI';
+import { sellerSignUpAPI } from 'api/user/sellerSignUpAPI';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const SignUp = () => {
     setFormType(type);
   };
 
-  const buyerMutation = useMutation(buyerJoinAPI, {
+  const buyerMutation = useMutation(buyerSignUpAPI, {
     onSuccess: (data) => {
       navigate('/login');
     },
@@ -39,7 +40,7 @@ const SignUp = () => {
       console.error(error);
     },
   });
-  const sellerMutation = useMutation(sellerJoinAPI, {
+  const sellerMutation = useMutation(sellerSignUpAPI, {
     onSuccess: (data) => {
       navigate('/login');
     },

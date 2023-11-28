@@ -1,7 +1,7 @@
 import { apiURL } from 'api/apiURL';
 import { PostBuyerForm } from 'model/market';
 
-export const buyerJoinAPI = async (formData: PostBuyerForm) => {
+export const buyerSignUpAPI = async (formData: PostBuyerForm) => {
   const res = await fetch(`${apiURL}/accounts/signup/`, {
     method: 'POST',
     body: JSON.stringify(formData),
