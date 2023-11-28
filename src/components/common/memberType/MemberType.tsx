@@ -33,7 +33,7 @@ const MemberType = ({
 };
 
 const MemberTypeBtn = styled.button<SelectedType>`
-  width: 275px;
+  width: 350px;
   padding: 20px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
