@@ -1,31 +1,30 @@
-import MemberType from 'components/common/memberType/MemberType';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { styled } from 'styled-components';
-
 import InputBox from 'components/common/inputBox/InputBox';
-import { useMutation } from 'react-query';
+import MemberType from 'components/common/memberType/MemberType';
 
-import { LoginDataForm } from 'model/market';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { userTokenState, userTypeState } from 'atoms/Atoms';
+import { LoginDataForm } from 'model/market';
+
 import { loginAPI } from 'api/login/loginAPI';
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, isSubmitted, errors },
+  } = useForm();
   const navigate = useNavigate();
   const setUserToken = useSetRecoilState(userTokenState);
   const setUserType = useSetRecoilState(userTypeState);
-  const [loginState, setLoginState] = useState({
-    id: '',
-    password: '',
-    type: 'BUYER',
-  });
-  const handleTypeChange = (type: 'BUYER' | 'SELLER') => {
-    setLoginState((prevState) => ({ ...prevState, type }));
-  };
+  const [selectedType, setSelectedType] = useState<'BUYER' | 'SELLER'>('BUYER');
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setLoginState({ ...loginState, [e.target.name]: e.target.value });
+  const handleTypeChange = (type: 'BUYER' | 'SELLER') => {
+    setSelectedType(type);
   };
   const loginMutation = useMutation(loginAPI, {
     // data : res(API 호출 결과 데이터),
@@ -40,15 +39,15 @@ const Login = () => {
       console.log(error);
     },
   });
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault(); // 페이지 새로고침 방지
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
     const postData: LoginDataForm = {
-      username: loginState.id,
-      password: loginState.password,
-      login_type: loginState.type,
+      username: data.email,
+      password: data.password,
+      login_type: selectedType,
     };
     loginMutation.mutate(postData);
-  };
+  });
   return (
     <WrapperDiv>
       <img src="/assets/Logo-hodu.png" alt="Logo" />
@@ -58,26 +57,56 @@ const Login = () => {
           sellerBtnText="판매회원 로그인"
           handleTypeChange={handleTypeChange}
         />
-        <LoginForm onSubmit={onSubmit}>
-          <InputBox
-            label="아이디"
-            id="id"
-            name="id"
-            type="text"
-            value={loginState.id}
-            onChange={handleInputChange}
-            required={true}
-          />
-          <InputBox
-            label="비밀번호"
-            name="password"
-            id="password"
-            type="password"
-            value={loginState.password}
-            onChange={handleInputChange}
-            required={true}
-          />
-          <button className="login-btn">로그인</button>
+
+        {/* noValidate : HTML 기본적으로 유효성 검증하는 기능 끄기 */}
+        <LoginForm onSubmit={onSubmit} noValidate>
+          <div className="inputWrapper">
+            <label htmlFor="email">아이디</label>
+            <input
+              id="email"
+              type="text"
+              placeholder="test@email.com"
+              aria-invalid={isSubmitted ? (errors.email ? 'true' : 'false') : undefined}
+              {...register('email', {
+                required: '이메일은 필수 입력입니다.',
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: '이메일 형식에 맞지 않습니다.',
+                },
+              })}
+            />
+            {errors.email?.message && (
+              <small className="error-message" role="alert">
+                이메일 형식에 맞지 않습니다.
+              </small>
+            )}
+          </div>
+          <div className="inputWrapper">
+            <label htmlFor="password">비밀번호</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="********"
+              aria-invalid={
+                isSubmitted ? (errors.password ? 'true' : 'false') : undefined
+              }
+              {...register('password', {
+                required: '비밀번호는 필수 입력입니다.',
+                minLength: {
+                  value: 8,
+                  message: '8자리 이상 비밀번호를 사용하세요.',
+                },
+              })}
+            />
+            {errors?.password && (
+              <small className="error-message" role="alert">
+                8자리 이상 비밀번호를 사용하세요.
+              </small>
+            )}
+          </div>
+          <button className="login-btn" type="submit" disabled={isSubmitting}>
+            로그인
+          </button>
         </LoginForm>
         <JoinGroupDiv>
           <a href="/join">회원가입</a>
@@ -91,11 +120,10 @@ const Login = () => {
 export default Login;
 
 const WrapperDiv = styled.div`
-  max-width: 500px;
   margin: 180px auto;
   img {
     display: block;
-    width: 250px;
+    width: 300px;
     margin: 0 auto 70px auto;
   }
 `;
@@ -111,24 +139,58 @@ const LoginContainerDiv = styled.div`
 `;
 
 const LoginForm = styled.form`
-  width: 550px;
-  padding: 30px;
+  width: 700px;
+  padding: 0 30px;
   padding-bottom: 0;
   border: 1px solid #c4c4c4;
   border-top: 0;
-
-  input:not(:last-of-type) {
-    margin-bottom: 40px;
+  .inputWrapper {
+    height: 100px;
+    margin-top: 40px;
   }
+
+  label {
+    display: block;
+    color: var(--sub-text-color);
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 100%;
+    color: var(--main-text-color);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 14px;
+    outline: none;
+    border: 1px solid var(--sub-text-color);
+    border-radius: 5px;
+    padding: 15px;
+    &::placeholder {
+      color: var(--main-disabled-color);
+    }
+  }
+  .error-message {
+    color: #eb5757;
+    font-size: 20px;
+    display: block;
+    margin-top: 10px;
+  }
+
+  /* input:not(:last-of-type) {
+    margin-bottom: 40px;
+  } */
   .login-btn {
-    margin: 36px 0;
+    width: 100%;
+    margin: 40px auto;
+    padding: 19px 215px;
     background-color: var(--main-color);
     color: white;
     font-size: 18px;
     font-weight: 700;
     line-height: 22px;
     border-radius: 5px;
-    padding: 19px 215px;
   }
 `;
 const JoinGroupDiv = styled.div`
