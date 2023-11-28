@@ -53,23 +53,6 @@ export type SelectedType = {
   selected: boolean;
 };
 
-export type InputProps = {
-  label?: string;
-  id: string;
-  name?: string;
-  type: string;
-  placeholder?: string;
-  value: string | number;
-  min?: number;
-  max?: number;
-  borderBottomColor?: string;
-  show?: 'on' | 'off';
-  errorMessage?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-};
 export type ErrorMsgPProps = {
   show?: 'on' | 'off';
 };

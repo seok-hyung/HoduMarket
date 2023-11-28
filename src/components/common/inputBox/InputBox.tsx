@@ -1,8 +1,7 @@
 import React from 'react';
-import { InputProps } from 'model/market';
 import { ErrorMsgPProps } from 'model/market';
 import styled from 'styled-components';
-
+import { UseFormRegisterReturn } from 'react-hook-form';
 /* InputBox 사용 명세
 label : label로 쓰일 텍스트입니다.
 id : input의 id값입니다.
@@ -35,19 +34,17 @@ const InputBox = ({
   onBlur,
   onInput,
   required,
-}: InputProps) => {
+  register,
+}: InputBoxProps) => {
   return (
     <>
       <BoxLabel htmlFor={id}>{label}</BoxLabel>
       <BoxInput
         id={id}
-        name={name}
         type={type}
         placeholder={placeholder}
         minLength={min}
         maxLength={max}
-        onChange={onChange}
-        onBlur={onBlur}
         onInput={onInput}
         value={value}
         required={required}
@@ -91,3 +88,22 @@ const ErrorMsgP = styled.p<ErrorMsgPProps>`
   margin: 10px 0;
   display: ${(props) => (props.show === 'on' ? 'block' : 'none')};
 `;
+
+type InputBoxProps = {
+  label?: string;
+  id: string;
+  name?: string;
+  type: string;
+  placeholder?: string;
+  value: string | number;
+  min?: number;
+  max?: number;
+  borderBottomColor?: string;
+  show?: 'on' | 'off';
+  errorMessage?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  register?: (name: string) => UseFormRegisterReturn | undefined;
+};
