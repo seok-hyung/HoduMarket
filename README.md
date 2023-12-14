@@ -163,6 +163,126 @@ hodu-market
 
 ## 트러블 슈팅
 
+<details>
+  <summary>장바구니 수량 조절 버튼 오류</summary>
+
+```ts
+//기존 코드
+const queryInfo = useQuery('cartItems', () => getCartItemAPI(token));
+useEffect(() => {
+  const { data, error, isLoading, isError } = queryInfo;
+  if (data) {
+    setCartItemList((prevState) =>
+      JSON.stringify(prevState) !== JSON.stringify(data.results)
+        ? data.results
+        : prevState,
+    );
+
+    if (data.results.length > 0) {
+      const newAmounts = data.results.reduce(
+        (acc: { [key: string]: number }, curr: CartListProduct) => ({
+          ...acc,
+          [curr.product_id]: curr.quantity,
+        }),
+        {},
+      );
+      setAmounts((prevState) =>
+        JSON.stringify(prevState) !== JSON.stringify(newAmounts) ? newAmounts : prevState,
+      );
+    }
+  }
+}, [queryInfo]);
+```
+
+```ts
+// 문제 해결
+useQuery('cartItems', () => getCartItemAPI(token), {
+  onSuccess: (data) => {
+    setCartItemList(data?.results);
+    if (data?.results.length > 0) {
+      const newAmounts = data?.results.reduce(
+        (acc: { [key: string]: number }, curr: CartListProduct) => ({
+          ...acc,
+          [curr.product_id]: curr.quantity,
+        }),
+        {},
+      );
+      setAmounts(newAmounts);
+    }
+  },
+  onError: (error) => {
+    console.error('장바구니 상품을 가져오는데 문제가 발생했습니다.', error);
+  },
+});
+```
+
+</details>
+
+<details>
+  <summary>장바구니 수량 조절 버튼 오류2</summary>
+  장바구니의 수량을 변경하고 주문 페이지에 들어갔을때, 즉각적인 변화가 생기지않았습니다.
+
+```js
+    //기존 코드
+    const handleIncrement = (productId: any) => {
+	    const newQuantity = (amounts[productId] || 0) + 1;
+	    const cartItem = cartItemList.find((item) => item.product_id === productId);
+	    if (!cartItem) return;
+
+	    const formData = {
+	      product_id: productId,
+	      quantity: newQuantity,
+	      is_active: true,
+	    };
+	    putCartItemAPI(token, cartItem?.cart_item_id, formData)
+	      .then(() => {
+	        setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+	      })
+	  };
+
+      <button
+        className="final-order-btn"
+        onClick={() => {
+          navigate('/payment', {
+            state: { cartData: cartItemDetails, quantityData: cartItemList },
+          });
+        }}
+      >
+        주문하기
+      </button>
+```
+
+```js
+    // 문제해결 코드
+    const handleIncrement = (productId: any) => {
+        const newQuantity = (amounts[productId] || 0) + 1;
+            const cartItem = cartItemList.find((item) => item.product_id === productId);
+            if (!cartItem) return;
+
+            const formData = {
+            product_id: productId,
+            quantity: newQuantity,
+            is_active: true,
+            };
+        putCartItemAPI(token, cartItem?.cart_item_id, formData)
+        .then(() => {
+            setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+            // 추가한 코드
+            const newCartItemList = [...cartItemList];
+            cartItem.quantity = newQuantity;
+            setCartItemList(newCartItemList);
+            //
+
+        })
+
+    };
+```
+
+주문서 페이지로 이동할때, navigate의 두번쨰 인자로 cartItemList 데이터를 전달 해줍니다.<br>
+수량조절 api함수가 성공했을때, 바뀐수량을 cartItemList에 반영해줘서 문제를 해결했습니다.
+
+</details>
+
 ## 리팩토링 리스트
 
 - 검색어 디바운싱
