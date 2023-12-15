@@ -165,10 +165,25 @@ hodu-market
 
 <details>
   <summary>장바구니 수량 조절 버튼 오류</summary>
+서버상에서 수량변경이 일어났지만, 실제로는 화면에 변화가 없는 에러가 있습니다.
+
+<br>
 
 ```ts
 //기존 코드
+const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
+const [cartItemDeatails, setCartItemDetails] = useState<ProductResults[]>([]);
+const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
 const queryInfo = useQuery('cartItems', () => getCartItemAPI(token));
+
+type CartListProduct = {
+  my_cart: number;
+  cart_item_id: number;
+  is_active: boolean;
+  product_id: number;
+  quantity: number;
+};
+
 useEffect(() => {
   const { data, error, isLoading, isError } = queryInfo;
   if (data) {
@@ -192,28 +207,58 @@ useEffect(() => {
     }
   }
 }, [queryInfo]);
+
+const handleIncrement = (productId: any) => {
+  const newQuantity = (amounts[productId] || 0) + 1;
+  const cartItem = cartItemList.find((item) => item.product_id === productId);
+  if (!cartItem) return;
+
+  const formData = {
+    product_id: productId,
+    quantity: newQuantity,
+    is_active: true,
+  };
+  putCartItemAPI(token, cartItem?.cart_item_id, formData).then(() => {
+    setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+  });
+};
 ```
+
+### 왜 수량변경에 대한 화면 업데이트가 지연되었을까요?
+
+handleIncrement 함수에서 putCartItemAPI를 통해 API 요청을 보낸 후에 setAmounts를 호출하여 상태를 업데이트합니다. 이 때, setAmounts 함수는 **비동기적으로 동작하므로**, 상태 업데이트를 요청한 직후에는 상태 변경이 바로 이루어지지 않습니다. 따라서 **상태 업데이트 함수(setAmounts)를 호출한 직후에 바로 상태(amounts)를 조회하면 업데이트가 반영되지 않은 상태를 조회**하게 됩니다. 때문에 상태 변경에 따른 화면 업데이트가 지연된 것입니다.
+
+이를 해결하기 위해서는 상태 업데이트 이후에 렌더링을 유발하는 로직을 사용해야 합니다. 예를 들어, **useEffect 훅과 의존성배열을 활용**하면 상태 업데이트와 그에 따른 렌더링 사이의 동기화를 보장할 수 있습니다.
 
 ```ts
 // 문제 해결
-useQuery('cartItems', () => getCartItemAPI(token), {
-  onSuccess: (data) => {
-    setCartItemList(data?.results);
-    if (data?.results.length > 0) {
-      const newAmounts = data?.results.reduce(
-        (acc: { [key: string]: number }, curr: CartListProduct) => ({
-          ...acc,
-          [curr.product_id]: curr.quantity,
-        }),
-        {},
+const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
+type CartListProduct = {
+  my_cart: number;
+  cart_item_id: number;
+  is_active: boolean;
+  product_id: number;
+  quantity: number;
+};
+
+useEffect(() => {
+  if (cartItemList.length > 0) {
+    const fetchDetails = async () => {
+      const detailsArr = await Promise.all(
+        cartItemList.map((item) => getDetailProductAPI(item.product_id)),
       );
-      setAmounts(newAmounts);
-    }
-  },
-  onError: (error) => {
-    console.error('장바구니 상품을 가져오는데 문제가 발생했습니다.', error);
-  },
-});
+      setCartItemDetails(detailsArr);
+    };
+    fetchDetails();
+  }
+}, [cartItemList]); // cartItemList, 즉 amount값(quantity)이 변했을때, 재랜더링 시켜준다.
+
+const handleIncrement = (productId: any) => {
+  //... 생략
+  putCartItemAPI(token, cartItem?.cart_item_id, formData).then(() => {
+    setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+  });
+};
 ```
 
 </details>
@@ -221,7 +266,7 @@ useQuery('cartItems', () => getCartItemAPI(token), {
 <details>
   <summary>장바구니 수량 조절 버튼 오류2</summary>
   장바구니의 수량을 변경하고 주문 페이지에 들어갔을때, 즉각적인 변화가 생기지않았습니다.
-
+  
 ```js
     //기존 코드
     const handleIncrement = (productId: any) => {
@@ -229,16 +274,16 @@ useQuery('cartItems', () => getCartItemAPI(token), {
 	    const cartItem = cartItemList.find((item) => item.product_id === productId);
 	    if (!cartItem) return;
 
-	    const formData = {
-	      product_id: productId,
-	      quantity: newQuantity,
-	      is_active: true,
-	    };
-	    putCartItemAPI(token, cartItem?.cart_item_id, formData)
-	      .then(() => {
-	        setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
-	      })
-	  };
+        const formData = {
+          product_id: productId,
+          quantity: newQuantity,
+          is_active: true,
+        };
+        putCartItemAPI(token, cartItem?.cart_item_id, formData)
+          .then(() => {
+            setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+          })
+      };
 
       <button
         className="final-order-btn"
@@ -250,33 +295,24 @@ useQuery('cartItems', () => getCartItemAPI(token), {
       >
         주문하기
       </button>
-```
+
+````
 
 ```js
     // 문제해결 코드
     const handleIncrement = (productId: any) => {
-        const newQuantity = (amounts[productId] || 0) + 1;
-            const cartItem = cartItemList.find((item) => item.product_id === productId);
-            if (!cartItem) return;
-
-            const formData = {
-            product_id: productId,
-            quantity: newQuantity,
-            is_active: true,
-            };
-        putCartItemAPI(token, cartItem?.cart_item_id, formData)
-        .then(() => {
-            setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
-            // 추가한 코드
-            const newCartItemList = [...cartItemList];
-            cartItem.quantity = newQuantity;
-            setCartItemList(newCartItemList);
-            //
-
-        })
-
+      //... 생략
+      putCartItemAPI(token, cartItem?.cart_item_id, formData)
+      .then(() => {
+          setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
+          // 추가
+          const newCartItemList = [...cartItemList];
+          cartItem.quantity = newQuantity;
+          setCartItemList(newCartItemList);
+          //
+      })
     };
-```
+````
 
 주문서 페이지로 이동할때, navigate의 두번쨰 인자로 cartItemList 데이터를 전달 해줍니다.<br>
 수량조절 api함수가 성공했을때, 바뀐수량을 cartItemList에 반영해줘서 문제를 해결했습니다.
