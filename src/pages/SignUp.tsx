@@ -107,7 +107,6 @@ const SignUp = () => {
 export default SignUp;
 
 const WrapperDiv = styled.div`
-  max-width: 500px;
   margin: 180px auto;
   img {
     display: block;
@@ -127,7 +126,7 @@ const LoginContainerDiv = styled.div`
 `;
 
 const LoginForm = styled.form`
-  width: 550px;
+  width: 700px;
   padding: 30px;
   padding-bottom: 0;
   border: 1px solid #c4c4c4;
@@ -201,9 +200,11 @@ const LoginForm = styled.form`
     padding: 19px 200px;
   }
 `;
+
 const JoinGroupDiv = styled.div`
   color: #333333;
   margin-top: 30px;
+  font-size: 20px;
   a:first-child::after {
     content: '';
     border-right: 1px solid #333333;
