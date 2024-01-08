@@ -17,6 +17,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { isSubmitting, isSubmitted, errors },
+    trigger,
   } = useForm();
   const navigate = useNavigate();
   const setUserToken = useSetRecoilState(userTokenState);
@@ -74,6 +75,7 @@ const Login = () => {
                   message: '이메일 형식에 맞지 않습니다.',
                 },
               })}
+              onBlur={() => trigger('email')}
             />
             {errors.email?.message && (
               <small className="error-message" role="alert">
@@ -86,7 +88,7 @@ const Login = () => {
             <input
               id="password"
               type="password"
-              placeholder="********"
+              placeholder="8자리 비밀번호"
               aria-invalid={
                 isSubmitted ? (errors.password ? 'true' : 'false') : undefined
               }
@@ -97,6 +99,7 @@ const Login = () => {
                   message: '8자리 이상 비밀번호를 사용하세요.',
                 },
               })}
+              onBlur={() => trigger('password')}
             />
             {errors?.password && (
               <small className="error-message" role="alert">
@@ -177,10 +180,6 @@ const LoginForm = styled.form`
     display: block;
     margin-top: 10px;
   }
-
-  /* input:not(:last-of-type) {
-    margin-bottom: 40px;
-  } */
   .login-btn {
     width: 100%;
     margin: 40px auto;
