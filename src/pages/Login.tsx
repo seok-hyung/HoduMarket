@@ -43,7 +43,7 @@ const Login = () => {
   const onSubmit = handleSubmit((data) => {
     console.log(data);
     const postData: LoginDataForm = {
-      username: data.email,
+      username: data.id,
       password: data.password,
       login_type: selectedType,
     };
@@ -62,22 +62,21 @@ const Login = () => {
         {/* noValidate : HTML 기본적으로 유효성 검증하는 기능 끄기 */}
         <LoginForm onSubmit={onSubmit} noValidate>
           <div className="inputWrapper">
-            <label htmlFor="email">아이디</label>
+            <label htmlFor="id">아이디</label>
             <input
-              id="email"
+              id="id"
               type="text"
-              placeholder="test@email.com"
-              aria-invalid={isSubmitted ? (errors.email ? 'true' : 'false') : undefined}
-              {...register('email', {
-                required: '이메일은 필수 입력입니다.',
+              aria-invalid={isSubmitted ? (errors.id ? 'true' : 'false') : undefined}
+              {...register('id', {
+                required: '아이디는 필수 입력입니다.',
                 pattern: {
-                  value: /\S+@\S+\.\S+/,
+                  value: /\S+/,
                   message: '이메일 형식에 맞지 않습니다.',
                 },
               })}
-              onBlur={() => trigger('email')}
+              onBlur={() => trigger('id')}
             />
-            {errors.email?.message && (
+            {errors.id?.message && (
               <small className="error-message" role="alert">
                 이메일 형식에 맞지 않습니다.
               </small>
@@ -88,7 +87,6 @@ const Login = () => {
             <input
               id="password"
               type="password"
-              placeholder="8자리 비밀번호"
               aria-invalid={
                 isSubmitted ? (errors.password ? 'true' : 'false') : undefined
               }
