@@ -61,7 +61,7 @@ const BuyerSignUpForm = ({ form, setForm }: BuyerJoinFormProps) => {
           <option value="011">011</option>
           <option value="016">016</option>
           <option value="017">017</option>
-          <option value="108">018</option>
+          <option value="018">018</option>
           <option value="019">019</option>
         </select>
         <InputBox

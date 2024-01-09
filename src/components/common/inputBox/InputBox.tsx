@@ -42,7 +42,9 @@ const InputBox = ({
       <BoxInput
         id={id}
         type={type}
+        name={name}
         placeholder={placeholder}
+        onChange={onChange}
         minLength={min}
         maxLength={max}
         onInput={onInput}
