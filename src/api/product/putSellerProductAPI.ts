@@ -7,7 +7,7 @@ export const putSellerProductAPI = async (
   formData: PutSellerProductForm,
 ) => {
   try {
-    const res = await fetch(`${apiURL}/cart/${product_id}/`, {
+    const res = await fetch(`${apiURL}/products/${product_id}/`, {
       method: 'PUT',
       headers: {
         Authorization: `JWT ${token}`,

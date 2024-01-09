@@ -13,6 +13,19 @@ import { putSellerProductAPI } from 'api/product/putSellerProductAPI';
 
 const UploadProduct = () => {
   const { product_id } = useParams();
+  const token = useRecoilValue(userTokenState);
+  const navigate = useNavigate();
+  const [productName, setProductName] = useState<string>('');
+  const [img, setImg] = useState<File | string | Blob>('');
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [price, setPrice] = useState<number | string>('');
+  const [shippingMethod, setShippingMethod] = useState<'PARCEL' | 'DELIVERY'>('PARCEL');
+  const [activeBtn, setActiveBtn] = useState<string>('PARCEL');
+  const [shippingFee, setShippingFee] = useState<number | string>('');
+  const [stock, setStock] = useState<number | string>('');
+  const [productInfo, setProductInfo] = useState<string>('');
+  const maxLength = 20;
+
   useEffect(() => {
     if (product_id !== undefined) {
       getDetailProductAPI(product_id).then((product) => {
@@ -28,19 +41,6 @@ const UploadProduct = () => {
       });
     }
   }, [product_id]);
-
-  const token = useRecoilValue(userTokenState);
-  const navigate = useNavigate();
-  const [productName, setProductName] = useState<string>('');
-  const [img, setImg] = useState<File | string | Blob>('');
-  const [previewImg, setPreviewImg] = useState<string | null>(null);
-  const [price, setPrice] = useState<number | string>('');
-  const [shippingMethod, setShippingMethod] = useState<'PARCEL' | 'DELIVERY'>('PARCEL');
-  const [activeBtn, setActiveBtn] = useState<string>('PARCEL');
-  const [shippingFee, setShippingFee] = useState<number | string>('');
-  const [stock, setStock] = useState<number | string>('');
-  const [productInfo, setProductInfo] = useState<string>('');
-  const maxLength = 20;
 
   const uploadProductForm: PostSellerProductForm = {
     product_name: productName,
@@ -64,7 +64,6 @@ const UploadProduct = () => {
     if (product_id) {
       putSellerProductAPI(token, product_id, updatedProductForm).then((res) => {
         navigate('/seller-center');
-        alert(res.detail + '(※서버측에서 막아둠)');
       });
     } else
       postSellerProductAPI(token, uploadProductForm).then((res) => {
