@@ -18,6 +18,8 @@ const CartList = () => {
   const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
   const [cartItemDetails, setCartItemDetails] = useState<ProductDetail[]>([]);
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
+  const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
+  const [isAllChecked, setIsAllChecked] = useState<boolean>(true); // 전체 선택
   const [totalPrice, setTotalPrice] = useState<number>(0); // 결제 예정 금액
   const [totalShippingFee, setTotalShippingFee] = useState<number>(0); // 총 배송비
   const [modalState, setModalState] = useState(false); //모달
@@ -27,7 +29,6 @@ const CartList = () => {
   useQuery('cartItems', () => getCartItemAPI(token), {
     onSuccess: (data) => {
       setCartItemList(data?.results);
-
       if (data?.results.length > 0) {
         const newAmounts = data?.results.reduce(
           (acc: { [key: string]: number }, curr: CartListProduct) => ({
@@ -56,6 +57,31 @@ const CartList = () => {
       fetchDetails();
     }
   }, [cartItemList]);
+
+  useEffect(() => {
+    if (cartItemList.length > 0) {
+      const newCheckedItems = cartItemList.reduce(
+        (acc: { [key: string]: boolean }, curr: CartListProduct) => ({
+          ...acc,
+          [curr.product_id]: checkedItems[curr.product_id] || false,
+        }),
+        {},
+      );
+      setCheckedItems(newCheckedItems);
+    }
+  }, [cartItemList]);
+
+  const toggleAllCheckboxes = () => {
+    setIsAllChecked(!isAllChecked);
+    const newCheckedItems = Object.keys(checkedItems).reduce((acc, curr) => {
+      return { ...acc, [curr]: !isAllChecked };
+    }, {});
+    setCheckedItems(newCheckedItems);
+  };
+
+  const handleCheckChange = (productId: string | number) => {
+    setCheckedItems({ ...checkedItems, [productId]: !checkedItems[productId] });
+  };
 
   // quantity(수량) 조절 함수
   const handleIncrement = (productId: any) => {
@@ -117,12 +143,14 @@ const CartList = () => {
     let shippingFee = 0;
 
     cartItemDetails.forEach((item) => {
-      price += item.price * (amounts[item.product_id] || 0);
-      shippingFee += item.shipping_fee;
+      if (checkedItems[item.product_id]) {
+        price += item.price * (amounts[item.product_id] || 0);
+        shippingFee += item.shipping_fee;
+      }
     });
     setTotalPrice(price);
     setTotalShippingFee(shippingFee);
-  }, [cartItemDetails, amounts]);
+  }, [cartItemDetails, amounts, checkedItems]);
 
   // 장바구니상품 개별 삭제
   const delEachProduct = async (productId: number) => {
@@ -144,7 +172,12 @@ const CartList = () => {
       <ul className="tab-list">
         <li className="checkbox">
           <label htmlFor="checkbox"></label>
-          <input type="checkbox" id="checkbox" />
+          <input
+            type="checkbox"
+            id="checkbox"
+            checked={isAllChecked}
+            onChange={toggleAllCheckboxes}
+          />
         </li>
         <li className="productInfo">상품정보</li>
         <li className="quantity">수량</li>
@@ -160,7 +193,11 @@ const CartList = () => {
               onClick={() => delEachProduct(detail.product_id)}
             />
             <div className="checkbox">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={checkedItems[detail.product_id]}
+                onChange={() => handleCheckChange(detail.product_id)}
+              />
             </div>
             <div className="cartImg-box">
               <img className="cart-img" src={`${detail.image}`} alt="" />
@@ -234,8 +271,14 @@ const CartList = () => {
       <button
         className="final-order-btn"
         onClick={() => {
+          const checkedCartData = cartItemDetails.filter(
+            (item) => checkedItems[item.product_id],
+          );
+          const checkedQuantityData = cartItemList.filter(
+            (item) => checkedItems[item.product_id],
+          );
           navigate('/payment', {
-            state: { cartData: cartItemDetails, quantityData: cartItemList },
+            state: { cartData: checkedCartData, quantityData: checkedQuantityData },
           });
         }}
       >
