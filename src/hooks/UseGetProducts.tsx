@@ -12,10 +12,15 @@ export const useGetProducts = () => {
       let shouldContinue = true;
       while (shouldContinue) {
         const data = await getAllProductsAPI(currentPage);
-        fetchedProducts = fetchedProducts.concat(data.results);
-        if (data.results.length < 15) {
+        if (data && data.results) {
+          fetchedProducts = fetchedProducts.concat(data.results);
+          if (data.results.length < 15) {
+            shouldContinue = false;
+          } else currentPage++;
+        } else {
+          console.error('데이터를 제대로 불러오지 못했습니다.');
           shouldContinue = false;
-        } else currentPage++;
+        }
       }
       setProducts(fetchedProducts);
     };
