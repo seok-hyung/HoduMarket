@@ -30,8 +30,10 @@ const ProductDetail = () => {
     setTotalPrice((amount + 1) * productInfo.price);
   };
   const handleDecrement = () => {
-    setAmount(amount - 1);
-    setTotalPrice((amount - 1) * productInfo.price);
+    if (amount > 1) {
+      setAmount(amount - 1);
+      setTotalPrice((amount - 1) * productInfo.price);
+    }
   };
   const formdata = {
     product_id: productInfo.product_id,
