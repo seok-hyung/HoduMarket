@@ -176,14 +176,6 @@ const [cartItemDeatails, setCartItemDetails] = useState<ProductResults[]>([]);
 const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
 const queryInfo = useQuery('cartItems', () => getCartItemAPI(token));
 
-type CartListProduct = {
-  my_cart: number;
-  cart_item_id: number;
-  is_active: boolean;
-  product_id: number;
-  quantity: number;
-};
-
 useEffect(() => {
   const { data, error, isLoading, isError } = queryInfo;
   if (data) {
@@ -233,13 +225,6 @@ handleIncrement 함수에서 putCartItemAPI를 통해 API 요청을 보낸 후�
 ```ts
 // 문제 해결
 const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
-type CartListProduct = {
-  my_cart: number;
-  cart_item_id: number;
-  is_active: boolean;
-  product_id: number;
-  quantity: number;
-};
 
 useEffect(() => {
   if (cartItemList.length > 0) {
@@ -252,13 +237,6 @@ useEffect(() => {
     fetchDetails();
   }
 }, [cartItemList]); // cartItemList, 즉 amount값(quantity)이 변했을때, 재랜더링 시켜준다.
-
-const handleIncrement = (productId: any) => {
-  //... 생략
-  putCartItemAPI(token, cartItem?.cart_item_id, formData).then(() => {
-    setAmounts((prev) => ({ ...prev, [productId]: newQuantity }));
-  });
-};
 ```
 
 </details>
