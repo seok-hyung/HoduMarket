@@ -1,6 +1,4 @@
-import { getAllProductsAPI } from 'api/product/getAllProductsAPI';
-import { ProductDetail } from 'model/market';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 
 const Pagination = ({ totalPage, currentPage, onPageChange }: any) => {

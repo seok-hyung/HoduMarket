@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { searchValueState, userTokenState, userTypeState } from 'atoms/Atoms';
+import { userTokenState, userTypeState } from 'atoms/Atoms';
 import MyPageModal from 'components/modal/MyPageModal';
 
 const MenuItem = ({ onClick, src, alt, text }: any) => (
@@ -132,7 +132,7 @@ const Nav = ({ setSearchValue }: any) => {
             className="searchImg"
             src="/assets/icon-search.svg"
             alt="검색 이미지"
-            onClick={(e) => {
+            onClick={() => {
               setSearchValue(searchInputValue.toLowerCase());
             }}
           />
