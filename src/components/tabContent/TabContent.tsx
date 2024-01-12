@@ -10,7 +10,7 @@ const TabContent = () => {
   };
 
   const tabs: Tab[] = [
-    { title: '버튼', content: <div>버튼 정보입니다</div> },
+    { title: '상세 정보', content: <div>상품 상세 정보입니다</div> },
     { title: '리뷰', content: <div>리뷰 정보입니다.</div> },
     { title: 'Q&A', content: <div>Q&A 정보입니다</div> },
     { title: '반품/교환정보', content: <div>반품 교환 정보입니다</div> },
@@ -37,7 +37,7 @@ const TabContent = () => {
 export default TabContent;
 
 const TabButtonsDiv = styled.div`
-  max-width: 65vw;
+  max-width: 70vw;
   button {
     background-color: white;
     width: 25%;
@@ -53,4 +53,5 @@ const TabButtonsDiv = styled.div`
 `;
 const TabContentDiv = styled.div`
   text-align: left;
+  font-size: 36px;
 `;
