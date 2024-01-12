@@ -28,7 +28,7 @@ const Carousel = () => {
           <img
             className="icon"
             onClick={goToPrevSlide}
-            src="/assets/icon-swiper-1.png"
+            src="/assets/chevron-left.svg"
             alt="좌측 이동 화살표"
           />
         </div>
@@ -47,7 +47,7 @@ const Carousel = () => {
           <img
             className="icon"
             onClick={goToNextSlide}
-            src="/assets/icon-swiper-2.png"
+            src="/assets/chevron-right.svg"
             alt="우측 이동 화살표"
           />
         </div>
@@ -69,18 +69,19 @@ const CarouselContainerDiv = styled.div`
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    width: 115px;
-    height: 115px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 3px solid #e9e9ec;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow:
+      rgba(0, 0, 0, 0.19) 0px 10px 20px,
+      rgba(0, 0, 0, 0.23) 0px 6px 6px;
     .icon {
-      min-width: 150px;
-      min-height: 150px;
+      max-width: 40px;
     }
   }
   .circle:hover {
