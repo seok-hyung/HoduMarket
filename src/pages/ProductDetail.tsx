@@ -4,9 +4,9 @@ import { styled } from 'styled-components';
 import TabContent from 'components/tabContent/TabContent';
 import Nav from 'components/common/nav/Nav';
 import Footer from 'components/common/footer/Footer';
-import { postCartItemAPI } from 'api/cart/postCartItemAPI';
 import { useRecoilValue } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
+import { postCartItemAPI } from 'api/cart/postCartItemAPI';
 import { getCartItemAPI } from 'api/cart/getCartItemAPI';
 
 const ProductDetail = () => {
@@ -26,8 +26,10 @@ const ProductDetail = () => {
 
   // 수량
   const handleIncrement = () => {
-    setAmount(amount + 1);
-    setTotalPrice((amount + 1) * productInfo.price);
+    if (amount < productInfo.stock) {
+      setAmount(amount + 1);
+      setTotalPrice((amount + 1) * productInfo.price);
+    }
   };
   const handleDecrement = () => {
     if (amount > 1) {
@@ -40,8 +42,6 @@ const ProductDetail = () => {
     quantity: amount,
     check: isInCart,
   };
-  // console.log(formdata);
-  console.log(productInfo);
 
   const handleCartBtn = () => {
     getCartItemAPI(token).then((res) => {
@@ -146,16 +146,16 @@ export default ProductDetail;
 
 const DetailWrapperDiv = styled.div`
   margin: 80px auto;
-  max-width: 65vw;
+  max-width: 70vw;
 `;
 
 const DetailContainerDiv = styled.div`
   display: flex;
   margin-bottom: 140px;
-  min-width: 65vw;
+  box-shadow: inset 0 0 0 3px blue;
   .detail-left-div {
-    min-width: 50%;
-    max-width: 50%;
+    width: 50%;
+    height: 860px;
     margin-right: 50px;
     img {
       object-fit: cover;
@@ -166,39 +166,34 @@ const DetailContainerDiv = styled.div`
   .detail-right-div {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     min-width: calc(50% - 50px);
-    font-size: 28px;
+    font-size: 40px;
     .info {
       color: var(--sub-text-color);
-      margin-bottom: 16px;
-      font-size: 24px;
+      margin-bottom: 2rem;
+      font-size: 38px;
     }
     .name {
-      font-size: 36px;
-      line-height: 45px;
-      margin-bottom: 20px;
+      margin-bottom: 2.5rem;
     }
     .price {
       display: inline-block;
-      font-size: 36px;
-      margin-bottom: 138px;
+      margin-bottom: 13rem;
       font-weight: 700;
-      line-height: 45px;
     }
     .deliveryInfo {
-      margin-bottom: 20px;
-      font-size: 20px;
+      margin-bottom: 3rem;
+      font-size: 32px;
     }
     .amount {
-      width: 150px;
+      width: 180px;
       height: 50px;
       display: flex;
       justify-content: space-around;
       align-items: center;
       border: 3px solid #c4c4c4;
       border-radius: 5px;
-      margin: 30px 0;
+      margin: 3rem 0;
 
       img {
         cursor: pointer;
@@ -212,15 +207,13 @@ const DetailContainerDiv = styled.div`
     .total-price {
       display: flex;
       justify-content: space-between;
-      margin: 30px 0 32px 0;
-
+      margin: 4rem 0;
       .price-info {
-        line-height: 23px;
         min-width: fit-content;
       }
       .total-amount {
         font-weight: 400;
-        line-height: 23px;
+
         min-width: fit-content;
       }
       .total-amount-span {
