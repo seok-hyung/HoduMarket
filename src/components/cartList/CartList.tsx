@@ -46,7 +46,7 @@ const CartList = () => {
   });
 
   useEffect(() => {
-    if (cartItemList.length > 0) {
+    if (cartItemList?.length > 0) {
       const fetchDetails = async () => {
         const detailsArr = await Promise.all(
           cartItemList.map((item) => getDetailProductAPI(item.product_id)),
@@ -59,7 +59,7 @@ const CartList = () => {
   }, [cartItemList]);
 
   useEffect(() => {
-    if (cartItemList.length > 0) {
+    if (cartItemList?.length > 0) {
       const newCheckedItems = cartItemList.reduce(
         (acc: { [key: string]: boolean }, curr: CartListProduct) => ({
           ...acc,
@@ -71,8 +71,13 @@ const CartList = () => {
     }
   }, [cartItemList]);
 
+  // 채크박스 변화생길때마다 모든 채크박스 상태확인
+  useEffect(() => {
+    const allChecked = Object.values(checkedItems).every((item) => item === true);
+    setIsAllChecked(allChecked);
+  }, [checkedItems]);
+
   const toggleAllCheckboxes = () => {
-    setIsAllChecked(!isAllChecked);
     const newCheckedItems = Object.keys(checkedItems).reduce((acc, curr) => {
       return { ...acc, [curr]: !isAllChecked };
     }, {});
@@ -183,7 +188,7 @@ const CartList = () => {
         <li className="quantity">수량</li>
         <li className="price">상품금액</li>
       </ul>
-      {cartItemDetails.length ? (
+      {cartItemDetails?.length ? (
         cartItemDetails.map((detail, index) => (
           <div className="cart-item" key={index}>
             <img
@@ -360,9 +365,10 @@ const CartWrapper = styled.div`
     }
     .del-img {
       position: absolute;
-      width: 24px;
-      top: -70px;
-      right: 20px;
+      width: 28px;
+      height: 28px;
+      top: 20px;
+      right: 18px;
       cursor: pointer;
     }
     .checkbox {
