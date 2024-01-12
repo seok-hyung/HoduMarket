@@ -51,7 +51,13 @@ const Login = () => {
   });
   return (
     <WrapperDiv>
-      <img src="/assets/Logo-hodu.png" alt="Logo" />
+      <img
+        src="/assets/Logo-hodu.png"
+        alt="로고"
+        onClick={() => {
+          navigate('/');
+        }}
+      />
       <LoginContainerDiv>
         <MemberType
           buyerBtnText="구매회원 로그인"
@@ -193,6 +199,7 @@ const LoginForm = styled.form`
 const JoinGroupDiv = styled.div`
   color: #333333;
   margin-top: 30px;
+  font-size: 20px;
   a:first-child::after {
     content: '';
     border-right: 1px solid #333333;
