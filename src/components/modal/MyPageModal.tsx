@@ -1,16 +1,18 @@
 import { logOutAPI } from 'api/login/logoutAPI';
 import { userTokenState } from 'atoms/Atoms';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { styled } from 'styled-components';
 
 const MyPageModal = () => {
   const setUserToken = useSetRecoilState(userTokenState);
-
+  const navigate = useNavigate();
   const handleLogout = async () => {
     await logOutAPI();
     setUserToken(null);
     window.location.reload();
+    navigate('/');
   };
   return (
     <ModalUl>
