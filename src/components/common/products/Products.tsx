@@ -60,10 +60,9 @@ const ProductWrapperDiv = styled.div`
       img {
         border-radius: 10px;
         width: 100%;
-        height: auto; // 높이를 자동으로 조절하도록 변경했습니다.
-        object-fit: cover; // 이미지가 컨테이너를 채우도록 설정했습니다.
+        height: auto;
+        object-fit: cover;
         aspect-ratio: 1;
-        /* border: 1px solid rgb(196, 196, 196); */
       }
       .productInfo {
         padding: 30px;
