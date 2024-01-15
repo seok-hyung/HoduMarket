@@ -25,6 +25,15 @@ const Payment = () => {
     }, 0);
     setShippingFee(shippingFee);
   }, [cartDatas, quantityDatas]);
+
+  const handlePostcode = () => {
+    new window.daum.Postcode({
+      oncomplete: (data: any) => {
+        (document.getElementById('postcode') as HTMLInputElement).value = data.zonecode;
+        (document.getElementById('address') as HTMLInputElement).value = data.address;
+      },
+    }).open();
+  };
   return (
     <>
       <Nav />
@@ -44,7 +53,9 @@ const Payment = () => {
             const quantity = quantityItem.quantity;
             return (
               <div className="cartItemBox" key={index}>
-                <img src={`${item.image}`} alt="카트 아이템 이미지" />
+                <div>
+                  <img src={`${item.image}`} alt="카트 아이템 이미지" />
+                </div>
                 <div className="productInfoBox">
                   <p className="storeName">{item.store_name}</p>
                   <p className="productName">{item.product_name}</p>
@@ -57,7 +68,7 @@ const Payment = () => {
             );
           })}
           <div className="totalPrice">
-            총 주문 금액 <span>{totalPrice}원</span>
+            총 주문 금액 : <span>{totalPrice}원</span>
           </div>
         </section>
 
@@ -68,14 +79,14 @@ const Payment = () => {
             <h3>주문자 정보</h3>
             <hr />
             <label htmlFor="name">
-              <span>이름:</span>
+              <span>이름 :</span>
               <div className="input-box">
                 <input type="text" name="name" id="name" />
               </div>
             </label>
             <hr />
             <label htmlFor="phone">
-              <span>휴대폰:</span>
+              <span>휴대폰 :</span>
               <div className="input-box phone">
                 <input type="text" name="phone1" />
                 -
@@ -87,7 +98,7 @@ const Payment = () => {
             <hr />
 
             <label htmlFor="email">
-              <span>이메일:</span>
+              <span>이메일 :</span>
               <div className="input-box">
                 <input type="email" name="email" id="email" />
               </div>
@@ -98,7 +109,7 @@ const Payment = () => {
             <hr />
             <div className="recipient">
               <label htmlFor="recipient">
-                <span>수령인:</span>
+                <span>수령인 :</span>
                 <div className="input-box">
                   <input type="text" name="recipient" id="recipient" />
                 </div>
@@ -106,7 +117,7 @@ const Payment = () => {
               <hr />
             </div>
             <label htmlFor="phone">
-              <span>휴대폰:</span>
+              <span>휴대폰 :</span>
               <div className="input-box phone">
                 <input type="text" name="phone1" />
                 -
@@ -118,40 +129,29 @@ const Payment = () => {
             <hr />
             <div className="address-input">
               <label htmlFor="postcode">
-                <span>배송주소:</span>
+                <span>배송주소 :</span>
                 <div className="input-box postcode">
                   <input type="text" name="postcode" id="postcode" />
-                  <button>우편번호 조회</button>
+                  <button onClick={handlePostcode}>우편번호 조회</button>
                 </div>
               </label>
-              <label htmlFor="postcode2">
-                <span></span>
-                <input type="text" name="postcode2" id="postcode2" />
-              </label>
-              <label htmlFor="postcode3">
-                <span></span>
-                <input type="text" name="postcode3" id="postcode3" />
-              </label>
-              <hr />
               <label htmlFor="address">
-                <span>주소 :</span>
-                <div className="input-box">
-                  <input type="text" name="address" id="address" />
-                </div>
+                <span></span>
+                <input type="text" name="address" id="address" />
               </label>
-              <hr />
               <label htmlFor="detailAddress">
-                <span>상세주소 :</span>
-                <div className="input-box">
-                  <input type="text" name="detailAddress" id="detailAddress" />
-                </div>
+                <span></span>
+                <input
+                  type="text"
+                  name="detailAddress"
+                  id="detailAddress"
+                  placeholder="상세주소"
+                />
               </label>
               <hr />
               <label htmlFor="msg">
                 <span>배송 메시지 :</span>
-                <div className="input-box">
-                  <input type="text" name="msg" id="msg" />
-                </div>
+                <input type="text" name="msg" id="msg" />
               </label>
               <hr />
             </div>
@@ -163,23 +163,23 @@ const Payment = () => {
             <h3>결제수단</h3>
             <div className="pay-method">
               <label htmlFor="card">
-                <input type="checkbox" name="card" id="card" />
+                <input type="radio" name="payment" id="card" />
                 <span>신용/체크카드</span>
               </label>
               <label htmlFor="no-bank">
-                <input type="checkbox" name="no-bank" id="no-bank" />
+                <input type="radio" name="payment" id="no-bank" />
                 <span>무통장 입금</span>
               </label>
               <label htmlFor="phone">
-                <input type="checkbox" name="phone" id="phone" />
+                <input type="radio" name="payment" id="phone" />
                 <span>휴대폰 결제</span>
               </label>
               <label htmlFor="naverPay">
-                <input type="checkbox" name="naverPay" id="naverPay" />
+                <input type="radio" name="payment" id="naverPay" />
                 <span>네이버페이</span>
               </label>
               <label htmlFor="kakaoPay">
-                <input type="checkbox" name="kakaoPay" id="kakaoPay" />
+                <input type="radio" name="payment" id="kakaoPay" />
                 <span>카카오페이</span>
               </label>
             </div>
@@ -241,7 +241,7 @@ const PaymentWrapper = styled.div`
     width: fit-content;
   }
   section {
-    max-width: 1400px;
+    max-width: 70vw;
     margin: 0 auto;
   }
   .tab {
@@ -265,34 +265,43 @@ const PaymentWrapper = styled.div`
     }
   }
   .cartItemBox {
-    max-width: 1400px;
     display: flex;
     margin-bottom: 15px;
     border-bottom: 2px solid #c4c4c4;
     padding: 15px 0;
+    > :first-child {
+      min-width: 300px;
+      height: 300px;
+    }
     img {
-      width: 10%;
+      object-fit: cover;
       border-radius: 10px;
     }
     .productInfoBox {
-      margin-left: 30px;
-      width: calc(35% - 30px);
+      margin-left: 20px;
 
+      width: calc(45% - 330px);
+      min-width: 250px;
+      font-size: 24px;
       .storeName {
-        margin-bottom: 6px;
+        margin-bottom: 20px;
+        white-space: nowrap;
         color: var(--main-disabled-color);
-        font-size: 20px;
+        font-size: 28px;
       }
       .productName {
-        font-size: 24px;
+        font-size: 30px;
+        white-space: nowrap;
         line-height: 22px;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
         font-weight: 400;
+      }
+      .quantity {
+        white-space: nowrap;
       }
     }
     .discount {
       width: 20%;
-
       display: flex;
       justify-content: center;
       align-items: center;
@@ -346,28 +355,39 @@ const PaymentWrapper = styled.div`
         margin-top: 50px;
       }
       + hr {
-        margin: 8px 0;
+        margin-top: 12px;
       }
     }
     label {
-      max-width: 1000px;
+      max-width: 2000px;
       display: flex;
+      input {
+        width: 100%;
+        font-size: 24px;
+        height: 40px;
+        margin: 8px 0;
+      }
+      span {
+        font-size: 24px;
+        line-height: 20px;
+        min-width: 180px;
+        margin: auto 0;
+      }
+
       .input-box {
-        width: 360px;
+        width: 420px;
         display: flex;
       }
       .input-box.phone {
         align-items: center;
         gap: 5px;
       }
-      .input-box.postcode {
-        margin-bottom: 10px;
-      }
       #postcode {
         width: 50%;
         margin-right: 10px;
         + button {
           width: 50%;
+          margin: 8px 0;
           font-size: 18px;
           background-color: var(--main-color);
           border-radius: 5px;
@@ -375,27 +395,10 @@ const PaymentWrapper = styled.div`
           color: white;
         }
       }
-      input {
-        width: 100%;
-        font-size: 24px;
-        height: 40px;
-      }
-      span {
-        font-size: 24px;
-        line-height: 20px;
-        min-width: 150px;
-        margin: auto 0;
-      }
-      + hr {
-        margin: 10px 0;
-      }
-    }
-
-    .address-input {
-      #postcode2,
-      #postcode3 {
+      #detailAddress,
+      #address,
+      #msg {
         width: 800px;
-        margin-bottom: 10px;
       }
     }
   }
@@ -413,7 +416,8 @@ const PaymentWrapper = styled.div`
       margin-bottom: 20px;
     }
     .footer-left {
-      flex-basis: 60%;
+      width: 60%;
+      min-width: 750px;
       margin-bottom: 400px;
       .pay-method {
         padding: 15px 10px;
@@ -421,7 +425,7 @@ const PaymentWrapper = styled.div`
         border-bottom: 2px solid #c4c4c4;
         label {
           margin-right: 30px;
-          input[type='checkbox'] {
+          input[type='radio'] {
             width: 1rem;
             height: 1rem;
             border-radius: 50%;
@@ -432,7 +436,7 @@ const PaymentWrapper = styled.div`
             margin-right: 7px;
           }
 
-          input[type='checkbox']:checked {
+          input[type='radio']:checked {
             background: #32e732;
             border: none;
           }
@@ -443,7 +447,7 @@ const PaymentWrapper = styled.div`
       }
     }
     .footer-right {
-      margin: 0 auto;
+      width: 40%;
       .pay-info-box {
         border: 3px solid var(--main-color);
         border-radius: 10px;
