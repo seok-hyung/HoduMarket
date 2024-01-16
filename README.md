@@ -4,7 +4,7 @@
 
 이 프로젝트는 상품에 대한 CRUD(Create, Read, Update, Delete)가 가능하고 SPA으로 만들었습니다.<br>
 
-배포 URL : https://hodu-market-dev.netlify.app/
+배포 URL : [https://hodumarket24.netlify.app/](https://hodumarket24.netlify.app/)
 
 테스트용 계정 <br>
 
