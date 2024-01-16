@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import TabContent from 'components/tabContent/TabContent';
@@ -67,6 +67,33 @@ const ProductDetail = () => {
       },
     });
   };
+
+  // init 체크
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//developers.kakao.com/sdk/js/kakao.min.js';
+    script.onload = () => {
+      window.Kakao.init('18623218c742bd8317f31216a17b1094'); // 발급받은 앱 키를 입력합니다.
+    };
+    document.body.appendChild(script);
+  }, []);
+
+  let shareKakao = function () {
+    // 메시지 공유 함수
+    window.Kakao.Link.sendScrap({
+      requestUrl: `https://hodumarket24.netlify.app/detail/${productInfo.product_id}`, // 페이지 url
+      templateId: 102981, // 메시지템플릿 번호
+      templateArgs: {
+        ID: `${productInfo.product_id}`,
+        PROFILE: `${productInfo.image}`, // 프로필 이미지 주소 ${PROFILE}
+        THUMB: `${productInfo.image}`, // 썸네일 주소 ${THUMB}
+        TITLE: `${productInfo.product_name}`, // 제목 텍스트 ${TITLE}
+        PRICE: `${productInfo.price}`, // 가격 ${PRICE}
+        DESC: `${productInfo.product_info}`, // 설명 텍스트 ${DESC}
+      },
+    });
+  };
+
   return (
     <>
       <Nav />
@@ -87,6 +114,9 @@ const ProductDetail = () => {
               {intl.format(productInfo.price)}
               <span>원</span>
             </p>
+            <div className="circle" onClick={shareKakao}>
+              <img src="/assets/share.svg" alt="공유하기 버튼" id="share" />
+            </div>
             <p className="deliveryInfo">택배 배송 / 무료배송</p>
             <hr />
             <div className="amount">
@@ -152,13 +182,12 @@ const DetailWrapperDiv = styled.div`
 const DetailContainerDiv = styled.div`
   display: flex;
   margin-bottom: 140px;
-  box-shadow: inset 0 0 0 3px blue;
   .detail-left-div {
     width: 50%;
     height: 860px;
     margin-right: 50px;
     img {
-      object-fit: cover;
+      width: 100%;
       border-radius: 10px;
     }
   }
@@ -168,6 +197,7 @@ const DetailContainerDiv = styled.div`
     flex-direction: column;
     min-width: calc(50% - 50px);
     font-size: 40px;
+    position: relative;
     .info {
       color: var(--sub-text-color);
       margin-bottom: 2rem;
@@ -199,6 +229,23 @@ const DetailContainerDiv = styled.div`
         cursor: pointer;
         width: 20px;
       }
+    }
+    .circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    #share {
+      width: 50px;
+      height: 50px;
     }
     hr {
       border: 2px solid #c4c4c4;
