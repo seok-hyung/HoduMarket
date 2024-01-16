@@ -9,6 +9,7 @@ import Pagination from 'components/common/pagination/Pagiation';
 
 // 커스텀 훅
 import { useGetProducts } from 'hooks/UseGetProducts';
+import ScrollToTopBtn from 'components/common/scrollToTopBtn/ScrollToTopBtn';
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +25,6 @@ const Home = () => {
     (currentPage - 1) * 15,
     currentPage * 15,
   );
-
   return (
     <>
       <Nav setSearchValue={setSearchValue} />
@@ -40,6 +40,7 @@ const Home = () => {
         onPageChange={setCurrentPage}
       />
       <Footer />
+      <ScrollToTopBtn />
     </>
   );
 };
