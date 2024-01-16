@@ -171,6 +171,34 @@ const CartList = () => {
     }
   };
 
+  const handleOrderBtn = () => {
+    const checkedCartData = cartItemDetails.filter(
+      (item) => checkedItems[item.product_id],
+    );
+    const checkedQuantityData = cartItemList.filter(
+      (item) => checkedItems[item.product_id],
+    );
+    if (checkedCartData.length === 0 && checkedQuantityData.length === 0) {
+      alert('선택된 상품이 없습니다.');
+      return;
+    }
+    navigate('/payment', {
+      state: { cartData: checkedCartData, quantityData: checkedQuantityData },
+    });
+  };
+
+  const handleEachOrderBtn = (productId: any) => {
+    const selectedCartItemData = cartItemDetails.filter(
+      (item) => item.product_id === productId,
+    );
+    const selectedQuantityData = cartItemList.filter(
+      (item) => item.product_id === productId,
+    );
+    navigate('/payment', {
+      state: { cartData: selectedCartItemData, quantityData: selectedQuantityData },
+    });
+  };
+
   return (
     <CartWrapper>
       <div className="tab-title">장바구니</div>
@@ -238,7 +266,14 @@ const CartList = () => {
               <p className="price">
                 {Number(detail.price) * amounts[detail.product_id]}원
               </p>
-              <button className="order-btn">주문하기</button>
+              <button
+                className="order-btn"
+                onClick={() => {
+                  handleEachOrderBtn(detail.product_id);
+                }}
+              >
+                주문하기
+              </button>
             </div>
           </div>
         ))
@@ -273,20 +308,7 @@ const CartList = () => {
           <strong id="final-price-strong">{totalPrice + totalShippingFee}원</strong>
         </li>
       </ul>
-      <button
-        className="final-order-btn"
-        onClick={() => {
-          const checkedCartData = cartItemDetails.filter(
-            (item) => checkedItems[item.product_id],
-          );
-          const checkedQuantityData = cartItemList.filter(
-            (item) => checkedItems[item.product_id],
-          );
-          navigate('/payment', {
-            state: { cartData: checkedCartData, quantityData: checkedQuantityData },
-          });
-        }}
-      >
+      <button className="final-order-btn" onClick={handleOrderBtn}>
         주문하기
       </button>
 
