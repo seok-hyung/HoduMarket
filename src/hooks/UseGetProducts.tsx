@@ -13,7 +13,7 @@ export const useGetProducts = () => {
       while (shouldContinue) {
         const data = await getAllProductsAPI(currentPage);
         if (data && data.results) {
-          fetchedProducts = fetchedProducts.concat(data.results);
+          fetchedProducts = [...fetchedProducts, ...data.results];
           if (data.results.length < 15) {
             shouldContinue = false;
           } else currentPage++;
