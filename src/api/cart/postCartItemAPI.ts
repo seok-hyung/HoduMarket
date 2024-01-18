@@ -1,6 +1,9 @@
 import { apiURL } from 'api/apiURL';
 
-export const postCartItemAPI = async (token: string, formData: PostCartItemForm) => {
+export const postCartItemAPI = async (
+  token: string,
+  formData: PostCartItemForm | undefined,
+) => {
   const res = await fetch(`${apiURL}/cart/`, {
     method: 'POST',
     body: JSON.stringify(formData),
