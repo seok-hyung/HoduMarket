@@ -2,9 +2,9 @@ export type Product = {
   count: number;
   next: string;
   previous: string;
-  results: ProductDetail;
+  results: ProductDetailForm;
 };
-export type ProductDetail = {
+export type ProductDetailForm = {
   created_at: string;
   image: string;
   price: number;
@@ -19,7 +19,7 @@ export type ProductDetail = {
   updated_at: string;
 };
 export type ProductsProps = {
-  products: ProductDetail[];
+  products: ProductDetailForm[];
 };
 export type CarouselProps = {
   images: string[];
@@ -142,7 +142,7 @@ export type CartProduct = {
   stock: number;
 };
 export type CartItemDetail = {
-  products: ProductDetail[];
+  products: ProductDetailForm[];
 };
 
 export type PostSellerProductForm = {

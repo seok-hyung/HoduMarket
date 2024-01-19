@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getAllProductsAPI } from '../api/product/getAllProductsAPI';
-import { ProductDetail } from 'model/market';
+import { ProductDetailForm } from 'model/market';
 
 // 상품 데이터 및 페이지 데이터 가져오는 커스텀 훅 (Home.tsx)
 export const useGetProducts = () => {
-  const [products, setProducts] = useState<ProductDetail[]>([]);
+  const [products, setProducts] = useState<ProductDetailForm[]>([]);
   useEffect(() => {
     const fetchAllProducts = async () => {
       let currentPage = 1;
