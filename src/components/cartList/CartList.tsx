@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { userTokenState } from 'atoms/Atoms';
 import { useNavigate } from 'react-router-dom';
-import { CartListProduct, ProductDetail } from 'model/market';
+import { CartListProduct, ProductDetailForm } from 'model/market';
 import { styled } from 'styled-components';
 
 //API
@@ -16,7 +16,7 @@ const CartList = () => {
   const navigate = useNavigate();
   const token = useRecoilValue(userTokenState);
   const [cartItemList, setCartItemList] = useState<CartListProduct[]>([]);
-  const [cartItemDetails, setCartItemDetails] = useState<ProductDetail[]>([]);
+  const [cartItemDetails, setCartItemDetails] = useState<ProductDetailForm[]>([]);
   const [amounts, setAmounts] = useState<{ [key: string]: number }>({});
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
   const [isAllChecked, setIsAllChecked] = useState<boolean>(true); // 전체 선택
