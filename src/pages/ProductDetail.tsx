@@ -1,71 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { userTokenState } from 'atoms/Atoms';
+import { ProductDetailForm } from 'model/market';
+// 공용 컴포넌트
 import TabContent from 'components/tabContent/TabContent';
 import Nav from 'components/common/nav/Nav';
 import Footer from 'components/common/footer/Footer';
-import { useRecoilValue } from 'recoil';
-import { userTokenState } from 'atoms/Atoms';
+
+// API
 import { postCartItemAPI } from 'api/cart/postCartItemAPI';
 import { getCartItemAPI } from 'api/cart/getCartItemAPI';
+import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 
 const ProductDetail = () => {
-  const location = useLocation();
-  const productInfo = location.state?.item;
+  // const location = useLocation();
+  // const product = location.state?.item;
   const intl = new Intl.NumberFormat();
   const token = useRecoilValue(userTokenState);
   let [amount, setAmount] = useState(1);
-  let [totalPrice, setTotalPrice] = useState(productInfo.price);
   const [isInCart, setIsInCart] = useState(false);
   const navigate = useNavigate();
-
-  // 모달
+  const { productId } = useParams();
+  const [product, setProduct] = useState<ProductDetailForm>();
   const [modalState, setModalState] = useState(false);
   const openModal = () => setModalState(true);
   const closeModal = () => setModalState(false);
+  useEffect(() => {
+    getDetailProductAPI(productId).then((data) => {
+      setProduct(data);
+    });
+  }, [productId, product]);
 
   // 수량
   const handleIncrement = () => {
-    if (amount < productInfo.stock) {
-      setAmount(amount + 1);
-      setTotalPrice((amount + 1) * productInfo.price);
+    if (product) {
+      if (amount < product.stock) {
+        setAmount(amount + 1);
+        setTotalPrice((amount + 1) * product.price);
+      }
     }
   };
   const handleDecrement = () => {
-    if (amount > 1) {
-      setAmount(amount - 1);
-      setTotalPrice((amount - 1) * productInfo.price);
+    if (product) {
+      if (amount > 1) {
+        setAmount(amount - 1);
+        setTotalPrice((amount - 1) * product.price);
+      }
     }
   };
-  const formdata = {
-    product_id: productInfo.product_id,
-    quantity: amount,
-    check: isInCart,
-  };
-
-  const handleCartBtn = () => {
-    getCartItemAPI(token).then((res) => {
-      // 현재 상품이 장바구니에 있는지 확인(상품의 고유 id로 확인)
-      if (res.results.some((item: any) => item.product_id === productInfo.product_id)) {
-        setIsInCart(true);
-        postCartItemAPI(token, formdata);
-        openModal();
-      } else {
-        // 장바구니에 현재 상품이 없을때만 실행
-        setIsInCart(false);
-        postCartItemAPI(token, formdata);
+  let formdata = product
+    ? {
+        product_id: product.product_id,
+        quantity: amount,
+        check: isInCart,
       }
-    });
+    : undefined;
+
+  let [totalPrice, setTotalPrice] = useState(product ? product.price : 0);
+  const handleCartBtn = () => {
+    if (product) {
+      getCartItemAPI(token).then((res) => {
+        if (res.results.some((item: any) => item.product_id === product.product_id)) {
+          setIsInCart(true);
+          postCartItemAPI(token, formdata);
+          openModal();
+        } else {
+          setIsInCart(false);
+          postCartItemAPI(token, formdata);
+        }
+      });
+    }
   };
 
   const handleBuyBtn = () => {
-    navigate('/payment', {
-      state: {
-        // 장바구니에서 주문서로 데이터를 배열로 보내기 떄문에 데이터 형태를 맞춰야 함
-        cartData: [productInfo],
-        quantityData: [{ product_id: productInfo.product_id, quantity: amount }],
-      },
-    });
+    if (product) {
+      navigate('/payment', {
+        state: {
+          cartData: [product],
+          quantityData: [{ product_id: product.product_id, quantity: amount }],
+        },
+      });
+    }
   };
 
   // init 체크
@@ -79,19 +96,20 @@ const ProductDetail = () => {
   }, []);
 
   let shareKakao = function () {
-    // 메시지 공유 함수
-    window.Kakao.Link.sendScrap({
-      requestUrl: `https://hodumarket24.netlify.app/detail/${productInfo.product_id}`, // 페이지 url
-      templateId: 102981, // 메시지템플릿 번호
-      templateArgs: {
-        ID: `${productInfo.product_id}`,
-        PROFILE: `${productInfo.image}`, // 프로필 이미지 주소 ${PROFILE}
-        THUMB: `${productInfo.image}`, // 썸네일 주소 ${THUMB}
-        TITLE: `${productInfo.product_name}`, // 제목 텍스트 ${TITLE}
-        PRICE: `${productInfo.price}`, // 가격 ${PRICE}
-        DESC: `${productInfo.product_info}`, // 설명 텍스트 ${DESC}
-      },
-    });
+    if (product) {
+      window.Kakao.Link.sendScrap({
+        requestUrl: `https://hodumarket24.netlify.app/detail/${product.product_id}`,
+        templateId: 102981,
+        templateArgs: {
+          ID: `${product.product_id}`,
+          PROFILE: `${product.image}`,
+          THUMB: `${product.image}`,
+          TITLE: `${product.product_name}`,
+          PRICE: `${product.price}`,
+          DESC: `${product.products_info}`,
+        },
+      });
+    }
   };
 
   return (
@@ -102,16 +120,16 @@ const ProductDetail = () => {
           <div className="detail-left-div">
             <img
               className="product-img"
-              src={`${productInfo.image}`}
+              src={`${product?.image}`}
               alt="상세페이지 이미지"
             />
           </div>
 
           <div className="detail-right-div">
-            <p className="info">{productInfo.store_name}</p>
-            <p className="name">{productInfo.product_name}</p>
+            <p className="info">{product?.store_name}</p>
+            <p className="name">{product?.product_name}</p>
             <p className="price">
-              {intl.format(productInfo.price)}
+              {product?.price}
               <span>원</span>
             </p>
             <div className="circle" onClick={shareKakao}>
