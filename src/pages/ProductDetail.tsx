@@ -15,8 +15,6 @@ import { getCartItemAPI } from 'api/cart/getCartItemAPI';
 import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 
 const ProductDetail = () => {
-  // const location = useLocation();
-  // const product = location.state?.item;
   const intl = new Intl.NumberFormat();
   const token = useRecoilValue(userTokenState);
   let [amount, setAmount] = useState(1);
@@ -38,7 +36,7 @@ const ProductDetail = () => {
     if (product) {
       if (amount < product.stock) {
         setAmount(amount + 1);
-        setTotalPrice((amount + 1) * product.price);
+        setTotalPrice((amount + 1) * product?.price);
       }
     }
   };
@@ -46,7 +44,7 @@ const ProductDetail = () => {
     if (product) {
       if (amount > 1) {
         setAmount(amount - 1);
-        setTotalPrice((amount - 1) * product.price);
+        setTotalPrice((amount - 1) * product?.price);
       }
     }
   };
@@ -90,11 +88,16 @@ const ProductDetail = () => {
     const script = document.createElement('script');
     script.src = '//developers.kakao.com/sdk/js/kakao.min.js';
     script.onload = () => {
-      window.Kakao.init('18623218c742bd8317f31216a17b1094'); // 발급받은 앱 키를 입력합니다.
+      window.Kakao.init('18623218c742bd8317f31216a17b1094'); // 발급받은 앱 키
     };
     document.body.appendChild(script);
   }, []);
-
+  useEffect(() => {
+    // product가 정의되었을 때만 shareKakao를 실행합니다.
+    if (product) {
+      shareKakao();
+    }
+  }, [product]);
   let shareKakao = function () {
     if (product) {
       window.Kakao.Link.sendScrap({
