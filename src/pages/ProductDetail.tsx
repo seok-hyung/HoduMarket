@@ -92,12 +92,7 @@ const ProductDetail = () => {
     };
     document.body.appendChild(script);
   }, []);
-  useEffect(() => {
-    // product가 정의되었을 때만 shareKakao를 실행합니다.
-    if (product) {
-      shareKakao();
-    }
-  }, [product]);
+
   let shareKakao = function () {
     if (product) {
       window.Kakao.Link.sendScrap({
