@@ -164,38 +164,39 @@ export default Nav;
 
 const WrapperDiv = styled.nav`
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  width: 100%;
   .wrapperNav {
-    max-width: 70vw;
+    max-width: 1400px;
     display: flex;
     margin: 0 auto;
     justify-content: space-between;
-    padding: 26px 0px;
+    padding: 15px 0px;
 
     .logoBoxDiv {
       display: flex;
-      gap: 40px;
+      gap: 20px;
       align-items: center;
       position: relative;
 
       .logoImg {
-        width: 200px;
+        width: 100px;
         object-fit: contain;
       }
       .searchInput {
-        width: 600px;
-        padding: 20px 30px;
+        width: 450px;
+        padding: 8px 15px;
         outline: none;
-        font-size: 28px;
+        font-size: 18px;
         display: flex;
         background: #ffffff;
-        border: 4px solid var(--main-color);
+        border: 3px solid var(--main-color);
         border-radius: 50px;
       }
       .searchImg {
         position: absolute;
-        width: 36px;
+        width: 25px;
         top: 0;
-        right: 30px;
+        right: 18px;
         cursor: pointer;
       }
     }
@@ -203,27 +204,27 @@ const WrapperDiv = styled.nav`
       display: flex;
       justify-content: flex-end;
       width: 100%;
-      gap: 30px;
+      gap: 0px;
     }
     .listLi {
       display: flex;
-      width: 120px;
+      width: 100px;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       .navImg {
-        width: 50px;
-        margin-bottom: 5px;
+        width: 25px;
+        margin-bottom: 3px;
       }
       p {
-        font-size: 20px;
+        font-size: 14px;
       }
     }
     .listLi.mypage {
       position: relative;
     }
     .shoppingBagLi {
-      width: 180px;
+      width: 120px;
       border-radius: 5px;
       background-color: var(--main-color);
       color: white;
