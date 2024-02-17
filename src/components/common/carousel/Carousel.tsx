@@ -22,55 +22,54 @@ const Carousel = () => {
   }, [currentIndex]);
 
   return (
-    <>
-      <CarouselContainerDiv>
-        <div className="circle left">
-          <img
-            className="icon"
-            onClick={goToPrevSlide}
-            src="/assets/chevron-left.svg"
-            alt="좌측 이동 화살표"
+    <CarouselContainerDiv>
+      <div className="circle left">
+        <img
+          className="icon"
+          onClick={goToPrevSlide}
+          src="/assets/chevron-left.svg"
+          alt="좌측 이동 화살표"
+        />
+      </div>
+      <div className="img-container">
+        {images.map((img, index) => (
+          <CarouselImg
+            index={index}
+            currentIndex={currentIndex}
+            key={img.id}
+            src={img.url}
+            alt="캐러셀 이미지"
           />
-        </div>
-        <div className="img-container">
-          {images.map((img, index) => (
-            <CarouselImg
-              index={index}
-              currentIndex={currentIndex}
-              key={img.id}
-              src={img.url}
-              alt="캐러셀 이미지"
-            />
-          ))}
-        </div>
-        <div className="circle right">
-          <img
-            className="icon"
-            onClick={goToNextSlide}
-            src="/assets/chevron-right.svg"
-            alt="우측 이동 화살표"
-          />
-        </div>
-      </CarouselContainerDiv>
-    </>
+        ))}
+      </div>
+      <div className="circle right">
+        <img
+          className="icon"
+          onClick={goToNextSlide}
+          src="/assets/chevron-right.svg"
+          alt="우측 이동 화살표"
+        />
+      </div>
+    </CarouselContainerDiv>
   );
 };
 
 export default Carousel;
 
 const CarouselContainerDiv = styled.div`
-  margin-top: 7px;
+  margin-top: 3px;
   position: relative;
   display: flex;
-  height: 650px;
+  height: 350px;
+  width: 100%;
   .circle {
     position: absolute;
     z-index: 10;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    width: 90px;
-    height: 90px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: white;
     display: flex;
@@ -91,10 +90,10 @@ const CarouselContainerDiv = styled.div`
     background-color: white;
   }
   .circle.left {
-    left: 80px;
+    left: 50px;
   }
   .circle.right {
-    right: 80px;
+    right: 50px;
   }
   .img-container {
     position: relative;
