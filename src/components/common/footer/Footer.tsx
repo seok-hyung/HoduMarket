@@ -65,11 +65,10 @@ export default Footer;
 
 const WrapperFooter = styled.footer<FooterProps>`
   background-color: #f2f2f2;
-  min-height: 300px;
+  width: 100%;
   .container-box {
-    /* max-width: 65vw; */
-    max-width: ${(props) => (props.isSellerCenter ? '90vw' : '70vw')};
-    padding: 40px 0;
+    max-width: 1400px;
+    padding: 20px 0;
     font-size: 14px;
     font-weight: 400;
     margin: 0 auto;
@@ -79,13 +78,13 @@ const LinkSection = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 15px;
   .link-ul {
     display: flex;
     color: black;
-    min-width: fit-content;
-    gap: 14px;
-    font-size: 20px;
+    /* min-width: fit-content; */
+    gap: 10px;
+    font-size: 16px;
     li {
       padding: 0 14px 0 0;
       position: relative;
@@ -103,23 +102,23 @@ const LinkSection = styled.section`
   }
   .link-btn-ul {
     display: flex;
-    gap: 14px;
+    gap: 10px;
     img {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
   }
 `;
 
 const AboutSection = styled.section`
   border-top: 1px solid #c4c4c4;
-  padding-top: 20px;
-  font-size: 20px;
+  padding-top: 12px;
+  font-size: 18px;
   letter-spacing: 3px;
   color: #767676;
   line-height: 24px;
 
   strong {
-    font-weight: 700;
+    font-weight: 900;
   }
 `;
