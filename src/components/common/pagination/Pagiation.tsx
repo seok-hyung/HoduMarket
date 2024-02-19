@@ -25,6 +25,7 @@ const PageBoxDiv = styled.div`
   justify-content: center;
   align-items: center;
   margin: 60px 0;
+  width: 100%;
   button {
     font-size: 30px;
     border: 1px solid black;
