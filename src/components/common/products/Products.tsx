@@ -39,17 +39,18 @@ const Products = ({ products }: ProductsProps) => {
 export default Products;
 
 const ProductWrapperDiv = styled.div`
-  margin-top: 100px;
+  margin-top: 50px;
+  width: 100%;
   .productsUl {
-    max-width: 70vw;
+    max-width: 1400px;
     display: flex;
-    gap: 70px;
+    gap: 40px;
     justify-content: space-between;
     margin: auto;
     flex-wrap: wrap;
 
     li {
-      flex-basis: calc(33% - 60px);
+      flex-basis: calc(33% - 42px);
       border-radius: 10px;
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
       cursor: pointer;
@@ -58,32 +59,30 @@ const ProductWrapperDiv = styled.div`
         transform: translateY(-15px);
       }
       img {
-        border-radius: 10px;
-        width: 100%;
         height: auto;
-        object-fit: cover;
-        aspect-ratio: 1;
+        border-radius: 10px;
+        aspect-ratio: 5/4;
       }
       .productInfo {
-        padding: 30px;
+        padding: 15px;
         .store-name-p {
           color: var(--main-disabled-color);
-          font-size: 28px;
-          margin-bottom: 16px;
+          font-size: 20px;
+          margin-bottom: 10px;
         }
         .product-name-h2 {
-          font-size: 34px;
+          font-size: 22px;
           color: var(--main-text-color);
-          margin-bottom: 14px;
+          margin-bottom: 10px;
         }
         .price-p {
-          font-size: 32px;
+          font-size: 20px;
           font-weight: bold;
           color: var(--main-text-color);
           .won {
             font-weight: normal;
-            margin-left: 5px;
-            font-size: 22px;
+            margin-left: 3px;
+            font-size: 20px;
           }
         }
       }
