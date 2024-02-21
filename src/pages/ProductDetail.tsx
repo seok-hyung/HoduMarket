@@ -25,26 +25,33 @@ const ProductDetail = () => {
   const [modalState, setModalState] = useState(false);
   const openModal = () => setModalState(true);
   const closeModal = () => setModalState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [basePrice, setBasePrice] = useState(0);
   useEffect(() => {
     getDetailProductAPI(productId).then((data) => {
       setProduct(data);
+      setBasePrice(data.price);
+      setTotalPrice(data.price);
     });
-  }, [productId, product]);
-
+  }, [productId]);
   // 수량
   const handleIncrement = () => {
     if (product) {
-      if (amount < product.stock) {
-        setAmount(amount + 1);
-        setTotalPrice((amount + 1) * product?.price);
+      let newAmount = amount;
+      if (newAmount < product.stock) {
+        newAmount = newAmount + 1;
+        setAmount(newAmount);
+        setTotalPrice(newAmount * basePrice);
       }
     }
   };
   const handleDecrement = () => {
     if (product) {
-      if (amount > 1) {
-        setAmount(amount - 1);
-        setTotalPrice((amount - 1) * product?.price);
+      let newAmount = amount;
+      if (newAmount > 1) {
+        newAmount = newAmount - 1;
+        setAmount(newAmount);
+        setTotalPrice(newAmount * basePrice);
       }
     }
   };
@@ -56,7 +63,6 @@ const ProductDetail = () => {
       }
     : undefined;
 
-  let [totalPrice, setTotalPrice] = useState(product ? product.price : 0);
   const handleCartBtn = () => {
     if (product) {
       getCartItemAPI(token).then((res) => {
@@ -160,6 +166,7 @@ const ProductDetail = () => {
         </DetailContainerDiv>
         <TabContent />
       </DetailWrapperDiv>
+
       {modalState ? (
         <ModalOverlay onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -191,55 +198,58 @@ const ProductDetail = () => {
 export default ProductDetail;
 
 const DetailWrapperDiv = styled.div`
-  margin: 80px auto;
-  max-width: 70vw;
+  width: 100%;
+  max-width: 1300px;
+  margin: 40px auto;
 `;
 
 const DetailContainerDiv = styled.div`
   display: flex;
-  margin-bottom: 140px;
+  margin-bottom: 50px;
+  max-width: 1300px;
   .detail-left-div {
     width: 50%;
-    height: 860px;
+    max-width: 50%;
     margin-right: 50px;
     img {
-      width: 100%;
       border-radius: 10px;
+      aspect-ratio: 2/1;
     }
   }
 
   .detail-right-div {
     display: flex;
     flex-direction: column;
-    min-width: calc(50% - 50px);
-    font-size: 40px;
+    width: 50%;
+    max-width: 50%;
+    font-size: 30px;
     position: relative;
     .info {
       color: var(--sub-text-color);
-      margin-bottom: 2rem;
-      font-size: 38px;
+      margin-bottom: 0.5rem;
+      font-size: 26px;
     }
     .name {
-      margin-bottom: 2.5rem;
+      margin-bottom: 1rem;
     }
     .price {
       display: inline-block;
-      margin-bottom: 13rem;
-      font-weight: 700;
+      margin-bottom: 6rem;
+      font-weight: 900;
     }
     .deliveryInfo {
-      margin-bottom: 3rem;
-      font-size: 32px;
+      margin-bottom: 1.5rem;
+      font-size: 24px;
     }
     .amount {
-      width: 180px;
-      height: 50px;
+      width: 150px;
+      height: 40px;
       display: flex;
       justify-content: space-around;
       align-items: center;
       border: 3px solid #c4c4c4;
       border-radius: 5px;
-      margin: 3rem 0;
+      margin: 1.5rem 0;
 
       img {
         cursor: pointer;
@@ -250,8 +260,8 @@ const DetailContainerDiv = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background-color: #f0f0f0;
       cursor: pointer;
@@ -260,23 +270,24 @@ const DetailContainerDiv = styled.div`
       top: 0;
     }
     #share {
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
     }
     hr {
-      border: 2px solid #c4c4c4;
+      border: 1px solid #c4c4c4;
     }
 
     .total-price {
+      font-size: 26px;
       display: flex;
       justify-content: space-between;
-      margin: 4rem 0;
+      margin-top: 8rem;
+      margin-bottom: 2rem;
       .price-info {
         min-width: fit-content;
       }
       .total-amount {
         font-weight: 400;
-
         min-width: fit-content;
       }
       .total-amount-span {
@@ -288,15 +299,16 @@ const DetailContainerDiv = styled.div`
         color: var(--main-color);
         font-style: normal;
         font-weight: 700;
-        font-size: 36px;
+        font-size: 30px;
         margin-left: 5px;
       }
     }
     .detail-btn {
       display: flex;
+      margin-top: 10px;
       .buy,
       .shop-bag {
-        padding: 20px 0;
+        padding: 15px 0;
       }
       .buy {
         flex-basis: 66%;
