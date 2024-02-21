@@ -67,7 +67,7 @@ const WrapperFooter = styled.footer<FooterProps>`
   background-color: #f2f2f2;
   width: 100%;
   .container-box {
-    max-width: 1400px;
+    max-width: 1300px;
     padding: 20px 0;
     font-size: 14px;
     font-weight: 400;

@@ -37,13 +37,14 @@ const TabContent = () => {
 export default TabContent;
 
 const TabButtonsDiv = styled.div`
-  max-width: 70vw;
+  width: 100%;
+  max-width: 1300px;
   button {
     background-color: white;
     width: 25%;
     min-width: fit-content;
-    font-size: 24px;
-    margin-bottom: 100px;
+    font-size: 20px;
+    margin-bottom: 40px;
     border-bottom: 12px solid #e0e0e0;
     padding: 15px 0;
   }
@@ -53,5 +54,5 @@ const TabButtonsDiv = styled.div`
 `;
 const TabContentDiv = styled.div`
   text-align: left;
-  font-size: 36px;
+  font-size: 20px;
 `;

@@ -166,7 +166,7 @@ const WrapperDiv = styled.nav`
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
   width: 100%;
   .wrapperNav {
-    max-width: 1400px;
+    max-width: 1300px;
     display: flex;
     margin: 0 auto;
     justify-content: space-between;

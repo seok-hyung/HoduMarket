@@ -42,7 +42,7 @@ const ProductWrapperDiv = styled.div`
   margin-top: 50px;
   width: 100%;
   .productsUl {
-    max-width: 1400px;
+    max-width: 1300px;
     display: flex;
     gap: 40px;
     justify-content: space-between;

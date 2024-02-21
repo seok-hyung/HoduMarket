@@ -1,28 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Button = styled.div`
-  position: fixed;
-  bottom: 3rem;
-  right: 3rem;
-  width: 5rem;
-  height: 5rem;
-  background: var(--main-color);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: none;
-  &.visible {
-    display: flex;
-  }
-  img {
-    width: 60px;
-    height: 60px;
-  }
-`;
-
 const ScrollToTopBtn = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -53,3 +31,31 @@ const ScrollToTopBtn = () => {
 };
 
 export default ScrollToTopBtn;
+
+const Button = styled.div`
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--main-color);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  &.visible {
+    display: flex;
+  }
+  &:hover {
+    background: #469f5b;
+  }
+  &:active {
+    background: #199c34;
+  }
+  & img {
+    width: 30px;
+    height: 30px;
+  }
+`;
