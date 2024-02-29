@@ -16,17 +16,17 @@ import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 
 const ProductDetail = () => {
   const intl = new Intl.NumberFormat();
+  const navigate = useNavigate();
   const token = useRecoilValue(userTokenState);
+  const [product, setProduct] = useState<ProductDetailForm>();
   let [amount, setAmount] = useState(1);
   const [isInCart, setIsInCart] = useState(false);
-  const navigate = useNavigate();
   const { productId } = useParams();
-  const [product, setProduct] = useState<ProductDetailForm>();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [basePrice, setBasePrice] = useState(0);
   const [modalState, setModalState] = useState(false);
   const openModal = () => setModalState(true);
   const closeModal = () => setModalState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [basePrice, setBasePrice] = useState(0);
   useEffect(() => {
     getDetailProductAPI(productId).then((data) => {
       setProduct(data);

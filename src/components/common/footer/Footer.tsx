@@ -5,6 +5,7 @@ type FooterProps = {
   isSellerCenter?: boolean;
 };
 
+// const Footer = React.memo(function Footer({ isSellerCenter }: FooterProps) {
 const Footer = ({ isSellerCenter }: FooterProps) => {
   return (
     <WrapperFooter isSellerCenter={isSellerCenter}>
@@ -61,6 +62,7 @@ const Footer = ({ isSellerCenter }: FooterProps) => {
     </WrapperFooter>
   );
 };
+
 export default Footer;
 
 const WrapperFooter = styled.footer<FooterProps>`
