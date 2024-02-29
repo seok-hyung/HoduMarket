@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 // 컴포넌트
 import Nav from 'components/common/nav/Nav';
@@ -10,11 +10,12 @@ import Pagination from 'components/common/pagination/Pagiation';
 // 커스텀 훅
 import { useGetProducts } from 'hooks/UseGetProducts';
 import ScrollToTopBtn from 'components/common/scrollToTopBtn/ScrollToTopBtn';
+import Skeleton from 'components/common/skeleton/Skeleton';
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
-  const { products } = useGetProducts(); // 전체 상품 불러오기
+  const { products } = useGetProducts(); // 전체 상품 데이터를 가져옵니다.
 
   const filteredProducts = products.filter((product) =>
     product.product_name.includes(searchValue),
@@ -32,7 +33,8 @@ const Home = () => {
       {products.length > 0 ? (
         <Products products={paginatedProducts} />
       ) : (
-        <p>Loading...</p>
+        <Skeleton count={15} />
+        // <p>Loading...</p>
       )}
       <Pagination
         totalPage={totalPage}
