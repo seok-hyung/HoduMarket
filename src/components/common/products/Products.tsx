@@ -86,16 +86,6 @@ const ProductWrapperDiv = styled.div`
           }
         }
       }
-
-      /* @media (max-width: 1600px) {
-        // 화면 너비가 900px 이하일 때 한 줄에 두 개의 상품이 나타나도록 설정합니다.
-        flex-basis: calc(50% - 60px);
-      }
-
-      @media (max-width: 1000px) {
-        // 화면 너비가 600px 이하일 때 한 줄에 하나의 상품이 나타나도록 설정합니다.
-        flex-basis: 100%;
-      } */
     }
   }
 `;
