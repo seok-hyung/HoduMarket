@@ -244,7 +244,7 @@ const WrapperDiv = styled.nav`
     .modalContent {
       width: 600px;
       background: white;
-      padding: 40px;
+      padding: 20px;
       border-radius: 10px;
       text-align: center;
       p {
