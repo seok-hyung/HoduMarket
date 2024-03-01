@@ -24,11 +24,11 @@ const MyPageModal = () => {
 const ModalUl = styled.ul`
   position: absolute;
   background-color: #ffff;
-  width: 200px;
-  top: 120px;
-  right: -40px;
+  width: 120px;
+  top: 80px;
+  right: 0px;
   z-index: 10;
-  font-size: 22px;
+  font-size: 16px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 10px;
@@ -37,10 +37,8 @@ const ModalUl = styled.ul`
     content: '';
     position: absolute;
     left: calc(50% - 10px);
-
     border-left: 13px solid transparent;
     border-right: 13px solid transparent;
-
     /* 삼각형 높이 조절 */
     top: -15px;
     border-bottom: 15px solid #ffff;
@@ -49,14 +47,14 @@ const ModalUl = styled.ul`
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
     &:last-of-type {
       margin-bottom: 0;
     }
     &:hover {
       border: 0.1px solid black;
-      padding: 20px;
+      padding: 10px;
       font-weight: bold;
       color: black;
       border-radius: 10px;
