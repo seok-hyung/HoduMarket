@@ -66,7 +66,7 @@ const ProductDetail = () => {
   const handleCartBtn = () => {
     if (product) {
       getCartItemAPI(token).then((res) => {
-        if (res.results.some((item: any) => item.product_id === product.product_id)) {
+        if (res?.results.some((item: any) => item.product_id === product.product_id)) {
           setIsInCart(true);
           postCartItemAPI(token, formdata);
           openModal();
