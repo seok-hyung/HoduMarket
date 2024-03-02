@@ -1,15 +1,17 @@
-import SellerNav from 'components/common/nav/SellerNav';
-import TextEditor from 'components/common/textEditor/TextEditor';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { PostSellerProductForm, PutSellerProductForm } from 'model/market';
-import { useRecoilValue } from 'recoil';
-import { userTokenState } from 'atoms/Atoms';
+import { readAndCompressImage } from 'browser-image-resizer';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { PostSellerProductForm, PutSellerProductForm } from 'model/market';
+import { userTokenState } from 'atoms/Atoms';
 
 import { postSellerProductAPI } from 'api/product/postSellerProductAPI';
 import { getDetailProductAPI } from 'api/product/getDetailProductAPI';
 import { putSellerProductAPI } from 'api/product/putSellerProductAPI';
+
+import SellerNav from 'components/common/nav/SellerNav';
+import TextEditor from 'components/common/textEditor/TextEditor';
 
 const UploadProduct = () => {
   const { product_id } = useParams();
@@ -78,16 +80,26 @@ const UploadProduct = () => {
   };
 
   // 이미지 설정
-  const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImgChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
+      try {
+        const img = await readAndCompressImage(e.target.files[0], {
+          quality: 0.7,
+          maxWidth: 600,
+          maxHeight: 600,
+        });
 
-      reader.onloadend = () => {
-        setPreviewImg(reader.result as string);
-      };
+        const reader = new FileReader();
 
-      reader.readAsDataURL(e.target.files[0]);
-      setImg(e.target.files[0]);
+        reader.onloadend = () => {
+          setPreviewImg(reader.result as string);
+        };
+
+        reader.readAsDataURL(img);
+        setImg(img);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
   // 가격 설정
