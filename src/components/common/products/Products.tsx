@@ -62,6 +62,8 @@ const ProductWrapperDiv = styled.div`
         height: auto;
         border-radius: 10px;
         aspect-ratio: 5/4;
+        /* width: 100%;
+        object-fit: cover; */
       }
       .productInfo {
         padding: 15px;
