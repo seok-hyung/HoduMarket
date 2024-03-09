@@ -35,10 +35,10 @@ const Carousel = () => {
         {images.map((img, index) => (
           <CarouselImg
             index={index}
-            currentIndex={currentIndex}
             key={img.id}
             src={img.url}
             alt="캐러셀 이미지"
+            $currentIndex={currentIndex}
           />
         ))}
       </div>
@@ -104,13 +104,13 @@ const CarouselContainerDiv = styled.div`
 
 type CarouselImgProps = {
   index: number;
-  currentIndex: number;
+  $currentIndex: number;
 };
 
 const CarouselImg = styled.img<CarouselImgProps>`
   position: absolute;
   object-fit: cover;
 
-  transform: ${(props) => `translateX(${(props.index - props.currentIndex) * 100}%)`};
+  transform: ${(props) => `translateX(${(props.index - props.$currentIndex) * 100}%)`};
   transition: transform ease-out 0.5s;
 `;
