@@ -68,6 +68,7 @@ export default Footer;
 const WrapperFooter = styled.footer<FooterProps>`
   background-color: #f2f2f2;
   width: 100%;
+  color: #333; // 색상 변경
   .container-box {
     max-width: 1300px;
     padding: 20px 0;
@@ -76,6 +77,7 @@ const WrapperFooter = styled.footer<FooterProps>`
     margin: 0 auto;
   }
 `;
+
 const LinkSection = styled.section`
   display: flex;
   justify-content: space-between;
@@ -83,22 +85,20 @@ const LinkSection = styled.section`
   margin-bottom: 15px;
   .link-ul {
     display: flex;
-    color: black;
-    /* min-width: fit-content; */
+    color: #333; // 색상 변경
     gap: 10px;
     font-size: 16px;
     li {
       padding: 0 14px 0 0;
       position: relative;
       min-width: fit-content;
-
       &:not(:last-child)::after {
         content: '';
         position: absolute;
         right: 0;
         top: 0;
         bottom: 0;
-        border-right: 1px solid black;
+        border-right: 1px solid #333; // 색상 변경
       }
     }
   }
@@ -117,9 +117,8 @@ const AboutSection = styled.section`
   padding-top: 12px;
   font-size: 18px;
   letter-spacing: 3px;
-  color: #767676;
+  color: #333; // 색상 변경
   line-height: 24px;
-
   strong {
     font-weight: 900;
   }
