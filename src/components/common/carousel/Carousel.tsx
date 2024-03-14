@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { imgList, Image } from './ImgList';
+import 'lazysizes';
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,9 +35,10 @@ const Carousel = () => {
       <div className="img-container">
         {images.map((img, index) => (
           <CarouselImg
+            className="lazyload"
             index={index}
             key={img.id}
-            src={img.url}
+            data-src={img.url}
             alt="캐러셀 이미지"
             $currentIndex={currentIndex}
           />
