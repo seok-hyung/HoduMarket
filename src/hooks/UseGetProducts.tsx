@@ -5,21 +5,20 @@ import { ProductDetailForm } from 'model/market';
 // 상품 데이터 및 페이지 데이터 가져오는 커스텀 훅 (Home.tsx)
 export const useGetProducts = () => {
   const [products, setProducts] = useState<ProductDetailForm[]>([]);
+
   const fetchAllProducts = async () => {
     let currentPage = 1;
     let fetchedProducts: ProductDetailForm[] = [];
-    let shouldContinue = true;
-    while (shouldContinue) {
+    const MAX_PRODUCTS_PER_PAGE = 15; // 페이지당 최대 상품 수 명시
+    let hasMoreProducts = true;
+    while (hasMoreProducts) {
       const data = await getAllProductsAPI(currentPage);
-      if (data && data.results) {
+      if (data.results) {
         fetchedProducts = [...fetchedProducts, ...data.results];
-        if (data.results.length < 15) {
-          shouldContinue = false;
-        } else currentPage++;
-      } else {
-        console.error('데이터를 제대로 불러오지 못했습니다.');
-        shouldContinue = false;
       }
+      if (data.results.length < MAX_PRODUCTS_PER_PAGE) {
+        hasMoreProducts = false;
+      } else currentPage++;
     }
     setProducts(fetchedProducts);
   };
