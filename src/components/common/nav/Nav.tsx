@@ -133,7 +133,7 @@ const Nav = ({ setSearchValue }: any) => {
             src="/assets/icon-search.svg"
             alt="검색 이미지"
             onClick={() => {
-              setSearchValue(searchInputValue.toLowerCase());
+              setSearchValue(searchInputValue);
             }}
           />
         </div>
