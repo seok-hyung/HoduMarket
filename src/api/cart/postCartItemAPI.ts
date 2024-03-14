@@ -14,10 +14,11 @@ export const postCartItemAPI = async (
   });
 
   if (!res.ok) {
+    // console.log(`Error: ${res.status} ${res.statusText}`);
     throw new Error('네트워크에 문제가 있습니다.');
   }
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
 
   return data;
 };
