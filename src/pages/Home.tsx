@@ -11,23 +11,19 @@ import Skeleton from 'components/common/skeleton/Skeleton';
 
 // 커스텀 훅
 import { useGetProducts } from 'hooks/UseGetProducts';
-import { getSearchProducstAPI } from 'api/product/getSearchProductsAPI';
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
-  const { products } = useGetProducts(); // 전체 상품 데이터 가져오기
+  const { products } = useGetProducts(); // 커스텀 훅을 통해 전체 상품 데이터 가져오기
 
+  // 검색 API가 없어서 검색 기능 직접 구현
   const filteredProducts = products.filter((product) =>
     product.product_name.includes(searchValue),
   );
-  useEffect(() => {
-    getSearchProducstAPI(searchValue).then((res) => {
-      console.log(res);
-    });
-  }, [searchValue]);
   const MAX_PRODUCTS_PER_PAGE = 15; // 페이지당 최대 상품 수 명시
   const totalPage = Math.ceil(filteredProducts.length / MAX_PRODUCTS_PER_PAGE);
+
   // 현재 페이지에 해당하는 상품들만 선택
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * MAX_PRODUCTS_PER_PAGE,
