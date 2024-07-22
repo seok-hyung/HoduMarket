@@ -68,11 +68,15 @@ const ProductDetail = () => {
       getCartItemAPI(token).then((res) => {
         if (res?.results.some((item: any) => item.product_id === product.product_id)) {
           setIsInCart(true);
-          postCartItemAPI(token, formdata);
-          openModal();
+          if (formdata !== undefined) {
+            postCartItemAPI(token, formdata);
+            openModal();
+          }
         } else {
           setIsInCart(false);
-          postCartItemAPI(token, formdata);
+          if (formdata !== undefined) {
+            postCartItemAPI(token, formdata);
+          }
         }
       });
     }
