@@ -100,7 +100,7 @@ const Nav = ({ setSearchValue }: any) => {
             <p>마이페이지</p>
             {isMyPageModalState && <MyPageModal />}
           </li>
-          <li className="shoppingBagLi" onClick={() => navigate('/seller-center')}>
+          <li className="sellerCenter" onClick={() => navigate('/seller-center')}>
             <img src="/assets/icon-shopping-bag.png" alt="판매자 센터 이미지" />
             <p>판매자센터</p>
           </li>
@@ -138,6 +138,7 @@ const Nav = ({ setSearchValue }: any) => {
           />
         </div>
         <ul className="listUl">{renderMenuItems()}</ul>
+
         {isCartModalState && (
           <div className="modalOverlay" onClick={handleCloseModal}>
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
@@ -203,42 +204,38 @@ const WrapperDiv = styled.nav`
     .listUl {
       display: flex;
       justify-content: flex-end;
-      width: 100%;
-      gap: 0px;
+      gap: 24px;
     }
     .listLi {
       display: flex;
-      width: 100px;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       .navImg {
-        width: 25px;
+        width: 26px;
         margin-bottom: 3px;
       }
       p {
-        font-size: 14px;
+        font-size: 16px;
       }
     }
     .listLi.mypage {
       position: relative;
     }
-    .shoppingBagLi {
-      width: 120px;
+    .sellerCenter {
       border-radius: 5px;
       background-color: var(--main-color);
       color: white;
       display: flex;
       gap: 8px;
-      font-size: 24px;
+      font-size: 20px;
       justify-content: center;
       align-items: center;
+      padding: 0 10px;
       cursor: pointer;
       img {
-        width: 32px;
-        height: 32px;
-      }
-      p {
+        width: 28px;
+        height: 28px;
       }
     }
     .modalContent {

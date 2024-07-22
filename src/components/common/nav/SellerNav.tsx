@@ -31,10 +31,10 @@ const WrapperDiv = styled.nav`
     padding: 26px 0px;
     gap: 30px;
     img {
-      width: 200px;
+      width: 150px;
     }
     p {
-      font-size: 44px;
+      font-size: 34px;
       font-weight: bold;
       line-height: 40px;
       display: flex;
