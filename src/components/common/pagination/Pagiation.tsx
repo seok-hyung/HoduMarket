@@ -1,10 +1,11 @@
+import { useGetProducts } from 'hooks/UseGetProducts';
 import React from 'react';
 import { styled } from 'styled-components';
 
-const Pagination = ({ totalPage, currentPage, onPageChange }: any) => {
+const Pagination = ({ totalPages, currentPage, onPageChange }: any) => {
   // 페이지 버튼들을 생성합니다.
   const pageButtons = [];
-  for (let i = 1; i <= totalPage; i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageButtons.push(
       <button
         key={i}
